@@ -2,30 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-.grad-alt {
-  background-color: rgb(244 244 245);
-  background-image: linear-gradient(225deg, #ff149296 0%, #00ffff96 100%);
-  background-size: 400% 400%;
-  animation: animationName 60s ease infinite;
-}
-
-@keyframes animationName {
+@keyframes bgPosDrift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-.one-corn {
-  border-bottom-right-radius: 100% 100px;
-}
-
-.one-corn-top {
-  border-top-right-radius: 100% 100px;
-}
-
-.grad-text {
-  background: linear-gradient(92deg, #B507DC 0.82%, #2F0FDB 26.77%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+@layer utilities {
+  .grad-alt {
+    background-color: rgb(244 244 245);
+    background-image: linear-gradient(225deg, #ff149296 0%, #00ffff96 100%);
+    background-size: 400% 400%;
+    animation: bgPosDrift 60s ease infinite;
+  }
+  .grad-text {
+    background: linear-gradient(92deg, #B507DC 0.82%, #2F0FDB 26.77%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .one-corn {
+    border-bottom-right-radius: 100% 100px;
+  }
+  .one-corn-top {
+    border-top-right-radius: 100% 100px;
+  }
 }
