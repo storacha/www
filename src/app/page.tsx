@@ -6,7 +6,7 @@ import ImageIconCluster from '@/../public/images/index/cluster-1.png'
 
 
 export function NavLink ({href, children}: {href:string, children: React.ReactNode}) {
-  return <Link href={href} className='inline-block uppercase font-medium text-xl py-4 md:py-2 px-2 mx-2 hover:text-blue-600'>{children}</Link>
+  return <Link href={href} className='inline-block uppercase font-medium text-lg md:text-xl py-4 md:py-2 px-2 mx-2 hover:text-blue-600'>{children}</Link>
 }
 
 export function ButtonLink ({href, className = '', children}: {href:string, className?: string, children: React.ReactNode}) {
@@ -54,9 +54,6 @@ export default function Home() {
           <NavLink href='/features'>Features</NavLink>
           <NavLink href='/docs'>Docs</NavLink>
           <NavLink href='/plans'>Pricing</NavLink>
-          <ButtonLink href='https://console.web3.storage' className='hidden sm:inline-block'>
-            CONSOLE
-          </ButtonLink>
         </nav>
       </section>
       <section className='bg-zinc-950 text-white pt-20 pb-20 leading-loose md:one-corn'>
@@ -111,25 +108,31 @@ export default function Home() {
             <Image alt="Cluster of logos for the technologies that make web3.storage work" src={ImageIconCluster} className='hidden lg:block lg:w-full lg:max-w-md opacity-80 inline' />
           </div>
         </div>
-        <div className='md:flex gap-8 max-w-6xl mx-auto p-8'>
-          <div className='md:w-1/3'>
+        <div className='md:flex gap-8 max-w-6xl mx-auto'>
+          <div className='md:w-1/3 p-6'>
             <h3 className='font-bold text-2xl'>JS Client</h3>
             <a href='https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#readme'>
-              <code className='shadow-md block text-sm p-4 rounded-md grad-text font-bold mt-2 mb-4 bg-white'>$ npm i @web3-storage/w3up-client</code>
+              <code className='shadow-md block text-sm p-4 rounded-md font-bold mt-2 mb-4 bg-white'>
+                <span className='grad-text'>$ npm i @web3-storage/w3up-client</span>
+              </code>
             </a>
             <p className='px-4 font-light'>Import the library into your project, and enjoy a simple and familiar way to store and retrieve.</p>
           </div>
-          <div className='md:w-1/3'>
+          <div className='md:w-1/3 p-6'>
             <h3 className='font-bold text-2xl'>Command Line</h3>
             <a href='https://github.com/web3-storage/w3cli'>
-              <code className='shadow-md block text-sm p-4 rounded-md grad-text font-bold mt-2 mb-4 bg-white'>$ w3 up ./anything</code>
+              <code className='shadow-md block text-sm p-4 rounded-md font-bold mt-2 mb-4 bg-white'>
+                <span className='grad-text'>$ w3 up ./anything</span>
+              </code>
             </a>
             <p className='px-4 font-light'>Install <a className='text-blue-400 font-medium' href='https://github.com/web3-storage/w3cli'>w3cli</a> to store data from your command line for the fastest way to programmatically upload data.</p>
           </div>
-          <div className='md:w-1/3'>
+          <div className='md:w-1/3 p-6'>
           <h3 className='font-bold text-2xl'>Web App</h3>
             <a href='https://console.web3.storage'>
-              <span className='shadow-sm hover:shadow-md block text-sm p-4 rounded-md grad-text mt-2 mb-4 border-dashed border-2 border-zinc-300 text-center font-medium'>Drop file to upload</span>
+              <span className='shadow-sm hover:shadow-md block text-sm p-4 rounded-md bg-white mt-2 mb-4 border-dashed border-2 border-zinc-300 text-center font-bold'>
+                <span className='grad-text'>Drop file to upload</span>
+              </span>
             </a>
             <p className='px-4 font-light'>Keep it simple? Upload your files directly through the <a className='font-semibold text-blue-400' href='https://console.web3.storage' >console</a> Web UI to try out web3.storage now.</p>
           </div>
@@ -137,14 +140,14 @@ export default function Home() {
       </section>
 
       <footer className='bg-zinc-950 text-white py-16'>
-        <div className='max-w-5xl mx-auto p-8 flex'>
-          <div className='w-1/2 pt-8'>
+        <div className='max-w-5xl mx-auto p-8 md:flex'>
+          <div className='md:w-1/2 pt-8'>
             <Web3StorageLogo>web3.storage</Web3StorageLogo>
             <p className='pt-6 pr-24 font-light text-lg'>Sign up for free using your email address.</p>
             <a className='rounded-full inline-block px-4 py-2 grad-alt font-light uppercase mt-8' href='https://console.web3.storage'>Sign up</a>
           </div>
-          <div className='w-1/4'>
-            <h2 className='font-semibold pb-2'>Resources</h2>
+          <div className='md:w-1/4'>
+            <h2 className='font-semibold pb-2 pt-16 md:pt-0'>Resources</h2>
             <nav>
               <a className='block py-2' href="/quickstart">Quickstart guide</a>
               <a className='block py-2' href="/faq">FAQ</a>
@@ -154,8 +157,8 @@ export default function Home() {
               <a className='block py-2' href="https://status.web3.storage/">status</a>
             </nav>
           </div>
-          <div className='w-1/4'>
-            <h2 className='font-semibold pb-2'>Get started</h2>
+          <div className='md:w-1/4'>
+            <h2 className='font-semibold pb-2 pt-8 md:pt-0'>Get started</h2>
             <nav>
               <a className='block py-2' href="https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#readme">Javascript client</a>
               <a className='block py-2' href="/faq">CLI</a>
