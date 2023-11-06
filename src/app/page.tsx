@@ -20,7 +20,7 @@ export function ButtonLink ({href, className = '', children}: {href:string, clas
 export default function Home() {
   return (
     <main>
-      <section className='md:pb-48 relative grad-alt md:one-corn'>
+      <section className='md:pb-48 relative bg-grad md:one-corn'>
         <header className='max-w-7xl mx-auto pt-4 md:pt-10 text-zinc-950'>
           <div className='md:flex items-center'>
             <div className='flex-1 px-3'>
@@ -65,18 +65,18 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className='bg-blue-400 text-zinc-950 py-36 px-2 leading-loose grad-alt one-corn-top'>
+      <section className='bg-blue-400 text-zinc-950 py-36 px-2 leading-loose bg-grad one-corn-top'>
         <div className='bg-zinc-100/80 shadow-md rounded-md max-w-6xl mx-auto px-8 pt-8 pb-16'>
           <h2 className='font-bold text-3xl pb-8'>web3.storage is built for scale</h2>
           <div className='md:flex'>
             <div className='md:w-1/2 text-center pt-8'>
               <h3 className='text-6xl font-bold'>
-              <span className='grad-text'>200K+</span>
+              <span className='text-grad'>200K+</span>
               <span className='block text-lg'>USERS</span></h3>
             </div>
             <div className='md:w-1/2 text-center pt-8'>
               <h3 className='text-6xl font-bold'>
-              <span className='grad-text'>200M+</span>
+              <span className='text-grad'>200M+</span>
               <span className='block text-lg'>STORED OBJECTS</span></h3>
             </div>
           </div>
@@ -87,11 +87,11 @@ export default function Home() {
               <p className='pt-4'><ButtonLink href='/docs'>Read docs</ButtonLink></p>
             </div>
             <div className='lg:w-1/2'>
-              <h3 className='pt-12 lg:pt-0'><span className='text-2xl font-bold grad-text'>Open</span></h3>
+              <h3 className='pt-12 lg:pt-0'><span className='text-2xl font-bold text-grad'>Open</span></h3>
               <p>All data is accessible via IPFS and backed by Filecoin storage, with service authentication using decentralized identity. No servers needed, no lock-in, no trust necessary.</p>
-              <h3 className='pt-4'><span className='text-2xl font-bold grad-text'>Reliable</span></h3>
+              <h3 className='pt-4'><span className='text-2xl font-bold text-grad'>Reliable</span></h3>
               <p>We take the best of web2 and web3 to provide infra you can rely on to scale with you. Frustration with decentralized storage is a thing of the past.</p>
-              <h3 className='pt-4'><span className='text-2xl font-bold grad-text'>Simple</span></h3>
+              <h3 className='pt-4'><span className='text-2xl font-bold text-grad'>Simple</span></h3>
               <p>Start storing in minutes using w3up, our simple client library, to see how decentralized protocols can work together to unlock your data layer.</p>
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function Home() {
             <h3 className='font-bold text-2xl'>JS Client</h3>
             <a href='https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#readme'>
               <code className='shadow-md block text-sm p-4 rounded-md font-bold mt-2 mb-4 bg-white'>
-                <span className='grad-text'>$ npm i @web3-storage/w3up-client</span>
+                <span className='text-grad'>$ npm i @web3-storage/w3up-client</span>
               </code>
             </a>
             <p className='px-4 font-light'>Import the library into your project, and enjoy a simple and familiar way to store and retrieve.</p>
@@ -122,7 +122,7 @@ export default function Home() {
             <h3 className='font-bold text-2xl'>Command Line</h3>
             <a href='https://github.com/web3-storage/w3cli'>
               <code className='shadow-md block text-sm p-4 rounded-md font-bold mt-2 mb-4 bg-white'>
-                <span className='grad-text'>$ w3 up ./anything</span>
+                <span className='text-grad'>$ w3 up ./anything</span>
               </code>
             </a>
             <p className='px-4 font-light'>Install <a className='text-blue-400 font-medium' href='https://github.com/web3-storage/w3cli'>w3cli</a> to store data from your command line for the fastest way to programmatically upload data.</p>
@@ -131,7 +131,7 @@ export default function Home() {
           <h3 className='font-bold text-2xl'>Web App</h3>
             <a href='https://console.web3.storage'>
               <span className='shadow-sm hover:shadow-md block text-sm p-4 rounded-md bg-white mt-2 mb-4 border-dashed border-2 border-zinc-300 text-center font-bold'>
-                <span className='grad-text'>Drop file to upload</span>
+                <span className='text-grad'>Drop file to upload</span>
               </span>
             </a>
             <p className='px-4 font-light'>Keep it simple? Upload your files directly through the <a className='font-semibold text-blue-400' href='https://console.web3.storage' >console</a> Web UI to try out web3.storage now.</p>
@@ -144,26 +144,26 @@ export default function Home() {
           <div className='md:w-1/2 pt-8'>
             <Web3StorageLogo>web3.storage</Web3StorageLogo>
             <p className='pt-6 pr-24 font-light text-lg'>Sign up for free using your email address.</p>
-            <a className='rounded-full inline-block px-4 py-2 grad-alt font-light uppercase mt-8' href='https://console.web3.storage'>Sign up</a>
+            <a className='shadow-md border bg-zinc-200 rounded-full inline-block px-4 py-2 bg-grad font-light uppercase mt-8' href='https://console.web3.storage'>Sign up</a>
           </div>
           <div className='md:w-1/4'>
             <h2 className='font-semibold pb-2 pt-16 md:pt-0'>Resources</h2>
             <nav>
-              <a className='block py-2' href="/quickstart">Quickstart guide</a>
-              <a className='block py-2' href="/faq">FAQ</a>
-              <a className='block py-2' href="/contact">Contact us</a>
-              <a className='block py-2' href="/terms">Terms of use</a>
-              <a className='block py-2' href="/privacy">Privacy Policy</a>
-              <a className='block py-2' href="https://status.web3.storage/">status</a>
+              <a className='block py-2 hover:text-blue-400' href="/quickstart">Quickstart guide</a>
+              <a className='block py-2 hover:text-blue-400' href="/faq">FAQ</a>
+              <a className='block py-2 hover:text-blue-400' href="/contact">Contact us</a>
+              <a className='block py-2 hover:text-blue-400' href="/terms">Terms of use</a>
+              <a className='block py-2 hover:text-blue-400' href="/privacy">Privacy Policy</a>
+              <a className='block py-2 hover:text-blue-400' href="https://status.web3.storage/">Status</a>
             </nav>
           </div>
           <div className='md:w-1/4'>
             <h2 className='font-semibold pb-2 pt-8 md:pt-0'>Get started</h2>
             <nav>
-              <a className='block py-2' href="https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#readme">Javascript client</a>
-              <a className='block py-2' href="/faq">CLI</a>
-              <a className='block py-2' href="https://console.web3.storage">Web UI</a>
-              <a className='block py-2' href="https://github.com/web3-storage/web3.storage/issues/new/choose">Open an issue</a>
+              <a className='block py-2 hover:text-blue-400' href="https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#readme">Javascript client</a>
+              <a className='block py-2 hover:text-blue-400' href="/faq">CLI</a>
+              <a className='block py-2 hover:text-blue-400' href="https://console.web3.storage">Web UI</a>
+              <a className='block py-2 hover:text-blue-400' href="https://github.com/web3-storage/web3.storage/issues/new/choose">Open an issue</a>
             </nav>
           </div>
         </div>
