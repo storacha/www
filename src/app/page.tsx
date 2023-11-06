@@ -1,9 +1,29 @@
-import { PropsWithChildren } from 'react'
 import { Web3StorageLogo } from '@/components/brand'
 import Link from 'next/link'
 import Image from 'next/image'
 import ImageIconCluster from '@/../public/images/index/cluster-1.png'
+import { highlight } from '@/lib/shiki'
+import { Lang, Theme } from 'shiki'
 
+const codeExample = `
+import { filesFromPaths } from 'files-from-path'
+import { create } from '@web3-storage/w3up-client'
+const client = await create()
+
+// assert your identity
+await client.authorize('you@example.org')
+
+// claim your space
+const space = await client.createSpace('lets-go')
+await client.setCurrentSpace(space.did())
+
+// content-address those files
+const files = await filesFromPaths(['./best-gifs'])
+const root = await client.uploadDirectory(files)
+
+// bafy...
+console.log(root.toString())
+`.trim()
 
 export function NavLink ({href, children}: {href:string, children: React.ReactNode}) {
   return <Link href={href} className='inline-block uppercase font-medium text-lg md:text-xl py-4 md:py-2 px-2 mx-2 hover:text-blue-600'>{children}</Link>
@@ -15,6 +35,11 @@ export function ButtonLink ({href, className = '', children}: {href:string, clas
       {children}
     </Link>
   )
+}
+
+export async function CodeBlock ({code, theme = 'dracula-soft', lang = 'javascript'}: {code: string, theme?: Theme, lang?: Lang}) {
+  const html = await highlight(code, theme, lang)
+  return <div dangerouslySetInnerHTML={{ __html: html }} className='font-mono' />
 }
 
 export default function Home() {
@@ -57,11 +82,16 @@ export default function Home() {
         </nav>
       </section>
       <section className='bg-zinc-950 text-white pt-20 pb-20 leading-loose md:one-corn'>
-        <div className='max-w-6xl mx-auto lg:flex gap-8 px-3'>
-          <div className='lg:w-1/2 pr-26'>
+        <div className='max-w-6xl mx-auto lg:flex px-3 gap-8'>
+          <div className='md:w-1/2'>
             <h2 className='font-bold text-2xl pb-8'>Connecting the web of data</h2>
             <p>Eliminate silos with web3.storage. Using IPFS and other decentralized protocols, create a true data layer that connects you, your users, and the Web, regardless of where content is stored - client-side, in the cloud, or elsewhere.</p>
             <p className='pt-4'>Sounds hard? It isn&apos;t. Our client libraries are super easy-to-use, abstracting the complexity of these decentralized protocols. And our hosted object storage provides best-in-class IPFS write and read performance and competitive pricing to web2 solutions, giving you the ability to write innovative applications without compromise.</p>
+          </div>
+          <div className='md:w-1/2'>
+            <div className='border-8 border-zinc-300/10 rounded-md p-4 pl-2 text-md'>
+              <CodeBlock code={codeExample} />
+            </div>
           </div>
         </div>
       </section>
@@ -105,7 +135,7 @@ export default function Home() {
             <p className='pt-8'><ButtonLink href='/start'>Create an account</ButtonLink></p>
           </div>
           <div className='text-center flex-auto'>
-            <Image alt="Cluster of logos for the technologies that make web3.storage work" src={ImageIconCluster} className='hidden lg:block lg:w-full lg:max-w-md opacity-80 inline' />
+            <Image alt="Cluster of logos for the technologies that make web3.storage work" src={ImageIconCluster} className='hidden lg:block lg:w-full lg:max-w-md opacity-80' />
           </div>
         </div>
         <div className='md:flex gap-8 max-w-6xl mx-auto'>
