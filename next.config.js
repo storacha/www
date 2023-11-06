@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  reactStrictMode: true,
+  experimental: {
+    serverComponentsExternalPackages: ['shiki', 'vscode-oniguruma']
+  }
+}
 
 module.exports = nextConfig
