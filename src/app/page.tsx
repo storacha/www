@@ -25,19 +25,19 @@ const root = await client.uploadDirectory(files)
 console.log(root.toString())
 `.trim()
 
-export function NavLink ({href, children}: {href:string, children: React.ReactNode}) {
+function NavLink ({href, children}: {href:string, children: React.ReactNode}) {
   return <Link href={href} className='inline-block uppercase font-medium text-lg md:text-xl py-4 md:py-2 px-2 mx-2 hover:text-blue-600'>{children}</Link>
 }
 
-export function ButtonLink ({href, className = '', children}: {href:string, className?: string, children: React.ReactNode}) {
+function ButtonLink ({href, className = '', children}: {href:string, className?: string, children: React.ReactNode}) {
   return (
-    <Link className={`inline-block bg-zinc-950 text-white font-bold text-lg px-8 py-2 rounded-full whitespace-nowrap ${className}`} href={href}>
+    <Link className={`inline-block bg-zinc-950/90 hover:bg-black text-white hover:outline outline-white font-bold text-lg px-8 py-2 rounded-full whitespace-nowrap ${className}`} href={href}>
       {children}
     </Link>
   )
 }
 
-export async function CodeBlock ({code, theme = 'dracula-soft', lang = 'javascript'}: {code: string, theme?: Theme, lang?: Lang}) {
+async function CodeBlock ({code, theme = 'dracula-soft', lang = 'javascript'}: {code: string, theme?: Theme, lang?: Lang}) {
   const html = await highlight(code, theme, lang)
   return <div dangerouslySetInnerHTML={{ __html: html }} className='font-mono' />
 }
@@ -135,7 +135,7 @@ export default function Home() {
             <p className='pt-8'><ButtonLink href='/start'>Create an account</ButtonLink></p>
           </div>
           <div className='text-center flex-auto'>
-            <Image alt="Cluster of logos for the technologies that make web3.storage work" src={ImageIconCluster} className='hidden lg:block lg:w-full lg:max-w-md opacity-80' />
+            <Image alt="Cluster of logos for the technologies that make web3.storage work" src={ImageIconCluster} className='hidden lg:inline-block lg:w-full lg:max-w-md opacity-80' />
           </div>
         </div>
         <div className='md:flex gap-8 max-w-6xl mx-auto'>
@@ -170,7 +170,7 @@ export default function Home() {
       </section>
 
       <footer className='bg-zinc-950 text-white py-16'>
-        <div className='max-w-5xl mx-auto p-8 md:flex'>
+        <div className='max-w-6xl mx-auto p-8 md:flex'>
           <div className='md:w-1/2 pt-8'>
             <Web3StorageLogo>web3.storage</Web3StorageLogo>
             <p className='pt-6 pr-24 font-light text-lg'>Sign up for free using your email address.</p>
