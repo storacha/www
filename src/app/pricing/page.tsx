@@ -21,7 +21,7 @@ function logoAlt (url: string) {
 function Logos ({ urls = [] }: { urls: string[] }) {
   return (
     <div className="overflow-x-auto whitespace-nowrap">
-      { urls.map(src => <LogoCard src={src} /> )}
+      { urls.map(src => <LogoCard src={src} key={src} /> )}
     </div>
   )
 }
@@ -41,8 +41,8 @@ export default async function AboutPage () {
       <div className="bg-grad">
         <Header />
         <section className='max-w-6xl mx-auto pt-20 md:pt-28 px-3'>
-          <h1 className="font-semibold text-5xl text-zinc-950">As much as you need, verifiably</h1>
-          <p className="pt-12 max-w-3xl text-xl text-zinc-950">web3.storage is designed for scale and simplicity. Utilize our elastic, hosted data platform that integrates decentralized data and authentication protocols. No need to worry about performance or reliability.</p>
+          <h1 className="font-bold text-4xl text-zinc-900">As much as you need, verifiably</h1>
+          <p className="pt-12 max-w-3xl text-xl text-zinc-900">web3.storage is designed for scale and simplicity. Utilize our elastic, hosted data platform that integrates decentralized data and authentication protocols. No need to worry about performance or reliability.</p>
         </section>
         <section>
           <div className="max-w-6xl mx-auto pt-12 px-3">

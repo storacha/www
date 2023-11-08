@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import { Web3StorageLogo } from '@/components/brand'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
@@ -14,11 +11,7 @@ export const metadata: Metadata = {
   keywords: ['IPFS', 'UCAN', 'storage', 'web3'],
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({children}: { children: React.ReactNode}) {
   return (
     <html lang="en" className='bg-zinc-950 text-white'>
       <head>
@@ -30,7 +23,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#3a0839" />
         <meta name="theme-color" content="#5bbad5" />
       </head>
-      <body className={inter.className}>
+      <body>
         {children}
         <Footer />
       </body>

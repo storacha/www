@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Web3StorageLogo } from "./brand"
 
 export function NavLink ({href, children}: {href:string, children: React.ReactNode}) {
-  return <Link href={href} className='inline-block uppercase font-medium text-lg md:text-xl py-4 md:py-2 px-2 mx-2 hover:text-blue-600'>{children}</Link>
+  return <Link href={href} className='inline-block uppercase font-medium text-lg md:text-xl py-4 md:py-2 px-2 mx-2 hover:text-zinc-100'>{children}</Link>
 }
 
 export function ButtonLink ({href, className = '', children}: {href:string, className?: string, children: React.ReactNode}) {

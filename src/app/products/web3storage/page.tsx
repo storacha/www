@@ -53,20 +53,20 @@ export default async function FeaturesPage () {
           <div className="md:flex gap-16">
             <div className="md:w-1/2">
               <h2 className='font-bold text-4xl leading-relaxed'>How does web3.storage work?</h2>
-              <p className='pt-8 text-md font-light leading-loose'>
+              <p className='pt-8 text-xl font-light leading-loose'>
                 <a className='text-indigo-700 font-semibold' href="https://web3.storage/docs/#quickstart">Developers can start building in a matter of minutes</a> - allowing them to take advantage of all the power and openness of the decentralized web with none of the infrastructure complexity.
               </p>
-              <p className='pt-8 text-md font-light leading-loose'>
+              <p className='pt-8 text-md leading-loose'>
                 Behind the scenes, web3.storage is backed by Filecoin and makes content available via IPFS leveraging the unique properties of each network.
               </p>
             </div>
             <div className="md:w-1/2">
               <h3 className="pt-8 text-xl font-bold text-grad">About Filecoin</h3>
-              <p className='pt-4 text-md font-light leading-loose'>
+              <p className='pt-4 text-md leading-loose'>
                 Filecoin offers persistent, decentralized storage - guaranteeing the integrity of the underlying data through a robust economic model while also providing cryptographic proofs for verifiability.
               </p>
               <h3 className="text-xl font-bold text-grad pt-8">About Filecoin</h3>
-              <p className='pt-4 text-md font-light leading-loose'>
+              <p className='pt-4 text-md leading-loose'>
                 IPFS offers content addressing - enabling developers to create immutable links to their content, and flexibility for developers in how they’d like to retrieve their data (whether it be running personal nodes, relying on public infrastructure, or paying for hosted options).
               </p>
             </div>
