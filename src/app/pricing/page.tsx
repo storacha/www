@@ -34,7 +34,7 @@ function LogoCard ({src}: {src: string}) {
   )
 }
 
-export default async function AboutPage () {
+export default async function PricingPage () {
   const logos = await findLogoUrls()
   return (
     <div>

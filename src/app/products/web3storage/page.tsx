@@ -16,7 +16,7 @@ export default async function FeaturesPage () {
           <div className="md:flex flex-row-reverse">
             <div className="md:w-2/3">
               <h1 className="font-bold text-4xl text-zinc-950">What is web3.storage</h1>
-              <p className="leading-relaxed pt-8 max-w-3xl text-xl text-zinc-950">At the core of web3.storage is a storage service to safely secure and make your data available - giving developers the power of decentralized storage and content addressing via simple client libraries or an HTTP API.</p>
+              <p className="leading-relaxed pt-8 max-w-3xl text-xl text-zinc-950">At the core of web3.storage is a storage service to safely secure and make your data available - giving developers the power of decentralized storage and content addressing via simple client libraries.</p>
             </div>
             <div className="hidden md:block w-1/3">
               <Image src={Ring} alt='Ring' className="rotate-45" />
@@ -31,7 +31,7 @@ export default async function FeaturesPage () {
               Content uploaded to web3.storage is stored on our instance of <a href="https://github.com/elastic-ipfs/elastic-ipfs">Elastic IPFS</a>, a cloud-native implementation of IPFS that our team wrote to stay reliable and performant with the scale of uploads we were seeing. Elastic IPFS ensures your data is continuously and quickly available over the IPFS network once your data is uploaded.
             </p>
             <p className="text-md leading-relaxed pt-8">
-              Before data is uploaded, it is locally converted into a CAR file, which contains your data transformed into a format that IPFS can consume (a directed acyclic graph, or <a href='https://dag.ipfs.tech/'>DAG</a>). This is very powerful - in this process, a  <a href="https://docs.ipfs.tech/concepts/content-addressing/">content address</a> is locally generated for your data, giving you a guarantee of your data&apos;s fingerprint. Further, you can construct the DAG in useful ways, like making individual files within your folders or key-value pairs in your JSON have their own content addresses.
+              Before data is uploaded, it is packed into a CAR file, which contains your data transformed into a format that IPFS can consume (a directed acyclic graph, or <a href='https://dag.ipfs.tech/'>DAG</a>). This is very powerful - in this process, a  <a href="https://docs.ipfs.tech/concepts/content-addressing/">content address</a> is locally generated for your data, giving you a guarantee of your data&apos;s fingerprint. Further, you can construct the DAG in useful ways, like making individual files within your folders or key-value pairs in your JSON have their own content addresses.
             </p>
             <p className='font-bold text-lg leading-relaxed pt-8'>
               Once the CAR file is uploaded, a queue of geographically distributed Filecoin storage providers, selected for performance and availability, bid for the right to store these deals.
@@ -65,7 +65,7 @@ export default async function FeaturesPage () {
               <p className='pt-4 text-md leading-loose'>
                 Filecoin offers persistent, decentralized storage - guaranteeing the integrity of the underlying data through a robust economic model while also providing cryptographic proofs for verifiability.
               </p>
-              <h3 className="text-xl font-bold text-grad pt-8">About Filecoin</h3>
+              <h3 className="text-xl font-bold text-grad pt-8">About IPFS</h3>
               <p className='pt-4 text-md leading-loose'>
                 IPFS offers content addressing - enabling developers to create immutable links to their content, and flexibility for developers in how they’d like to retrieve their data (whether it be running personal nodes, relying on public infrastructure, or paying for hosted options).
               </p>

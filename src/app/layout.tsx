@@ -7,8 +7,8 @@ export const metadata: Metadata = {
     template: '%s ⁂ web3.storage',
     default: 'web3.storage ⁂ The simple file storage service for IPFS & Filecoin'
   },
-  description: 'With web3.storage you get all the benefits of decentralized storage and content addressing with the frictionless experience you expect in a modern storage solution. It\’s fast and it\'s open.',
-  keywords: ['IPFS', 'UCAN', 'storage', 'web3'],
+  description: 'With web3.storage you get all the benefits of decentralized storage and content addressing with the frictionless experience you expect in a modern storage solution. It\’s fast, it\'s open and it\'s verifiable.',
+  keywords: ['IPFS', 'UCAN', 'storage', 'web3', 'Filecoin'],
 }
 
 export default function RootLayout({children}: { children: React.ReactNode}) {
