@@ -1,66 +1,14 @@
-import { Web3StorageLogo } from '@/components/brand'
-import Link from 'next/link'
 import Image from 'next/image'
 import ImageIconCluster from '@/../public/images/index/cluster-1.png'
-import { highlight } from '@/lib/shiki'
-import { Lang, Theme } from 'shiki'
+import { Web3StorageLogo } from '@/components/brand'
+import { W3UPClientExample } from '@/components/code'
+import { NavLink, ButtonLink, Header } from '@/components/nav'
 
-const codeExample = `
-import { filesFromPaths } from 'files-from-path'
-import { create } from '@web3-storage/w3up-client'
-const client = await create()
-
-// assert your identity
-await client.authorize('you@example.org')
-
-// claim your space
-const space = await client.createSpace('lets-go')
-await client.setCurrentSpace(space.did())
-
-// content-address those files
-const files = await filesFromPaths(['./best-gifs'])
-const root = await client.uploadDirectory(files)
-
-// bafy...
-console.log(root.toString())
-`.trim()
-
-function NavLink ({href, children}: {href:string, children: React.ReactNode}) {
-  return <Link href={href} className='inline-block uppercase font-medium text-lg md:text-xl py-4 md:py-2 px-2 mx-2 hover:text-blue-600'>{children}</Link>
-}
-
-function ButtonLink ({href, className = '', children}: {href:string, className?: string, children: React.ReactNode}) {
-  return (
-    <Link className={`inline-block bg-zinc-950/90 hover:bg-black text-white hover:outline outline-white font-bold text-lg px-8 py-2 rounded-full whitespace-nowrap ${className}`} href={href}>
-      {children}
-    </Link>
-  )
-}
-
-async function CodeBlock ({code, theme = 'dracula-soft', lang = 'javascript'}: {code: string, theme?: Theme, lang?: Lang}) {
-  const html = await highlight(code, theme, lang)
-  return <div dangerouslySetInnerHTML={{ __html: html }} className='font-mono' />
-}
-
-export default function Home() {
+export default function HomePage () {
   return (
     <main>
-      <section className='md:pb-48 relative bg-grad md:one-corn'>
-        <header className='max-w-7xl mx-auto pt-4 md:pt-10 text-zinc-950'>
-          <div className='md:flex items-center'>
-            <div className='flex-1 px-3'>
-              <Web3StorageLogo>web3.storage</Web3StorageLogo>
-            </div>
-            <nav className='hidden md:block bg-zinc-950/10 md:bg-transparent mt-4 md:mt-0 text-center md:text-left text-zinc-950'>
-              <NavLink href='/features'>Features</NavLink>
-              <NavLink href='/plans'>Pricing</NavLink>
-              <NavLink href='/docs'>Docs</NavLink>
-              <ButtonLink href='https://console.web3.storage' className='hidden sm:inline-block ml-4'>
-                CONSOLE
-              </ButtonLink>
-            </nav>
-          </div> 
-        </header>
+      <section className='md:pb-48 bg-grad md:one-corn'>
+        <Header />
         <div className='max-w-6xl mx-auto pt-20 md:pt-28 md:flex justify-items-stretch items-start'>
           <div className='basis-1/2 text-left md:text-left px-3'>
             <p className='text-5xl md:text-7xl text-white font-medium'>Say <span className=''>hello</span> to <br/>the <span className='underline  font-bold'>data layer</span></p>
@@ -76,9 +24,9 @@ export default function Home() {
           </div>
         </div>
         <nav className='md:hidden border-b-4 border-zinc-100 bg-zinc-100/10 md:bg-transparent mt-16 md:mt-0 text-center md:text-left text-blue-950'>
-          <NavLink href='/features'>Features</NavLink>
+          <NavLink href='/products/web3storage'>Features</NavLink>
           <NavLink href='/docs'>Docs</NavLink>
-          <NavLink href='/plans'>Pricing</NavLink>
+          <NavLink href='/pricing'>Pricing</NavLink>
         </nav>
       </section>
       <section className='bg-zinc-950 text-white pt-20 pb-20 leading-loose md:one-corn'>
@@ -89,9 +37,7 @@ export default function Home() {
             <p className='pt-4'>Sounds hard? It isn&apos;t. Our client libraries are super easy-to-use, abstracting the complexity of these decentralized protocols. And our hosted object storage provides best-in-class IPFS write and read performance and competitive pricing to web2 solutions, giving you the ability to write innovative applications without compromise.</p>
           </div>
           <div className='md:w-1/2'>
-            <div className='border-8 border-zinc-300/10 rounded-md p-4 pl-2 text-md'>
-              <CodeBlock code={codeExample} />
-            </div>
+            <W3UPClientExample />
           </div>
         </div>
       </section>
@@ -169,35 +115,6 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className='bg-zinc-950 text-white py-16'>
-        <div className='max-w-6xl mx-auto p-8 md:flex'>
-          <div className='md:w-1/2 pt-8'>
-            <Web3StorageLogo>web3.storage</Web3StorageLogo>
-            <p className='pt-6 pr-24 font-light text-lg'>Sign up for free using your email address.</p>
-            <a className='shadow-md border bg-zinc-200 rounded-full inline-block px-4 py-2 bg-grad font-light uppercase mt-8' href='https://console.web3.storage'>Sign up</a>
-          </div>
-          <div className='md:w-1/4'>
-            <h2 className='font-semibold pb-2 pt-16 md:pt-0'>Resources</h2>
-            <nav>
-              <a className='block py-2 hover:text-blue-400' href="/quickstart">Quickstart guide</a>
-              <a className='block py-2 hover:text-blue-400' href="/faq">FAQ</a>
-              <a className='block py-2 hover:text-blue-400' href="/contact">Contact us</a>
-              <a className='block py-2 hover:text-blue-400' href="/terms">Terms of use</a>
-              <a className='block py-2 hover:text-blue-400' href="/privacy">Privacy Policy</a>
-              <a className='block py-2 hover:text-blue-400' href="https://status.web3.storage/">Status</a>
-            </nav>
-          </div>
-          <div className='md:w-1/4'>
-            <h2 className='font-semibold pb-2 pt-8 md:pt-0'>Get started</h2>
-            <nav>
-              <a className='block py-2 hover:text-blue-400' href="https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#readme">Javascript client</a>
-              <a className='block py-2 hover:text-blue-400' href="/faq">CLI</a>
-              <a className='block py-2 hover:text-blue-400' href="https://console.web3.storage">Web UI</a>
-              <a className='block py-2 hover:text-blue-400' href="https://github.com/web3-storage/web3.storage/issues/new/choose">Open an issue</a>
-            </nav>
-          </div>
-        </div>
-      </footer>
     </main>
   )
 }
