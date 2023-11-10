@@ -28,7 +28,7 @@ export async function SyntaxHighlight ({code, theme = 'dracula-soft', lang = 'ja
 
 export function CodeSample (props: {code: string, theme?: Theme, lang?: Lang}) {
   return (
-    <div className='border-8 border-zinc-300/10 rounded-md p-4 pl-2 text-md'>
+    <div className='border-8 border-zinc-300/10 rounded-md p-4 pl-2 overflow-auto text-sm/relaxed sm:text-base/loose'>
       <SyntaxHighlight {...props} />
     </div>
   )

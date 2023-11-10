@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import ImageIconCluster from '@/../public/images/index/cluster-1.png'
-import { Web3StorageLogo } from '@/components/brand'
 import { W3UPClientExample } from '@/components/code'
 import { NavLink, ButtonLink, Header } from '@/components/nav'
 
@@ -31,12 +30,12 @@ export default function HomePage () {
       </section>
       <section className='bg-zinc-950 text-white pt-20 pb-20 leading-loose md:one-corn'>
         <div className='max-w-6xl mx-auto lg:flex px-3 gap-8'>
-          <div className='md:w-1/2'>
+          <div className='lg:w-1/2'>
             <h2 className='font-bold text-2xl pb-8'>Connecting the web of data</h2>
             <p>Eliminate silos with web3.storage. Using IPFS and other decentralized protocols, create a true data layer that connects you, your users, and the Web, regardless of where content is stored - client-side, in the cloud, or elsewhere.</p>
             <p className='pt-4'>Sounds hard? It isn&apos;t. Our client libraries are super easy-to-use, abstracting the complexity of these decentralized protocols. And our hosted object storage provides best-in-class IPFS write and read performance and competitive pricing to web2 solutions, giving you the ability to write innovative applications without compromise.</p>
           </div>
-          <div className='md:w-1/2'>
+          <div className='pt-8 lg:pt-0 lg:w-1/2'>
             <W3UPClientExample />
           </div>
         </div>

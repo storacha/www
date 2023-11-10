@@ -15,6 +15,9 @@
     background-size: 400% 400%;
     animation: bgPosDrift 60s ease infinite;
   }
+  .bg-grad-2 {
+    background: linear-gradient(269deg, #0AB2AA 0%, #4622FC 53.4%, #FF00C4 108.59%);
+  }
   .text-grad {
     background: linear-gradient(92deg, #B507DC 0.82%, #2F0FDB 26.77%);
     background-clip: text;
