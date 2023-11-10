@@ -50,7 +50,7 @@ function PlanCard ({ name, price, storage, egress = storage, storageExcess, egre
   return (
     <div className=' bg-white/30 rounded-lg shadow-md border-white/10 overflow-hidden'>
       {banner ? <p className="bg-grad-2 text-white font-bold px-3 py-2">{banner}</p> : null}
-      <div className="px-6 py-8">
+      <div className="px-6 py-8 md:px-4 lg:px-6">
         <h2 className="font-semibold text-3xl flex">
           <span className="flex-auto">{name}</span>
           <span className="font-bold">{price}<span className="text-zinc-500 font-normal">/mo</span></span>
@@ -89,14 +89,14 @@ export default async function PricingPage () {
           <p className="pt-12 max-w-3xl text-xl text-zinc-900">web3.storage is designed for scale and simplicity. Utilize our elastic, hosted data platform that integrates decentralized data and authentication protocols. No need to worry about performance or reliability.</p>
         </section>
         <section className='max-w-6xl mx-auto pt-20 md:pt-28 px-3 pb-20'>
-          <div className="flex text-zinc-950 gap-7 items-end">
-            <div className='w-1/3'>
+          <div className="md:flex text-zinc-950 gap-3 lg:gap-7 items-end">
+            <div className='md:w-1/3'>
               <PlanCard name='Free' price='$0' storage='5GB' storageExcess='$0.15/GB' />
             </div>
-            <div className='w-1/3'>
+            <div className='md:w-1/3 pt-8 md:pt-0'>
               <PlanCard name='Lite' price='$10' storage='100GB' storageExcess='$0.05/GB' />
             </div>
-            <div className='w-1/3'>
+            <div className='md:w-1/3 pt-8 md:pt-0'>
               <PlanCard name='Business' price='$100' storage='2TB' storageExcess='$0.03/GB' banner='Cheapest per GB' />
             </div>
           </div>
