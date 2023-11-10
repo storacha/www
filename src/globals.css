@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes bgPosDrift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 @layer utilities {
   .bg-grad {
     background-color: rgb(244 244 245);
@@ -29,6 +23,17 @@
   }
 }
 
+/* make the header bright */
+/* .nextra-nav-container .nextra-nav-container-blur {
+  background-color: transparent !important;
+}
+:is(html[class~="dark"] .nextra-nav-container .nextra-nav-container-blur) {
+  background-color: transparent !important;
+} */
+.nextra-nav-container.nx-bg-transparent {
+  @apply bg-grad
+}
+
 /* Line numbers for code examples */
 code {
   counter-reset: step;
@@ -43,4 +48,10 @@ code .line::before {
   display: inline-block;
   text-align: right;
   color: rgba(115,138,148,.4)
+}
+
+@keyframes bgPosDrift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

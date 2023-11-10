@@ -8,4 +8,9 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+const withNextra = require('nextra')({
+  theme: 'nextra-theme-docs',
+  themeConfig: './src/theme.config.jsx'
+})
+
+module.exports = withNextra(nextConfig)
