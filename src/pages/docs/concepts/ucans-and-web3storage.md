@@ -1,6 +1,6 @@
 # UCANs and web3.storage
 
-For authorization, w3up services use [ucanto](https://github.com/web3-storage/ucanto), a Remote Procedure Call (RPC) framework built around [UCAN](https://ucan.xzy/), or User Controlled Authorization Networks. UCANs are a powerful capability-based authorization system that allows fine-grained sharing of permissions through a process called *delegation* on top of [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
+For authorization, w3up services use [ucanto](https://github.com/web3-storage/ucanto), a Remote Procedure Call (RPC) framework built around [UCAN](https://ucan.xzy/), or User Controlled Authorization Networks. UCANs are a powerful capability-based authorization system that allows fine-grained sharing of permissions through a process called _delegation_ on top of [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
 
 You can think about UCAN replacing bearer tokens in traditional APIs for authorization with w3up. Since any actor can be represented by a cryptographic keypair and permissions can be delegated to them, users can interact with w3up directly in cases where a developer might have needed to previously run additional back-end infrastructure to keep API keys secure. This can be extended even to have end users using applications integrated with w3up using their own keypair-based identity.
 
@@ -8,11 +8,11 @@ You can think about UCAN replacing bearer tokens in traditional APIs for authori
 
 Our client and CLI use ucanto to take care of the details of UCANs for you, but a few of the underlying terms and concepts may "bubble up" to the surface of the API, so we'll cover the basics. We'll also go over some terms that are specific to web3.storage that you might not have encountered elsewhere.
 
-UCAN-based APIs are centered around *capabilities*, which are comprised of an *ability* and a *resource*. Together, the ability and resource determine what action a client can perform and what objects in the system can be acted upon. When invoking a service method, a client will present a UCAN token that includes an ability and resource, along with *proofs* that verify that they should be allowed to exercise the capability. The proof might be signed directly by the capability owner, or have a chain of signatures (*delegations*) where the actor invoking the capability has been verifiably delegated permission to do so.
+UCAN-based APIs are centered around _capabilities_, which are comprised of an _ability_ and a _resource_. Together, the ability and resource determine what action a client can perform and what objects in the system can be acted upon. When invoking a service method, a client will present a UCAN token that includes an ability and resource, along with _proofs_ that verify that they should be allowed to exercise the capability. The proof might be signed directly by the capability owner, or have a chain of signatures (_delegations_) where the actor invoking the capability has been verifiably delegated permission to do so.
 
 ### Space
 
-When you upload data to w3up, your uploads are linked to a unique *Space* that acts as a "namespace" for the data you upload. Each Space corresponds to a *DID*, or [Decentralized Identity Document](https://www.w3.org/TR/did-core/). In web3.storage's implementation of w3up, these Space DIDs generally use the key DID method, of the form did:key:publicKey with a corresponding private signing key.
+When you upload data to w3up, your uploads are linked to a unique _Space_ that acts as a "namespace" for the data you upload. Each Space corresponds to a _DID_, or [Decentralized Identity Document](https://www.w3.org/TR/did-core/). In web3.storage's implementation of w3up, these Space DIDs generally use the key DID method, of the form did:key:publicKey with a corresponding private signing key.
 
 When creating a Space, it generates this private key and did:key for you locally. To use web3.storage, you then register a Space by associating it with your email address. From there, when invoking storage capabilities with web3.storage, the Space did:key is the "resource" portion of the capability, while the ability is an action like store/add or store/remove. (A Space registered with web3.storage is imperfectly analogous to an "account" with web3.storage.)
 
@@ -20,7 +20,7 @@ Under the hood in the email registration process, your Space delegates the capab
 
 ### Agent
 
-To invoke a capability like store/add on a Space using the client or CLI, the client must have an *Agent*. Like a Space, an Agent corresponds to a did:key whose private key is generated locally. An Agent is useful once the client or CLI has a UCAN delegation where a registered Space(s) delegates the Agent its capabilities. (An imperfect analogy is Agent to login session.)
+To invoke a capability like store/add on a Space using the client or CLI, the client must have an _Agent_. Like a Space, an Agent corresponds to a did:key whose private key is generated locally. An Agent is useful once the client or CLI has a UCAN delegation where a registered Space(s) delegates the Agent its capabilities. (An imperfect analogy is Agent to login session.)
 
 The delegation from a Space to your Agent that w3up-client needs can be passed either by verifying the email address the Space is registered to and claiming the UCAN delegation (authorize(email) then capability.access.claim) or directly if you have the UCAN delegation available locally (addSpace(delegation)).
 
@@ -94,14 +94,14 @@ async function frontend() {
 
 You can see the following flow:
 
-* When `backend` function is called in the developer's backend:
-  * It's passed the DID of the user's Agent
-  * Backend client initializes with an Agent that has permission to the developer's Space
-  * It then generates a UCAN delegated to the user Agent DID passed in with only the `store/add` and `upload/add` abilities (to give the user ability to upload) and set to expire in 24 hours
-* When `frontend` function is called in the user's environment:
-  * An Agent DID is created
-  * The `backend` function hosted at an API endpoint is called, passing in the Agent DID
-  * The client is set up with a UCAN delegating upload capabilities to the Agent
-  * It's now ready to upload!
+- When `backend` function is called in the developer's backend:
+  - It's passed the DID of the user's Agent
+  - Backend client initializes with an Agent that has permission to the developer's Space
+  - It then generates a UCAN delegated to the user Agent DID passed in with only the `store/add` and `upload/add` abilities (to give the user ability to upload) and set to expire in 24 hours
+- When `frontend` function is called in the user's environment:
+  - An Agent DID is created
+  - The `backend` function hosted at an API endpoint is called, passing in the Agent DID
+  - The client is set up with a UCAN delegating upload capabilities to the Agent
+  - It's now ready to upload!
 
 However, there's other interesting possibilities - for instance, you could create an app where your users make Spaces and delegate permission to your app to read their uploads. Read the [Architecture options](/docs/concepts/architecture-options/) section to explore more.

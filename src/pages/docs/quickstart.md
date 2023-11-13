@@ -87,7 +87,7 @@ __  _  __  ____  \_ |__  \_____  \      _______/  |_   ____  _______ _____      
 
 Congratulations! You've just covered the basics of web3.storage. To learn more, take a look at these useful resources:
 
-* For a deep dive into storing files, including using the Javascript client to do so, visit the Store how-to guide.
-* Read more about the power of UCANs and IPFS, and learn about the various options to integrate web3.storage with your application.
-* Try out our image gallery example to see how easy it is to take advantage of these decentralized protocols using web3.storage.
-* Visit the reference API section for more details on what else you can do with the web3.storage client and how to integrate it into your own projects.
+- For a deep dive into storing files, including using the Javascript client to do so, visit the Store how-to guide.
+- Read more about the power of UCANs and IPFS, and learn about the various options to integrate web3.storage with your application.
+- Try out our image gallery example to see how easy it is to take advantage of these decentralized protocols using web3.storage.
+- Visit the reference API section for more details on what else you can do with the web3.storage client and how to integrate it into your own projects.

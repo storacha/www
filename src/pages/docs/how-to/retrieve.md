@@ -4,10 +4,10 @@ In this how-to guide, you'll learn several methods for retrieving data from web3
 
 All data stored using web3.storage is made available for retrieval via [IPFS](https://ipfs.io/), the InterPlanetary File System. IPFS is a distributed, peer-to-peer network for storing and sharing content-addressed data. This guide shows you several ways to retrieve your data from IPFS:
 
-* In your browser using an [HTTP gateway](https://web3.storage/docs/how-tos/retrieve/#using-an-ipfs-http-gateway).
-* Using the Saturn dCDN.
-* In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-tos/retrieve/#using-the-ipfs-command-line).
-* In your terminal using [curl or Powershell](https://web3.storage/docs/how-tos/retrieve/#using-curl-or-powershell).
+- In your browser using an [HTTP gateway](https://web3.storage/docs/how-tos/retrieve/#using-an-ipfs-http-gateway).
+- Using the Saturn dCDN.
+- In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-tos/retrieve/#using-the-ipfs-command-line).
+- In your terminal using [curl or Powershell](https://web3.storage/docs/how-tos/retrieve/#using-curl-or-powershell).
 
 When retrieving any data, you'll be using the content CID of the upload (prefixed by `bafy…`).
 
@@ -35,8 +35,8 @@ Since the web3.storage client wraps your uploaded files in a directory by defaul
 
 However, the behavior is a bit different if you make a gateway link directly to the image CID:
 
-* <https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/>
-* <https://ipfs.io/ipfs/bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei>
+- <https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/>
+- <https://ipfs.io/ipfs/bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei>
 
 Both of the URLs above link directly to the CID of the image, without an associated filename. The first URL uses the recommended "subdomain" URL format for gateway links, while the second form uses a "path prefix" format that you may see in use elsewhere in the IPFS ecosystem.
 
@@ -81,7 +81,7 @@ Replace `<YOUR CID>`, `<FILE NAME>`, and `<OUTPUT FILE>` with their respective v
 | Variable | Replace with | Example |
 | --- | --- | --- |
 | `<YOUR CID>` | The CID of the file you want to download. | bafybeie2bjap32zi2yqh5jmpve5njwulnkualcbiszvwfu36jzjyqskceq |
-| `<FILE NAME>` | The *name* of the file that you originally uploaded to web3.storage. | example.txt |
+| `<FILE NAME>` | The _name_ of the file that you originally uploaded to web3.storage. | example.txt |
 | `<OUTPUT FILE>` | The path and filename that you want curl to save the file to. This can be different to `<FILE NAME>`. | `./output-file.txt` |
 
 ## Next steps

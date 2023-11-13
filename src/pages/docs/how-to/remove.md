@@ -14,8 +14,8 @@ Note that there is a minimum 30 day retention period for uploaded data, and even
 
 web3.storage tracks two different things for its users to support content addressing. These concepts were first introduced in the Upload section:
 
-* Content CIDs: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
-* Shard CIDs: The CID of the serialized shards of data itself (CAR files) that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
+- Content CIDs: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
+- Shard CIDs: The CID of the serialized shards of data itself (CAR files) that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
 
 web3.storage tracks usage for payment (i.e., how much storage is utilized by a user) using the volume of data associated with shard CIDs. However, in general, most users will be interacting with content CIDs (this is how you fetch your data from the network), with shard CIDs more of an implementation detail (how data gets chunked, serialized into CAR files, and stored for uploads).
 
@@ -27,13 +27,13 @@ However, if you are a power user interacting with shard CIDs as well (e.g., usin
 
 If you followed the Upload section, you should already have your client or CLI set up with an Agent for your Space. From there, to remove a content CID from your account, you'll generally be using:
 
-* Client: `Client.remove(contentCID)`
-* CLI: `w3 rm <contentCID>`
+- Client: `Client.remove(contentCID)`
+- CLI: `w3 rm <contentCID>`
 
 If you initially uploaded your content by using the recommended upload methods (e.g., used `Client.upload()` or `w3 up`) and didn't interact with CAR shards at all when uploading, we recommend removing the shard CIDs associated with the content CID from your account. Otherwise, you will still be paying for the data stored with web3.storage (as mentioned above). The easiest way to do that is to set the `shards` parameter as `True`:
 
-* Client: `Client.remove(contentCID, shards=True)`
-* CLI: `w3 rm <contentCID> --shards` in the CLI
+- Client: `Client.remove(contentCID, shards=True)`
+- CLI: `w3 rm <contentCID> --shards` in the CLI
 
 A full example of this is:
 
@@ -76,17 +76,17 @@ If you have managed your shard CIDs and upload CIDs separately (e.g., used `Clie
 
 To remove shard CIDs and upload CIDs separately, you'll generally do this by:
 
-* Client:
-  * If you registered a content CID you want to remove using `Client.capability.upload.add(contentCID)`…
-    * (If you don't know which shard CIDs are associated with the content CID) Run `Client.capability.upload.listShards(contentCID)`, which returns a list of shard CIDs
-    * Remove it using `Client.capability.upload.remove(contentCID)`
-  * Remove the shard CIDs that you'd like to
-    * For each shard CID, ensure no other uploaded content CIDs share the same shard (otherwise, the other content CIDs will no longer be fetchable)
-    * Remove the shard CIDs one-by-one using `Client.capability.store.remove(shardCID)`
-* CLI:
-  * If you registered a content CID you want to remove using `w3 can upload add <contentCID>`…
-    * (If you don't know which shard CIDs are associated with the content CID) Run `w3 can upload ls <contentCID> --shards`, which returns a list of shard CIDs
-    * Remove it using `w3 can upload rm <contentCID>`
-  * Remove the shard CIDs that you'd like to
-    * For each shard CID, ensure no other uploaded content CIDs share the same shard (otherwise, the other content CIDs will no longer be fetchable)
-    * Remove the shard CIDs one-by-one using `w3 can store rm <shardCID>`
+- Client:
+  - If you registered a content CID you want to remove using `Client.capability.upload.add(contentCID)`…
+    - (If you don't know which shard CIDs are associated with the content CID) Run `Client.capability.upload.listShards(contentCID)`, which returns a list of shard CIDs
+    - Remove it using `Client.capability.upload.remove(contentCID)`
+  - Remove the shard CIDs that you'd like to
+    - For each shard CID, ensure no other uploaded content CIDs share the same shard (otherwise, the other content CIDs will no longer be fetchable)
+    - Remove the shard CIDs one-by-one using `Client.capability.store.remove(shardCID)`
+- CLI:
+  - If you registered a content CID you want to remove using `w3 can upload add <contentCID>`…
+    - (If you don't know which shard CIDs are associated with the content CID) Run `w3 can upload ls <contentCID> --shards`, which returns a list of shard CIDs
+    - Remove it using `w3 can upload rm <contentCID>`
+  - Remove the shard CIDs that you'd like to
+    - For each shard CID, ensure no other uploaded content CIDs share the same shard (otherwise, the other content CIDs will no longer be fetchable)
+    - Remove the shard CIDs one-by-one using `w3 can store rm <shardCID>`

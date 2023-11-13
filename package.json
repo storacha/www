@@ -39,7 +39,11 @@
   },
   "remarkConfig": {
     "settings": {
-      "listItemIndent": "mixed"
+      "bullet": "-",
+      "listItemIndent": "mixed",
+      "emphasis": "_",
+      "strong": "*",
+      "rule": "-"
     },
     "plugins": [
       "remark-preset-lint-consistent",

@@ -157,8 +157,8 @@ Now that your backend client instance is set up with being able to interact with
 
 There are two main options to getting content into your Space:
 
-* Upload data to web3.storage from the backend client itself (e.g., you're storing data that your users are uploading to your backend)
-* Upload data to web3.storage directly from your user's environment (like your application's user's browser) by delegating a UCAN that has permission to upload to your Space
+- Upload data to web3.storage from the backend client itself (e.g., you're storing data that your users are uploading to your backend)
+- Upload data to web3.storage directly from your user's environment (like your application's user's browser) by delegating a UCAN that has permission to upload to your Space
 
 ### Upload from backend client directly
 
