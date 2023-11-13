@@ -155,7 +155,7 @@ You can also use delegation to share access with other services, without requiri
 
 For example, you or your users could delegate access to an image resizing app that will create thumbnails of each uploaded image and write them back to web3.storage. While you could do this without delegation by having the image app use its own web3.storage account, the uploads would be attached to the space registered to the app. By using delegation, you'll be able to see the CIDs for the thumbnails in the upload listing for the user's account instead, and the resizing app doesn't need to have any kind of business relationship with web3.storage to use the service.
 
-###Link devices through delegation
+### Link devices through delegation
 
 The last use case we'll look at today involves managing multiple devices belonging to the same user.
 
