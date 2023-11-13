@@ -1,6 +1,6 @@
-## Architecture options
+# Architecture options
 
-## Possible architectures of using web3.storage to upload
+Possible architectures of using web3.storage to upload
 
 UCAN opens up a number of options in how to integrate with w3up: Should you, the developer, own the Space? Should you delegate permissions to your users? Or should your user own their own Space? Broadly, there are three ways to integrate:
 
@@ -10,21 +10,14 @@ UCAN opens up a number of options in how to integrate with w3up: Should you, the
 
 In the How-tos section of the docs, we focused on the first two options, as they are the most familiar today. However, you can implement each of these in a number of ways, but we talk through some considerations when implementing a given option.
 
-#### [Client-server](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#client-server)
+## Client-server
 
-```
-mermaid
-
+```mermaid
 sequenceDiagram
-
 participant User
-
 w3up-client in backend-\>\>w3up-client in backend: Client set with Agent with delegation from Space
-
 User-\>\>w3up-client in backend: Upload data
-
 w3up-client in backend-\>\>web3.storage w3up service: Upload data
-
 ```
 
 - For your backend to be scalable, you might consider using serverless workers or a queue in front of a server
@@ -33,28 +26,18 @@ w3up-client in backend-\>\>web3.storage w3up service: Upload data
   - If your backend is persistent, you can do this or do everything in the client directly ([create Space](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#creating-and-registering-spaces) and [get delegation](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#delegating-from-space-to-agent))
 - After this, once your user uploads data to your backend, you can run any of the upload methods
 
-#### [Delegated](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#delegated)
+## Delegated
 
 ```mermaid
-
 sequenceDiagram
-
 participant w3up-client in user
-
 participant w3up-client in backend
-
 participant web3.storage w3up service
-
 w3up-client in backend-\>\>w3up-client in backend: Client created with Agent and delegation from Space
-
 w3up-client in user-\>\>w3up-client in user: Client instantiated with default Agent
-
 w3up-client in user-\>\>w3up-client in backend: Request delegation with user's Agent DID
-
 w3up-client in backend-\>\>w3up-client in user: Send delegation from Space to user's Agent DID
-
 w3up-client in user-\>\>web3.storage w3up service: Upload data
-
 ```
 
 - You will likely have w3up-client running in your end-user's client code, as well as backend code that's able to generate UCANs that delegate the ability to upload and pass them to your users (e.g., w3up-client running in a serverless worker)
@@ -72,131 +55,80 @@ w3up-client in user-\>\>web3.storage w3up service: Upload data
   - Note that this alone does not give visibility into which of your end users are uploading what; to track this, you'll probably need them to send you that information separately (e.g., once they've run upload and get back a content CID, you can have them send that CID to you for tracking)
 - A code example that does this can be found below
 
-```
-import { CarReader } from '@ipld/car';
-
-import \* as DID from '@ipld/dag-ucan/did';
-
-import \* as Delegation from '@ucanto/core/delegation';
-
-import { importDAG } from '@ucanto/core/delegation';
-
-import \* as Signer from '@ucanto/principal/ed25519';
-
-import \* as Client from '@web3-storage/w3up-client';
+```js
+import { CarReader } from '@ipld/car'
+import * as DID from '@ipld/dag-ucan/did'
+import * as Delegation from '@ucanto/core/delegation'
+import { importDAG } from '@ucanto/core/delegation'
+import * as Signer from '@ucanto/principal/ed25519'
+import * as Client from '@web3-storage/w3up-client'
 
 async function backend(did: string) {
+  // Load client with specific private key
+  const principal = Signer.parse(process.env.KEY)
+  const client = await Client.create({ principal })
 
-// Load client with specific private key
+  // Add proof that this agent has been delegated capabilities on the space
+  const proof = await parseProof(process.env.PROOF)
+  const space = await client.addSpace(proof)
+  await client.setCurrentSpace(space.did())
 
-const principal = Signer.parse(process.env.KEY);
+  // Create a delegation for a specific DID
+  const audience = DID.parse(did)
+  const abilities = ['store/add', 'upload/add']
+  const expiration = Math.floor(Date.now() / 1000) + 60 \* 60 \* 24 // 24 hours from now
+  const delegation = await client.createDelegation(audience, abilities, { expiration })
 
-const client = await Client.create({ principal });
+  // Serialize the delegation and send it to the client
+  const archive = await delegation.archive()
 
-// Add proof that this agent has been delegated capabilities on the space
-
-const proof = await parseProof(process.env.PROOF);
-
-const space = await client.addSpace(proof);
-
-await client.setCurrentSpace(space.did());
-
-// Create a delegation for a specific DID
-
-const audience = DID.parse(did);
-
-const abilities = ['store/add', 'upload/add'];
-
-const expiration = Math.floor(Date.now() / 1000) + 60 \* 60 \* 24; // 24 hours from now
-
-const delegation = await client.createDelegation(audience, abilities, {
-
-expiration,
-
-});
-
-// Serialize the delegation and send it to the client
-
-const archive = await delegation.archive();
-
-return archive.ok;
-
+  return archive.ok;
 }
 
-/\*\* @param {string} data Base64 encoded CAR file \*/
-
+/** @param {string} data Base64 encoded CAR file */
 async function parseProof(data) {
-
-const blocks = [];
-
-const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'));
-
-for await (const block of reader.blocks()) {
-
-blocks.push(block);
-
-}
-
-return importDAG(blocks);
-
+  const blocks = []
+  const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'))
+  for await (const block of reader.blocks()) {
+    blocks.push(block)
+  }
+  return importDAG(blocks)
 }
 
 async function frontend() {
+  // Create a new client
+  const client = await Client.create()
 
-// Create a new client
+  // Fetch the delegation from the backend
+  const apiUrl = `/api/w3up-delegation/${client.agent().did()}`
+  const response = await fetch(apiUrl)
+  const data = await response.arrayBuffer();
 
-const client = await Client.create();
+  // Deserialize the delegation
+  const delegation = await Delegation.extract(new Uint8Array(data));
+  if (!delegation.ok) {
+    throw new Error('Failed to extract delegation');
+  }
 
-// Fetch the delegation from the backend
+  // Add proof that this agent has been delegated capabilities on the space
+  const space = await client.addSpace(delegation.ok);
+  client.setCurrentSpace(space.did())
 
-const apiUrl = `/api/w3up-delegation/${client.agent().did()}`;
-
-const response = await fetch(apiUrl);
-
-const data = await response.arrayBuffer();
-
-// Deserialize the delegation
-
-const delegation = await Delegation.extract(new Uint8Array(data));
-
-if (!delegation.ok) {
-
-throw new Error('Failed to extract delegation');
-
-}
-
-// Add proof that this agent has been delegated capabilities on the space
-
-const space = await client.addSpace(delegation.ok);
-
-client.setCurrentSpace(space.did());
-
-// READY to go!
-
+  // READY to go!
 }
 ```
 
-#### [User-owned](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#user-owned)
+## User-owned
 
-```
-mermaid
-
+```mermaid
 sequenceDiagram
-
 participant User
-
 participant Application backend
-
 participant web3.storage w3up service
-
 Application backend-\>\>User: Front end code that includes w3up-client
-
 User-\>\>web3.storage w3up service: (If needed) Create Space and register it
-
 User-\>\>web3.storage w3up service: (If needed) Use Agent email verification to "log in" to Space
-
 User-\>\>web3.storage w3up service: Upload data using w3up-client
-
 ```
 
 - If you want your user to own their own Space, you'll likely be relying on the w3up-client methods to create a Space, authorize the Space, and authorize the Agent on the end user-side; from there they can run any of the upload methods
