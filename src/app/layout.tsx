@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import './globals.css'
+import '../globals.css'
 import { Web3StorageLogo } from '@/components/brand'
 
 export const metadata: Metadata = {
