@@ -1,12 +1,7 @@
 import Link from "next/link"
-import { ComponentPropsWithoutRef, PropsWithChildren } from "react"
 
-export const serviceName = 'web3.storage'
-
-export const tosUrl = 'https://web3.storage/terms'
-
-export const Web3StorageLogoIcon = () => (
-  <svg width='50' viewBox='0 0 27.2 27.18' xmlns='http://www.w3.org/2000/svg'>
+export const Web3StorageLogoIcon = ({width = 50}: {width?: number}) => (
+  <svg width={width} viewBox='0 0 27.2 27.18' xmlns='http://www.w3.org/2000/svg'>
     <path
       d='M13.6 27.18A13.59 13.59 0 1127.2 13.6a13.61 13.61 0 01-13.6 13.58zM13.6 2a11.59 11.59 0 1011.6 11.6A11.62 11.62 0 0013.6 2z'
       fill='currentColor'
@@ -19,10 +14,18 @@ export const Web3StorageLogoIcon = () => (
 )
 
 export const Web3StorageLogo = ({ className = '', children}: { className?: string, children?: string } ) => (
-  <Link href='/' className={`${className} font-medium text-2xl font-mono flex flex-row justify-left items-center gap-2`}>
+  <Link href='/' className={`${className} font-medium text-2xl font-mono flex flex-row justify-left items-center gap-2 hover:invert`}>
     <Web3StorageLogoIcon />
     <span>{children}</span>
   </Link>
 )
+
+export const DocsLogo = ({ className = '', children}: { className?: string, children?: string } ) => (
+  <span className={`${className} font-medium text-xl font-mono flex flex-row justify-left items-center gap-2`}>
+    <Web3StorageLogoIcon width={40} />
+    <span className="font-features-off">{children}</span>
+  </span>
+)
+
 
 export const Logo = Web3StorageLogo

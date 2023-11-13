@@ -1,0 +1,189 @@
+
+- id: agent
+  name: Agent
+  definition: A software component that manages signing keys and delegations needed to invoke w3up APIs.
+  details: |
+    Agents are used to invoke capabilities provided by the w3up service layer, using the [ucanto](https://github.com/web3-storage/ucanto) RPC framework. 
+    
+    Agents are created locally on an end-user's device, and users are encouraged to create new agents for each device (or browser) that they want to use, rather than sharing agent keys between devices.
+
+- id: audience
+  name: Audience
+  definition: The intended recipient of a UCAN token, identified by DID
+  details: |
+    Each UCAN token is "addressed to" a specific principal, known as the audience.
+    
+    When invoking a capability, the service provider is the audience of the invocation.
+   
+    When delegating permissions, the audience is the party receiving the delegation.
+
+- id: bitswap
+  definition: A peer-to-peer protocol used by IPFS and Filecoin to distribute blocks of data throughout the network.
+  details: |
+    While the w3up APIs do not use Bitswap directly, once data is stored with web3.storage it is made available via Bitswap to the larger IPFS network.
+
+- id: block
+  definition: A chunk of binary data that can be identified by CID.
+  details: |
+    Data stored with web3.storage is encoded into blocks, with large files consisting of several blocks linked together.
+
+    Blocks can be uniquely identified by <Term id="cid">CID (Content Identifier)</Term>, and are often bundled into Content Archives (CARs) for transport and storage.
+
+- id: car
+  name: CAR
+  definition: A collection of blocks, packaged for storage and transport.
+  details: |
+    CARs are like a [tar file](https://en.wikipedia.org/wiki/Tar_(computing)) for content-addressed data. 
+    
+    Used extensively by w3up protocols, although most users shoudn't be exposed to them directly for the most common operations.
+
+- id: cid
+  name: CID
+  definition: A Content Identifier that uniquely and verifiably identifies a block of data.
+  details: |
+    A CID consists of a cryptographic hash of the data it identifies, as well as a few bytes of metadata indicating what format the content is expected to be in. 
+    
+    See [the IPFS docs](https://docs.ipfs.tech/concepts/content-addressing/) for more details.
+
+- id: dag
+  name: DAG
+  definition: A Directed Acyclic Graph data structure.
+  details: |
+    A Directed Acyclic Graph (DAG) is a data structure that represents a collection of linked objects ("nodes"), 
+    where the links between nodes ("edges") have certain properties. 
+    For example, you can't have "cycles" or loops in the graph, where following a set of edges brings you back to the node you started from.
+
+    IPFS encodes files and directories into DAGs comprised of <Term id="block">blocks</Term> of data,
+    where each block can optionally link to other blocks using its <Term id="cid">CID</Term>.
+
+    Most DAGs will have a single "root" node which represents the "top" of the graph. 
+    By starting at the root node and traversing the links, you can find all the blocks that make up the DAG.
+
+- id: did
+  name: DID
+  definition: A decentralized identifier that contains or links to a cryptographic public key.
+  details: |
+    DIDs are decentralized identifiers that don't rely on any single authority to issue and validate.
+
+    See our [DID intro article](/concepts/dids/) for more details.
+
+- id: dht
+  name: DHT
+  definition: A Distributed Hash Table allows many peers in a peer-to-peer network to locate each other and coordinate to provide services.
+  details: |
+    IPFS uses a DHT to advertise content to the network, making it discoverable to all peers who query the DHT.
+    The DHT does not contain the full content - instead a small "provider record" contains addresses of peers 
+    who will serve the content on request (e.g. via <Term id="bitswap">Bitswap</Term>).
+    
+    Content stored with web3.storage is discoverable via the public IPFS DHT.
+
+- id: elastic-ipfs
+  name: Elastic IPFS
+  definition: A "cloud-native" IPFS implementation developed by Protocol Labs.
+  details: |
+    Elastic IPFS is an implementation of IPFS designed to leverage cloud storage for scalability and efficient retrieval.
+
+    Content is stored on commodity cloud storage (e.g. Amazon S3, Cloudflare R2) in <Term id="car">CAR</Term> format,
+    along with indexes that allow efficient location and retrieval of data within the CARs.
+    
+    Elastic IPFS interoperates with the public IPFS network by making content available via <Term id="bitswap">Bitswap</Term>.
+
+- id: gateway
+  name: Gateway
+  definition: An IPFS gateway allows retrieving IPFS content via HTTP, allowing any web browser to access data stored with IPFS.
+  details: |
+    Gateways act as a "bridge" between IPFS's peer-to-peer protocols and the HTTP protocol used by web browsers.
+
+    You can fetch IPFS content from a gateway by creating a gateway URL from the <Term id="cid">CID</Term> of your content,
+
+    To use the web3.storage gateway at `w3s.link`, make a URL like this, replacing `${cid}` with the CID you want to link to:
+
+    ```
+    https://${cid}.ipfs.w3s.link
+    ```
+
+- id: ipfs
+  name: IPFS
+  definition: The InterPlanetary File System, a distributed system for sharing and linking to content-addressed data.
+  details: |
+    IPFS is a system for organizing, locating, and transmitting data using cryptographic hashes to identify each piece of content.
+    There are many IPFS implementations, which work together to form a public network
+    (as well as specialized private networks).
+    web3.storage makes all uploaded content available to the IPFS network
+    via <Term id="bitswap">Bitswap</Term>, as well as via HTTP through <Term id="gateway">gateways</Term>.
+
+- id: ipld
+  name: IPLD
+  definition: InterPlanetary Linked Data is a collection of data formats that can be linked together by CID.
+  details: |
+    IPLD is a specification for data types that can be linked together by <Term id="cid">CID</Term> to form a <Term id="dag">DAG</Term>.
+
+    <Term id="unixfs">UnixFS</Term> is an IPLD data format, but IPLD also supports
+    JSON, CBOR, and other encodings for structured data that do not need the "file-like"
+    metadata included in UnixFS.
+
+    See the [IPLD website](https://ipld.io) for more information.
+
+- id: issuer
+  name: Issuer
+  definition: The creator and signer of a UCAN token, identified by DID.
+  details: |
+    Each UCAN token must be signed by the private key belonging to the issuer.
+   
+    When invoking a capability, the issuer is the agent executing the invocation.
+   
+    When delegating permissions, the issuer is the agent who currently possesses 
+    the given permissions and is delegating them to another agent (the audience).
+
+- id: space
+  definition: A unique identifier that acts as a "namespace" for uploaded content.
+  details: |
+    The w3up APIs use "spaces" to group uploads together, similar to how cloud storage buckets group stored objects.
+
+    Spaces act as the "destination" for uploaded data, and permissions to write to and/or manage a space can be delegated
+    to multiple <Term id="agent">agents</Term>.
+
+- id: ucan
+  name: UCAN
+  definition: User Controlled Authorization Networks are an authentication and authorization protocol designed for decentralized systems.
+  details: |
+    The w3up APIs use UCAN extensively to provide services and authorize invocations.
+
+    See our [intro to UCAN article](/concepts/ucan/) for an overview.
+
+- id: ucanto
+  name: ucanto
+  definition: A remote procedure call (RPC) framework based on UCANs.
+  details: |
+    The <Term id="ucan">UCAN</Term>-based w3up APIs are implemented using the [ucanto framework](https://github.com/web3.storage/ucanto).
+    
+    ucanto provides the "plumbing" for type-safe UCAN-based APIs, allowing services to define capability handlers which can be invoked by authorized clients.
+
+- id: unixfs
+  name: UnixFS
+  definition: A data format used by IPFS to represent files and directories.
+  details: |
+    UnixFS is a data format used by <Term id="ipfs">IPFS</Term> to encode files and directories into a <Term id="dag">DAG</Term> structure.
+    When preparing data for IPFS, the UnixFS encoder will chunk files into <Term id="block">blocks</Term> that are linked by <Term id="cid">CID</Term>. 
+
+    UnixFS is used by IPFS on all operating systems, including Windows.
+    The name indicates that the format supports some common metadata used on Unix platforms,
+    for example, symbolic links and modification time.
+
+- id: w3up
+  name: w3up
+  definition: The name of web3.storage's UCAN-based storage platform.
+  details: |
+    When web3.storage first launched, it offered a traditional "RESTful" / "JSON over HTTP" API,
+    aimed at getting traditional web developers tapped into the potential of decentralized,
+    content addressed storage.
+
+    After learning a lot from our first iteration, we created a new API backed
+    by <Term id="elastic-ipfs">Elastic IPFS</Term> that leverages <Term id="ucan">UCANs</Term> 
+    to provide secure and flexible authorization that can integrate with traditional web apps
+    as well as fully decentralized smart contract applications.
+
+    The new APIs are provided by a collection of <Term id="ucanto">ucanto</Term> services and are
+    collectively known as "w3up" to distinguish them from our "v1" RESTful API.
+
+    You can learn more about the motivations for w3up in our [beta announcement blog post](https://blog.web3.storage/posts/w3up-beta-launch).
