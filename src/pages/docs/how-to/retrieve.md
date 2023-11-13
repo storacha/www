@@ -1,4 +1,4 @@
-# Retrieve
+# How to retrieve data from web3.storage
 
 In this how-to guide, you'll learn several methods for retrieving data from web3.storage.
 

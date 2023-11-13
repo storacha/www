@@ -1,4 +1,4 @@
-# Architecture options
+# Possible architectures using web3.storage to upload
 
 UCAN opens up a number of options in how to integrate with w3up: Should you, the developer, own the Space? Should you delegate permissions to your users? Or should your user own their own Space? Broadly, there are three ways to integrate:
 

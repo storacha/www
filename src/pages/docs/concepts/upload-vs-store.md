@@ -1,4 +1,4 @@
-# Upload vs. Store in web3.storage
+# Upload vs. Store capabilities in web3.storage
 
 There are two types of content identifiers (CIDs) that web3.storage interacts with:
 

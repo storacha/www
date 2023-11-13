@@ -1,4 +1,4 @@
-# Content Archive (CAR) files
+# Working with Content Archive (CAR) files
 
 When you upload files to web3.storage using the [client library](https://web3.storage/docs/reference/js-client-library/), your data is converted into a graph of data structures, which are then packed into a format called a Content Archive (CAR) before being sent to the web3.storage service.
 

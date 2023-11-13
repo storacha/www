@@ -1,6 +1,4 @@
-# Upload
-
-## How to upload data using web3.storage
+# How to upload data using web3.storage
 
 In this how-to guide, you'll learn how to store data programmatically for your development projects using the web3.storage client library in JavaScript using your (developer-owned) Space. This includes various architecture options for the data pipeline for your users to upload to web3.storage, which then makes your data available on the decentralized IPFS network with persistent long-term storage provided by Filecoin.
 

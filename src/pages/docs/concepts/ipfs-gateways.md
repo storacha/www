@@ -1,4 +1,4 @@
-# IPFS Gateways
+# IPFS HTTP Gateways
 
 web3.storage uses the [InterPlanetary File System (IPFS)](https://ipfs.io/) as a key part of its storage and retrieval infrastructure.
 
