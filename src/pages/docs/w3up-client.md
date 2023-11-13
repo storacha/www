@@ -36,9 +36,9 @@ See the [client reference docs][reference-w3up-client#create] for more creation 
 
 ## Create and register a space
 
-When you upload things to web3.storage, each upload is associated with a <Term id="space">"space,"</Term> which is a unique identifier that acts as a namespace for your content.
+When you upload things to web3.storage, each upload is associated with a "space," which is a unique identifier that acts as a namespace for your content.
 
-Spaces are identified by <Term id="did">DID</Term> using keys created locally on your devices. To use a space for uploads, it needs to be registered with the storage service by providing an email address.
+Spaces are identified by DID using keys created locally on your devices. To use a space for uploads, it needs to be registered with the storage service by providing an email address.
 
 To create a space using `w3up-client`, use the [`createSpace` client method][reference-w3up-client#createSpace]:
 
@@ -106,7 +106,7 @@ In the example above, `directoryCid` resolves to an IPFS directory with the foll
 
 The `uploadFile` and `uploadDirectory` methods described in the previous step both return a CID, or Content Identifier, encoded as a string.
 
-To create a link to view your file on an <Term id="gateway">IPFS gateway</Term>, create a URL of the form `https://${cid}.ipfs.${gatewayHost}`, where `${cid}` is the CID of the content you want to view, and `${gatewayHost}` is the domain of the gateway. To use our own gateway at `w3s.link`, your url would be `https://${cid}.ipfs.w3s.link`.
+To create a link to view your file on an IPFS gateway, create a URL of the form `https://${cid}.ipfs.${gatewayHost}`, where `${cid}` is the CID of the content you want to view, and `${gatewayHost}` is the domain of the gateway. To use our own gateway at `w3s.link`, your url would be `https://${cid}.ipfs.w3s.link`.
 
 Opening the gateway URL in a browser will take you to your uploaded file, or a directory listing of files, depending on what you uploaded.
 

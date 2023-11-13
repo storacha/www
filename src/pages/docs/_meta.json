@@ -1,6 +1,8 @@
 {
-  "index": "Start",
+  "index": "Welcome",
+  "quickstart": "Quickstart",
   "w3cli": "Command line",
   "w3up-client": "JS Client",
+  "how-to": "How to",
   "concepts": "Concepts"
 }

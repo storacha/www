@@ -1,0 +1,15 @@
+{
+  "create-account": "Create account and space",
+  "upload": "Upload",
+  "retrieve": "Retrieve",
+  "list": "List",
+  "remove": "Remove",
+  "plan": {
+    "title": "Change price plan",
+    "display": "hidden"
+  },
+  "receipts": {
+    "title": "Query UCAN receipts",
+    "display": "hidden"
+  }
+}
