@@ -1,41 +1,27 @@
-## Upload vs. Store in web3.storage
-
-## Upload vs. Store capabilities in web3.storage
+# Upload vs. Store in web3.storage
 
 There are two types of content identifiers (CIDs) that web3.storage interacts with:
 
-- Content CIDs: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
-- Shard CIDs: The CID of the serialized shards of data itself that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
+1. Content CIDs: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
+2. Shard CIDs: The CID of the serialized shards of data itself that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
 
 One example of where you might see both is uploading a large file with the CLI:
 
-```
+```sh
 w3 up gb.file
-
-1 file (1GB)
-
+ 1 file (1GB)
 bagbaierao...
-
 bagbaieraq...
-
 bagbaieraj...
-
 bagbaierai...
-
 bagbaierax...
-
 bagbaieraf...
-
 bagbaierac...
-
 bagbaierax...
-
 bagbaierax...
-
 bagbaiera4...
 
 ⁂ Stored 1 file
-
 ⁂ https://w3s.link/ipfs/bafybeiaxwvg4...
 ```
 
@@ -45,7 +31,7 @@ In the vast majority of cases, users should focus on content CIDs, as this is wh
 
 However, if you're interested in learning more about how web3.storage uses both, read on!
 
-### Upload vs. Store
+## Upload vs. Store
 
 There are two similar-sounding, complementary, but separate concepts in web3.storage: Upload and Store. The place you most readily see this is in the lower-level client methods like `Client.capabilities.upload.*` and `Client.capabilities.store.*`, and CLI methods like `w3 can upload *`, and `w3 can store *`.
 
@@ -61,26 +47,24 @@ However, from web3.storage's perspective, it doesn't necessarily know whether th
 
 In cases where the user is uploading a whole file or directory like in the example above, it's safe to know that the series of CAR shards uploaded by the user correspond to the file's content CID that it cares about. That's why the higher-level `w3 up` method is appropriate to use, and should represent the vast majority of upload use cases by web3.storage users.
 
-### When should I care about Store and shard CIDs?
+## When should I care about Store and shard CIDs?
 
 There's a few cases to note when caring about shard CIDs themselves and the `store` series of capabilities.
 
-**Sharing data across content CIDs**
+### Sharing data across content CIDs
 
-Because IPFS interacts with DAGs, you can actually share blocks between different content CIDs. One simple example would be in a directory:
+Because IPFS interacts with DAGs, you can actually share blocks between different content CIDs. One simple example would be in a directory
 
-\<screenshot\>
-
-If a user uploads this directory using `w3 up`, the content CID for this directory will be registered with their account. This is actually the root CID of the directory itself, but isn't the only content CID in reality that was made available on the network: each file within this directory actually has their own content CID (highlighted).
+If a user uploads a directory using `w3 up`, the content CID for this directory will be registered with their account. This is actually the root CID of the directory itself, but isn't the only content CID in reality that was made available on the network: each file within this directory actually has their own content CID (highlighted).
 
 Let's say you want to be able to have two different directories registered as uploads in your account: one that has 3 of the files above, and another that has all of them. One way to do this would be to upload each file separately, then locally compute the content CIDs of each directory. You can then call `w3 can upload add` to register each of these directories.
 
 This results in only a single copy of each file being stored, but you being able to interact with two different directories!
 
-**Removing data from account**
+### Removing data from an account
 
 web3.storage tracks usage for payment (i.e., how much storage is utilized by a user) using the volume of data associated with shard CIDs. This should make sense after learning about the difference between `store` and `upload` - web3.storage is storing the CAR shards themselves, and `upload`s are more users tracking.
 
-Fortunately, this shouldn't make things any more complicated - we go into more detail below, but in general, when you remove a content CID from your account, you'll want to remove the shard CIDs as well (e.g., in the client calling `Client.remove(contentCID, shards=True)`).
+Fortunately, this shouldn't make things any more complicated - we go into more detail below, but in general, when you remove a content CID from your account, you'll want to remove the shard CIDs as well (e.g., in the client calling `Client.remove(contentCID, shards=true)`).
 
 However, if you are a power user interacting with shard CIDs as well (like in the previous section), then you need to be more cautious about removing shard CIDs from your account. (This is why the default for the client and CLI methods is for shards to be maintained after removing a content CID). Learn more about how to do this in the Remove section.

@@ -1,12 +1,10 @@
 # Architecture options
 
-Possible architectures of using web3.storage to upload
-
 UCAN opens up a number of options in how to integrate with w3up: Should you, the developer, own the Space? Should you delegate permissions to your users? Or should your user own their own Space? Broadly, there are three ways to integrate:
 
 - Client-server: You (the developer) own the Space, and your user uploads to your backend infra before you upload it to the service
 - Delegated: You own the Space, but you give a delegated UCAN token to your user's Agent to upload directly to the service (rather than needing to touch the upload in your backend)
-- (Most complex) User-owned: Your user owns the Space and registers it and they use it to upload directly with the service; if you want to instrument visibility into what they're uploading, you'll have to write separate code in your app for it
+- User-owned: Your user owns the Space and registers it and they use it to upload directly with the service; if you want to instrument visibility into what they're uploading, you'll have to write separate code in your app for it
 
 In the How-tos section of the docs, we focused on the first two options, as they are the most familiar today. However, you can implement each of these in a number of ways, but we talk through some considerations when implementing a given option.
 

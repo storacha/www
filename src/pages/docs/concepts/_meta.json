@@ -1,5 +1,15 @@
 {
-  "ucan": "UCAN",
-  "did": "DID",
-  "car": "CAR"
+  "ucans-and-web3storage": "UCANs and web3.storage",
+  "content-addressing": "Content-addressing",
+  "upload-vs-store": "Upload vs. Store",
+  "architecture-options": "Architecture options",
+  "car": "Content Archive (CAR) files",
+  "filecoin-storage": "Filecoin",
+  "ipfs-gateways": "IPFS Gateways",
+  "did": {
+    "display": "hidden"
+  },
+  "ucan": {
+    "display": "hidden"
+  }
 }

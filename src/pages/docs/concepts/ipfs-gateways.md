@@ -1,6 +1,4 @@
-## IPFS Gateways
-
-### IPFS HTTP Gateways
+# IPFS Gateways
 
 web3.storage uses the [InterPlanetary File System (IPFS)](https://ipfs.io/) as a key part of its storage and retrieval infrastructure.
 
@@ -12,7 +10,7 @@ As more browsers like [Brave](https://brave.com/ipfs-support/) and [Opera](https
 
 For more information about fetching content that you uploaded through an IPFS HTTP gateway, see the Retrieve section.
 
-## [Types of gateway](https://web3.storage/docs/concepts/w3link/#types-of-gateway)
+## Types of gateway
 
 The official [IPFS documentation on gateways](https://docs.ipfs.io/concepts/ipfs-gateway/) is helpful for understanding the types of gateways in the IPFS ecosystem and how they're used.
 
@@ -20,7 +18,7 @@ One of the key things to understand for our purposes is the different [resolutio
 
 If you check the [list of public gateways](https://ipfs.github.io/public-gateway-checker/), you'll see that some support "subdomain" style URLs, while others only support path-style URLs. Below is a short refresher on the distinction between the two styles.
 
-### [Path style URLs](https://web3.storage/docs/concepts/w3link/#path-style-urls)
+### Path style URLs
 
 A "path style" URL puts the IPFS CID into the path portion of the gateway URL, like this:
 
@@ -30,7 +28,7 @@ If the CID points to a directory listing, you can append the name of a file with
 
 [https://w3s.link/ipfs/bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my/hi-gateway.txt](https://w3s.link/ipfs/bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my/hi-gateway.txt)
 
-### [Subdomain style URLs](https://web3.storage/docs/concepts/w3link/#subdomain-style-urls)
+### Subdomain style URLs
 
 A "subdomain style" gateway URL puts the CID into the host portion of the URL, as a subdomain of the gateway host, like this:
 

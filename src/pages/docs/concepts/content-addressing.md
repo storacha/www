@@ -1,16 +1,14 @@
-## Content addressing
-
-Content addressing in brief
+# Content addressing
 
 web3.storage's decentralized file storage relies on _content addressing_ to find, reference, and retrieve your files on the network. Content addressing is a technique for organizing and locating data in a system in which the key used to locate content is derived from the content itself, rather than its location. While you don't need to understand content addressing to be able to incorporate web3.storage in your apps and services, if you're curious about what's going on under the hood, read on.
 
-### [The basic problem](https://web3.storage/docs/concepts/content-addressing/#the-basic-problem)
+## The basic problem
 
 Consider what happens when you resolve a link like web3.storage/docs/concepts/content-addressing. First, your operating system queries a global shared key-value store, split into many domains — you may know this as the Domain Name System (DNS). The DNS returns an IP address that your network card can use to send HTTP requests over the network, where this site's naming conventions turn the key /concepts/content-addressing into a response payload.
 
 The problem is, components of an address like web3.storage/docs/concepts/content-addressing are _mutable_, meaning they can change over time. In the context of the web, where _everything_ is mutable and dynamic, this is just the way it's always been. As a result, [link rot](https://en.wikipedia-on-ipfs.org/wiki/Link_rot) is just something we've all learned to live with.
 
-### [CIDs: Location-independent, globally unique keys](https://web3.storage/docs/concepts/content-addressing/#cids-location-independent-globally-unique-keys)
+## CIDs: Location-independent, globally unique keys
 
 However, thanks to content addressing, link rot may become a thing of the past. A content-addressed system such as web3.storage is like our key-value-based DNS, with one significant difference: You no longer get to choose the keys. Instead, the keys are derived directly from the file contents using an algorithm that will always generate the same key for the same content.
 
@@ -18,7 +16,7 @@ As a result, we no longer need to coordinate among multiple writers to our store
 
 This type of key is called a _content identifier (CID)_. Once you know the CID of a file on the web3.storage network, you have all you need for the network to locate and return the file back to you.
 
-[web3.storage CIDs under the hood](https://web3.storage/docs/concepts/content-addressing/#web3storage-cids-under-the-hood)
+## web3.storage CIDs under the hood
 
 web3.storage uses CIDs to make its decentralized file storage work, with help from [IPFS](https://ipfs.io/) for locating files and making sure they're always available.
 
@@ -33,14 +31,14 @@ There are two types of CIDs that web3.storage interacts with:
 
 In the vast majority of cases, users should focus on content CIDs, as this is what they'll be using to fetch their content. If you stick with using the recommended client and CLI methods, then you won't really have to ever worry about the shard CIDs.
 
-### [Summary](https://web3.storage/docs/concepts/content-addressing/#summary)
+## Summary
 
 Using content addressing for locating files rather than the legacy web's method of location-dependent addressing responds to several critical weaknesses of the legacy web:
 
 - Content addressing solves for the problem behind link rot — the mutability of location-dependent storage systems — by using a hashing algorithm to generate a unique CID for each file that can be used as the lookup key for a file rather than a URL.
 - In addition to making sure files don't get lost if they're moved, content addressing also ensures that users intending to retrieve a specific version of a file will be guaranteed to retrieve that version for as long as it exists anywhere on the network.
 
-### [Learn more](https://web3.storage/docs/concepts/content-addressing/#learn-more)
+## Learn more
 
 Want a deep dive into content addressing, how it works, and why it's important? Check out [ProtoSchool](https://proto.school/content-addressing/) for an in-depth look at content addressing on the decentralized web, plus a wealth of other interactive tutorials on DWeb concepts, protocols, and tools.
 
