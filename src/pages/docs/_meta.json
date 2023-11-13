@@ -4,5 +4,9 @@
   "w3cli": "Command line",
   "w3up-client": "JS Client",
   "how-to": "How to",
-  "concepts": "Concepts"
+  "concepts": "Concepts",
+  "specs": {
+    "title": "Specs",
+    "href": "https://github.com/web3-storage/specs"
+  }
 }
