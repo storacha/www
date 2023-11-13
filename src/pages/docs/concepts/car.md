@@ -1,6 +1,6 @@
 # Working with Content Archive (CAR) files
 
-When you upload files to web3.storage using the [client library](https://web3.storage/docs/reference/js-client-library/), your data is converted into a graph of data structures, which are then packed into a format called a Content Archive (CAR) before being sent to the web3.storage service.
+When you upload files to web3.storage using the client library, your data is converted into a graph of data structures, which are then packed into a format called a Content Archive (CAR) before being sent to the web3.storage service.
 
 For most use cases, you never need to know about this process, as the conversion happens behind the scenes when using the client library. However, you might want to know more about how to manipulate CAR files directly, especially if you're using `upload` and `store` separately in web3.storage.
 
@@ -20,7 +20,7 @@ This format uses an IPLD "codec" called [dag-pb](https://ipld.io/docs/codecs/kno
 
 First, formatting everything on the client allows us to calculate the root Content Identifier for the data you're uploading before we send any data to the remote service. This means that you can compare the CID returned by the web3.storage service to the one you calculated locally, and you don't have to trust the service to do the right thing.
 
-Another reason to use CARs is to support large files, which would otherwise hit size limits on the web3.storage backend platform. The data in a CAR is already chunked into small blocks, which makes CARs easy to shard into small pieces that can be uploaded in batches.
+Another reason to use CARs is to support large files, which would otherwise hit size limits on the web3.storage backend platform. The data in a CAR is already chunked into small blocks, which makes CARs easy to shard into small pieces that can be uploaded in batches. This also enables the web3.storage platform to get larger content into Filecoin deals.
 
 CAR files are a format that pretty much any IPFS tool or implementation can interact with. You can export data from your personal IPFS node into a CAR file and upload it to web3.storage using `w3 up --car` or `client.uploadCar`. As a result, we dive into the various ways you might interact with CAR files.
 

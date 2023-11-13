@@ -3,7 +3,7 @@
 UCAN opens up a number of options in how to integrate with w3up: Should you, the developer, own the Space? Should you delegate permissions to your users? Or should your user own their own Space? Broadly, there are three ways to integrate:
 
 - Client-server: You (the developer) own the Space, and your user uploads to your backend infra before you upload it to the service
-- Delegated: You own the Space, but you give a delegated UCAN token to your user's Agent to upload directly to the service (rather than needing to touch the upload in your backend)
+- Delegated: You own the Space, but you give a delegated UCAN token to your user's Agent to upload directly to the service, rather than needing to proxy the upload through your backend (no egress from your infrastructure)
 - User-owned: Your user owns the Space and registers it and they use it to upload directly with the service; if you want to instrument visibility into what they're uploading, you'll have to write separate code in your app for it
 
 In the How-tos section of the docs, we focused on the first two options, as they are the most familiar today. However, you can implement each of these in a number of ways, but we talk through some considerations when implementing a given option.
@@ -133,4 +133,4 @@ User-\>\>web3.storage w3up service: Upload data using w3up-client
   - Doing this does take some of the UX out of your control; for instance, when web3.storage fully launches with w3up, your users will have to set up their payment methods with web3.storage
   - Note that this alone does not give visibility into which of your end users are uploading what; to track this, you'll probably need them to send you that information separately (e.g., once they've run upload and get back a content CID, you can have them send that CID to you for tracking)
 - There is a world of possibilities with your users "bringing their own identity" for their Space; you could explore how crypto wallet private keys, Apple Passkey, and more might map to Space DIDs and have the client use those
-- If you have code snippet(s) that works for you, please share them in a PR or [Github issue](https://github.com/web3-storage/w3up/issues) and we'll link them here!
+- If you have code snippet(s) that works for you, please share them in a PR or [Github issue](https://github.com/web3-storage/www/issues) and we'll link them here!
