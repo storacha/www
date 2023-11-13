@@ -84,10 +84,10 @@ To remove shard CIDs and upload CIDs separately, you'll generally do this by:
     - For each shard CID, ensure no other uploaded content CIDs share the same shard (otherwise, the other content CIDs will no longer be fetchable)
     - Remove the shard CIDs one-by-one using `Client.capability.store.remove(shardCID)`
 - CLI:
-  - If you registered a content CID you want to remove using `w3 can upload add `<contentCID>`…
-    - (If you don't know which shard CIDs are associated with the content CID) Run `w3 can upload ls `<contentCID>` --shards, which returns a list of shard CIDs
-    - Remove it using `w3 can upload rm `<contentCID>`
+  - If you registered a content CID you want to remove using `w3 can upload add <contentCID>`…
+    - (If you don't know which shard CIDs are associated with the content CID) Run `w3 can upload ls <contentCID> --shards`, which returns a list of shard CIDs
+    - Remove it using `w3 can upload rm <contentCID>`
   - Remove the shard CIDs that you'd like to
     - For each shard CID, ensure no other uploaded content CIDs share the same shard (otherwise, the other content CIDs will no longer be fetchable)
-    - Remove the shard CIDs one-by-one using `w3 can store rm `<shardCID>`
+    - Remove the shard CIDs one-by-one using `w3 can store rm <shardCID>`
 
