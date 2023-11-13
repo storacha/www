@@ -4,10 +4,10 @@ In this how-to guide, you'll learn several methods for retrieving data from web3
 
 All data stored using web3.storage is made available for retrieval via [IPFS](https://ipfs.io/), the InterPlanetary File System. IPFS is a distributed, peer-to-peer network for storing and sharing content-addressed data. This guide shows you several ways to retrieve your data from IPFS:
 
-- In your browser using an [HTTP gateway](https://web3.storage/docs/how-tos/retrieve/#using-an-ipfs-http-gateway).
-- Using the Saturn dCDN.
-- In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-tos/retrieve/#using-the-ipfs-command-line).
-- In your terminal using [curl or Powershell](https://web3.storage/docs/how-tos/retrieve/#using-curl-or-powershell).
+* In your browser using an [HTTP gateway](https://web3.storage/docs/how-tos/retrieve/#using-an-ipfs-http-gateway).
+* Using the Saturn dCDN.
+* In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-tos/retrieve/#using-the-ipfs-command-line).
+* In your terminal using [curl or Powershell](https://web3.storage/docs/how-tos/retrieve/#using-curl-or-powershell).
 
 When retrieving any data, you'll be using the content CID of the upload (prefixed by `bafy…`).
 
@@ -27,7 +27,7 @@ Your web3.storage console page includes IPFS gateway links to all the content yo
 
 When downloading files from an HTTP gateway, web browsers will set the default filename for the downloaded file based on the path component of the gateway link. For example, if you use your browser's "Save link as..." feature on the following link, it should prompt you to save a file named treehouse.jpeg:
 
-[https://bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq.ipfs.w3s.link/treehouse.jpeg](https://bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq.ipfs.w3s.link/treehouse.jpeg)
+<https://bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq.ipfs.w3s.link/treehouse.jpeg>
 
 In the link above, the CID bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq points to an IPFS directory listing, which maps from the filename treehouse.jpeg to the CID for the image itself.
 
@@ -35,17 +35,16 @@ Since the web3.storage client wraps your uploaded files in a directory by defaul
 
 However, the behavior is a bit different if you make a gateway link directly to the image CID:
 
-- [https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/](https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/)
-- [https://ipfs.io/ipfs/bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei](https://ipfs.io/ipfs/bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei)
+* <https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/>
+* <https://ipfs.io/ipfs/bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei>
 
 Both of the URLs above link directly to the CID of the image, without an associated filename. The first URL uses the recommended "subdomain" URL format for gateway links, while the second form uses a "path prefix" format that you may see in use elsewhere in the IPFS ecosystem.
 
 Depending on which style of link you use, your browser will prompt you to save a file with a generic name like download, or with the CID as the filename.
 
-If you have such a link, you can override the default filename by adding a query string parameter to your link of the form ?filename=\<desired-filename\>. For example, the following link will save as treehouse.jpeg, even though it links directly to the image by CID:
+If you have such a link, you can override the default filename by adding a query string parameter to your link of the form ?filename=\<desired-filename>. For example, the following link will save as treehouse.jpeg, even though it links directly to the image by CID:
 
-[https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/?filename=treehouse.jpeg](https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/?filename=treehouse.jpeg)
-
+<https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/?filename=treehouse.jpeg>
 
 ## Using the `ipfs` command
 
@@ -53,13 +52,13 @@ If you have the [IPFS command line interface](https://docs.ipfs.io/how-to/comman
 
 To get the whole bundle and save it to a directory, run the following command:
 
-```
+```shell
 ipfs get bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu
 ```
 
 If you want to get a specific file out of the bundle, add its name onto the end of the ipfs get bafybie... command:
 
-```
+```shell
 ipfs get bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu/youareanonsense.jpg
 ```
 
@@ -82,11 +81,9 @@ Replace `<YOUR CID>`, `<FILE NAME>`, and `<OUTPUT FILE>` with their respective v
 | Variable | Replace with | Example |
 | --- | --- | --- |
 | `<YOUR CID>` | The CID of the file you want to download. | bafybeie2bjap32zi2yqh5jmpve5njwulnkualcbiszvwfu36jzjyqskceq |
-| `<FILE NAME>` | The _name_ of the file that you originally uploaded to web3.storage. | example.txt | 
+| `<FILE NAME>` | The *name* of the file that you originally uploaded to web3.storage. | example.txt |
 | `<OUTPUT FILE>` | The path and filename that you want curl to save the file to. This can be different to `<FILE NAME>`. | `./output-file.txt` |
-
 
 ## Next steps
 
 Next, you'll learn about how to [list](https://web3.storage/docs/how-tos/list/)
-

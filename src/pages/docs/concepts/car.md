@@ -6,7 +6,7 @@ For most use cases, you never need to know about this process, as the conversion
 
 ## What is a Content Archive?
 
-The [Content Archive format](https://ipld.io/specs/transport/car/) is a way of packaging up [content addressed data](https://web3.storage/docs/concepts/content-addressing/) into archive files that can be easily stored and transferred. You can think of them like [TAR files](https://en.wikipedia.org/wiki/Tar_(computing)) that are designed for storing collections of content addressed data.
+The [Content Archive format](https://ipld.io/specs/transport/car/) is a way of packaging up [content addressed data](https://web3.storage/docs/concepts/content-addressing/) into archive files that can be easily stored and transferred. You can think of them like [TAR files](https://en.wikipedia.org/wiki/Tar_\(computing\)) that are designed for storing collections of content addressed data.
 
 The type of data stored in CARs is defined by [IPLD](https://ipld.io/), or InterPlanetary Linked Data. IPLD is a specification and set of implementations for structured data types that can link to each other using a hash-based Content Identifier (CID). Data linked in this way forms a Directed Acyclic Graph, or DAG, and you'll likely see a few references to DAGs in the documentation for IPLD and IPFS.
 
@@ -83,13 +83,13 @@ ipfs dag import path/to/input.car
 
 ## Javascript libraries
 
-#### ipfs-car
+### ipfs-car
 
 The ipfs-car package includes library functions for packing and unpacking files into CARs, using the IPFS UnixFs data model. The library includes the same functionality as the ipfs-car command line utility [described above](https://web3.storage/docs/how-tos/work-with-car-files/#ipfs-car).
 
 See the [ipfs-car README](https://github.com/web3-storage/ipfs-car#api) for API documentation and usage examples.
 
-#### @ipld/car
+### @ipld/car
 
 The [@ipld/car](https://github.com/ipld/js-car)[package](https://github.com/ipld/js-car) contains the main JavaScript implementation of the CAR specification and is used by ipfs-car under the hood. If you want to store non-file data using [advanced IPLD formats](https://web3.storage/docs/how-tos/work-with-car-files/#advanced-ipld-formats), you should use @ipld/car directly.
 
@@ -131,4 +131,3 @@ Here's an example of a `dag-json` object:
 The image field uses the special "link type" to reference another IPLD object. The link is just a regular JSON object with a single key named /, whose value is a Content Identifier.
 
 Although dag-json is familiar and easy to use, we recommend using the similar [dag-cbor](https://ipld.io/docs/codecs/known/dag-cbor/)[codec](https://ipld.io/docs/codecs/known/dag-cbor/) instead. dag-cbor uses the [Concise Binary Object Representation](https://cbor.io/) to more efficiently encode data, especially binary data which must be Base64-encoded when using dag-json.
-

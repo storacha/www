@@ -26,10 +26,10 @@ When the right Space is selected, you are ready to upload! You can do so by runn
 
 There are a few useful flags (check out the reference docs to see a full list):
 
-```
---no-wrap //Don't wrap input files with a directory.
--H, --hidden //Include paths that start with ".".
--c, --car //File is a CAR file.
+```shell
+--no-wrap    # Don't wrap input files with a directory.
+-H, --hidden # Include paths that start with ".".
+-c, --car    # File is a CAR file.
 ```
 
 ## Using the Javascript client
@@ -157,8 +157,8 @@ Now that your backend client instance is set up with being able to interact with
 
 There are two main options to getting content into your Space:
 
-- Upload data to web3.storage from the backend client itself (e.g., you're storing data that your users are uploading to your backend)
-- Upload data to web3.storage directly from your user's environment (like your application's user's browser) by delegating a UCAN that has permission to upload to your Space
+* Upload data to web3.storage from the backend client itself (e.g., you're storing data that your users are uploading to your backend)
+* Upload data to web3.storage directly from your user's environment (like your application's user's browser) by delegating a UCAN that has permission to upload to your Space
 
 ### Upload from backend client directly
 
@@ -184,8 +184,7 @@ const directoryCid = await client.storeDirectory(files)
 
 In the example above, `directoryCid` resolves to an IPFS directory.
 
-
-### Delegate UCAN for your user to upload directly
+\### Delegate UCAN for your user to upload directly
 
 ```mermaid
 sequenceDiagram
@@ -288,7 +287,7 @@ const directoryCid = await client.storeDirectory(files)
 
 In the example above, directoryCid resolves to an IPFS directory with the following layout:
 
-```
+```text
 .
 ├──images
 |  └──example.png
@@ -359,10 +358,8 @@ function makeFileObjects () {
 }
 ```
 
-
-
 ## Next steps
 
 Learn more about how to fetch your data using the CID in the next section, Retrieve.
 
-[https://web3.storage/docs/how-tos/retrieve/](https://web3.storage/docs/how-tos/retrieve/)
+<https://web3.storage/docs/how-tos/retrieve/>

@@ -22,11 +22,11 @@ If you check the [list of public gateways](https://ipfs.github.io/public-gateway
 
 A "path style" URL puts the IPFS CID into the path portion of the gateway URL, like this:
 
-[https://w3s.link/ipfs/bafkreied5tvfci25k5td56w4zgj3owxypjgvmpwj5n7cvzgp5t4ittatfy](https://w3s.link/ipfs/bafkreied5tvfci25k5td56w4zgj3owxypjgvmpwj5n7cvzgp5t4ittatfy)
+<https://w3s.link/ipfs/bafkreied5tvfci25k5td56w4zgj3owxypjgvmpwj5n7cvzgp5t4ittatfy>
 
 If the CID points to a directory listing, you can append the name of a file within the directory to fetch the file:
 
-[https://w3s.link/ipfs/bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my/hi-gateway.txt](https://w3s.link/ipfs/bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my/hi-gateway.txt)
+<https://w3s.link/ipfs/bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my/hi-gateway.txt>
 
 ### Subdomain style URLs
 
@@ -36,6 +36,6 @@ A "subdomain style" gateway URL puts the CID into the host portion of the URL, a
 
 If the CID points to a directory listing, you can use the path portion of the URL to specify the filename:
 
-[https://bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my.ipfs.w3s.link/hi-gateway.txt](https://bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my.ipfs.w3s.link/hi-gateway.txt)
+<https://bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my.ipfs.w3s.link/hi-gateway.txt>
 
 This is the preferred style for serving web assets over HTTP gateways, because web browsers provide security isolation on a per-domain basis. Using the subdomain style, every CID gets its own "namespace" for things like cookies and local storage, which isolates things from other web content stored on IPFS.

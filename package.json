@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint && pnpm lint:md",
+    "lint:md": "remark src/pages/docs -e .md,.mdx, --frail --quiet --output",
     "test": "echo 'no tests yet'"
   },
   "dependencies": {
@@ -25,7 +26,32 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.1",
     "postcss": "^8",
+    "remark-cli": "^12.0.0",
+    "remark-lint-fenced-code-flag": "^3.1.2",
+    "remark-lint-first-heading-level": "^3.1.2",
+    "remark-lint-heading-increment": "^3.1.2",
+    "remark-lint-list-item-indent": "^3.1.2",
+    "remark-lint-no-hr-after-heading": "^1.0.0",
+    "remark-preset-lint-consistent": "^5.1.2",
+    "remark-preset-lint-recommended": "^6.1.3",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
+  },
+  "remarkConfig": {
+    "settings": {
+      "listItemIndent": "mixed"
+    },
+    "plugins": [
+      "remark-preset-lint-consistent",
+      "remark-preset-lint-recommended",
+      "remark-lint-fenced-code-flag",
+      "remark-lint-first-heading-level",
+      "remark-lint-heading-increment",
+      "remark-lint-no-hr-after-heading",
+      [
+        "remark-lint-list-item-indent",
+        "mixed"
+      ]
+    ]
   }
 }

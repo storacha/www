@@ -40,7 +40,7 @@ w3 space create Documents
 
 The DID for the new space will be printed to the console. It should look something like this, although the part after `did:key` will be unique to your space:
 
-```
+```bash
 did:key:z6MkixXechJLc3TWibQj9RN6AiFx8VoMY9HNB3Y97WcwK3fm
 ```
 
@@ -79,5 +79,3 @@ When uploading directories, files beginning with a `.` character are ignored by 
 ## View your file with IPFS
 
 When your upload completes, you should see a link to your files on the `w3s.link` <abbr id="gateway">IPFS gateway</abbr>. Just click the link to see your files!
-
-[concepts-did]: ../concepts/dids.md
