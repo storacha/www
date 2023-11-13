@@ -4,6 +4,12 @@
   "retrieve": "Retrieve",
   "list": "List",
   "remove": "Remove",
-  "plan": "Change price plan",
-  "receipts": "Query UCAN receipts"
+  "plan": {
+    "title": "Change price plan",
+    "display": "hidden"
+  },
+  "receipts": {
+    "title": "Query UCAN receipts",
+    "display": "hidden"
+  }
 }
