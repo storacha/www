@@ -24,10 +24,19 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
         <meta name="theme-color" content="#5bbad5" />
       </head>
       <body>
+        <Banner />
         {children}
         <Footer />
       </body>
     </html>
+  )
+}
+
+function Banner () {
+  return (
+    <div className='bg-zinc-950 text-white text-sm text-center p-3'>
+      Looking for the <strong>old</strong> web3.storage? Read more <a className='underline' href='https://blog.web3.storage'>about our changes</a> or <a className='underline' href='https://old.web3.storage'>log in</a> to the old web3.storage.
+    </div>
   )
 }
 
