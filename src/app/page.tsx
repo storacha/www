@@ -12,8 +12,8 @@ export default function HomePage () {
           <div className='basis-1/2 text-left md:text-left px-3'>
             <p className='text-5xl md:text-7xl text-white font-medium'>Say <span className=''>hello</span> to <br/>the <span className='underline  font-bold'>data layer</span></p>
             <p className='pt-12 text-center md:text-left'>
-              <ButtonLink href='/start'>Start now</ButtonLink>
-              <ButtonLink href='/faq' className='hidden sm:inline-block ml-6'>What&apos;s the data layer?</ButtonLink>
+              <ButtonLink href='https://console.web3.storage'>Start now</ButtonLink>
+              <ButtonLink href='/docs/faq' className='hidden sm:inline-block ml-6'>What&apos;s the data layer?</ButtonLink>
             </p>
           </div>
           <div className='basis-1/2 text-2xl text-white pt-12 md:pt-0 px-3'>
