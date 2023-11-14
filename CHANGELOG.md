@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/web3-storage/www/compare/www-v1.0.2...www-v1.0.3) (2023-11-14)
+
+
+### Bug Fixes
+
+* authorize renamed to login ([#26](https://github.com/web3-storage/www/issues/26)) ([5638a4d](https://github.com/web3-storage/www/commit/5638a4db5efe9390bac7f566230355bfa6f14fdd))
+
 ## [1.0.2](https://github.com/web3-storage/www/compare/www-v1.0.1...www-v1.0.2) (2023-11-14)
 
 
