@@ -91,7 +91,7 @@ export default async function PricingPage () {
         <section className='max-w-6xl mx-auto pt-20 md:pt-28 px-3 pb-20'>
           <div className="md:flex text-zinc-950 gap-3 lg:gap-7 items-end">
             <div className='md:w-1/3'>
-              <PlanCard name='Free' price='$0' storage='5GB' storageExcess='$0.15/GB' />
+              <PlanCard name='Starter' price='$0' storage='5GB' storageExcess='$0.15/GB' />
             </div>
             <div className='md:w-1/3 pt-8 md:pt-0'>
               <PlanCard name='Lite' price='$10' storage='100GB' storageExcess='$0.05/GB' />
