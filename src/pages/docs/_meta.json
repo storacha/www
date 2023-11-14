@@ -5,8 +5,9 @@
   "w3up-client": "JS Client",
   "how-to": "How to",
   "concepts": "Concepts",
-  "service-level-agreement": "Service level agreement",
   "terms": "Terms of service",
+  "service-level-agreement": "Service level agreement",
+  "privacy-policy": "Privacy Policy",
   "specs": {
     "newWindow": true,
     "title": "Specs",
