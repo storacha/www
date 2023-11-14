@@ -12,7 +12,7 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. Make changes and the preview site will update automatically.
 
-Run the linter before committing to catch errors"
+Run the linter before committing to catch errors
 
 ```bash
 pnpm lint
