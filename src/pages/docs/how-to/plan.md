@@ -1,17 +1,17 @@
-## View or change plan settings
+# View or change plan settings
 
 To view or change account settings, navigate to the web console. Sign in if you need to, and click "Plan settings."
 
-\<screenshot\>
+\<screenshot>
 
 You can see your current plan, and select a new plan if you'd like to move to it.
 
-\<screenshot\>
+\<screenshot>
 
 You can also see your current payment method on file and change it if you need to.
 
-\<screenshot\>
+\<screenshot>
 
 You can access your previous invoices by clicking on "See invoices."
 
-\<screenshot\>
+\<screenshot>

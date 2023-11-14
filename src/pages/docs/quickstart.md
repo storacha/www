@@ -20,7 +20,7 @@ node --version && npm --version
 > 7.18.1
 ```
 
-Install the CLI from npm using your command line: 
+Install the CLI from npm using your command line:
 
 ```sh
 npm install -g @web3-storage/w3cli
@@ -42,7 +42,7 @@ w3 space register
 
 ## Upload
 
-You can now upload a file or directory using the command line: 
+You can now upload a file or directory using the command line:
 
 ```sh
 $ w3 up lets-go.txt
@@ -70,7 +70,6 @@ __  _  __  ____  \_ |__  \_____  \      _______/  |_   ____  _______ _____      
               \/      \/        \/  \/     \/                             \/ /_____/       \/ 
 ```
 
-
 You can also fetch your content p2p style over bitswap with an IPFS implementation like `helia` or `kubo`.
 
 ```sh
@@ -92,4 +91,3 @@ Congratulations! You've just covered the basics of web3.storage. To learn more, 
 - Read more about the power of UCANs and IPFS, and learn about the various options to integrate web3.storage with your application.
 - Try out our image gallery example to see how easy it is to take advantage of these decentralized protocols using web3.storage.
 - Visit the reference API section for more details on what else you can do with the web3.storage client and how to integrate it into your own projects.
-

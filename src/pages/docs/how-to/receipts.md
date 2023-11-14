@@ -1,4 +1,4 @@
-## Querying UCAN receipts
+# Querying UCAN receipts
 
 You'll be able to get the receipt for a given task. This is especially useful for getting more information about async tasks that are found in receipts for other UCAN invocations. To read more about how web3.storage uses UCANs and why they're so useful, check out the UCANs and web3.storage section.
 

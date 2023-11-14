@@ -1,6 +1,6 @@
 # Filecoin storage
 
-The Filecoin network is a great building block for any decentralized storage system. Independent storage providers periodically must cryptographically prove that they are physically storing your specific data for a specific duration of time. When they submit these proofs to the network, other nodes verify these proofs, and this is what ends up on the Filecoin blockchain. So, anyone at any given moment can trustlessly verify that specific content is persisted, the number of copies on the network, and with who they are stored with. 
+The Filecoin network is a great building block for any decentralized storage system. Independent storage providers periodically must cryptographically prove that they are physically storing your specific data for a specific duration of time. When they submit these proofs to the network, other nodes verify these proofs, and this is what ends up on the Filecoin blockchain. So, anyone at any given moment can trustlessly verify that specific content is persisted, the number of copies on the network, and with who they are stored with.
 
 Read more about Filecoin proofs [here](https://filecoin.io/blog/posts/what-sets-us-apart-filecoin-s-proof-system/).
 
@@ -10,4 +10,4 @@ The great thing about IPFS is that, regardless of where your data is sitting (on
 
 When storing data on Filecoin, you enter storage "deals" that have a finite duration. web3.storage service currently renews deals for you to ensure your data deals never expire.
 
-[https://web3.storage/docs/concepts/w3link/](https://web3.storage/docs/concepts/w3link/)
+<https://web3.storage/docs/concepts/w3link/>

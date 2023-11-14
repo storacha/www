@@ -52,14 +52,13 @@ Delegated UCANs have a proof chain with multiple "links" in the form of UCAN tok
 
 Delegation is at the heart of what makes UCAN special! To learn more about delegation in the context of the w3up APIs, see our [delegation overview](./delegation.md).
 
-
 ## User owned accounts by default
 
-In our [Intro to UCAN article](./index.md), we gave a high-level overview of the new authorization protocol at the heart of our next-generation storage APIs. One of the most exciting things about UCAN is the ability for users to delegate access to their account's resources to other users, services, and devices. This guide will highlight some of the ways that delegation can be used with w3up, our new upload API. But first, let's consider some use cases that don't require delegation. 
+In our [Intro to UCAN article](./index.md), we gave a high-level overview of the new authorization protocol at the heart of our next-generation storage APIs. One of the most exciting things about UCAN is the ability for users to delegate access to their account's resources to other users, services, and devices. This guide will highlight some of the ways that delegation can be used with w3up, our new upload API. But first, let's consider some use cases that don't require delegation.
 
-When applications use the w3ui components, or developers run the `w3` CLI, they need access to a "space," which is a unique ID that groups uploads together. Once a space has been registered with the w3up service, it can be used to upload files and other data. 
+When applications use the w3ui components, or developers run the `w3` CLI, they need access to a "space," which is a unique ID that groups uploads together. Once a space has been registered with the w3up service, it can be used to upload files and other data.
 
-If you're uploading files from your laptop using [the `w3` command line tool](../../getting-started/w3cli.md), you can just create a space on the laptop and register it with the w3up service using the `w3 space register` command. The service will issue you a UCAN token that grants your client's "agent" some capabilities; in this case, you get the ability to upload data to web3.storage, list your uploads, unlink uploads from your account, etc. 
+If you're uploading files from your laptop using [the `w3` command line tool](../../getting-started/w3cli.md), you can just create a space on the laptop and register it with the w3up service using the `w3 space register` command. The service will issue you a UCAN token that grants your client's "agent" some capabilities; in this case, you get the ability to upload data to web3.storage, list your uploads, unlink uploads from your account, etc.
 
 Each client that you use to access w3up will have an "agent" associated with it. Agents are what we call the component that manages your local private keys and signs UCAN requests to the w3up service. When you create a space and register it, the agent you use to register the space is automatically issued a UCAN delegation that grants the agent the ability to upload to the space, as well as other "space related" capabilities like listing uploads.
 
@@ -167,7 +166,7 @@ If you also want to upload from your phone, you can use delegation to share acce
 
 Now that we've seen some reasons why you might want to delegate, let's look at delegation in practice using the `w3` command line tool.
 
-If you haven't had a chance to check out the `w3` tool yet, see our [intro to using w3up from the command line](../../getting-started/w3cli.md) to get an overview. 
+If you haven't had a chance to check out the `w3` tool yet, see our [intro to using w3up from the command line](../../getting-started/w3cli.md) to get an overview.
 
 To get started, make sure you have [Node.js](https://nodejs.org/en/) version 16 or greater installed on your computer. Then enter the following command at a terminal:
 
@@ -193,7 +192,7 @@ Let's go through the process step-by-step.
 
 In the first terminal window, use the `w3 space create` command to create a new space:
 
-```bash
+```shell
 w3 space create SharedSpace
 ```
 
@@ -207,7 +206,7 @@ Before we can make requests to the w3up service, we need to register our new spa
 
 In the first terminal window, run the following command, filling in your own email address:
 
-```
+```shell
 w3 space register your-email@your-provider.net
 ```
 
@@ -225,7 +224,7 @@ echo "Hello, web3!" > hello.txt
 
 Now you can use `w3 up hello.txt` to upload the file. You should see something like this:
 
-```
+```shell
   1 file (12B)
   bagbaieraspawtgooy5lptr7loyd3fxjsrgkamre3y6au3ga4df5bkhrxdkmq
 ⁂ Stored 1 file
@@ -235,7 +234,7 @@ Now you can use `w3 up hello.txt` to upload the file. You should see something l
 
 Running `w3up list` should now show the CID of your upload:
 
-```
+```shell
 bafybeidwm2gfdrx2yjnzdqnw7n3a2er2vo5uwv6w5otjfbyboeoq3jfiby
 ```
 
@@ -245,7 +244,7 @@ You can also use the HTTP gateway at `w3s.link` to quickly fetch the content and
 
 Switch over to your second terminal window with the `W3_STORE_NAME` variable set and run the `w3 whoami` command. You should see a string starting with `did:key:`. Copy that string to your clipboard for the next step.
 
-##### 5. Delegate access to the new Agent DID
+### 5. Delegate access to the new Agent DID
 
 Run the `w3 delegation create` command, passing in the DID for the second agent. The `-o` flag tells the `w3` command to write the delegation to a file named `delegation.car`:
 
@@ -255,9 +254,9 @@ w3 delegation create -o delegation.car SECOND_AGENT_DID
 
 Be sure to replace `SECOND_AGENT_DID` in the example command with the DID for the second agent that you copied in step 4.
 
-This will create a file called `delegation.car` in your current directory. 
+This will create a file called `delegation.car` in your current directory.
 
-##### 6. Add the delegated space to the second agent
+### 6. Add the delegated space to the second agent
 
 Next, import this delegation to our second agent.
 
@@ -277,7 +276,7 @@ w3 space use SPACE_DID
 
 Replace `SPACE_DID` with the space DID you just copied. If you run `w3 space ls` again, you should see a `*` symbol next to the space, indicating that it's currently active.
 
-##### 7. Upload to the space from the second agent
+### 7. Upload to the space from the second agent
 
 Now that your second agent has access to the space created by the first, you can use `w3 up` in your second terminal window to upload whatever you like.
 
@@ -290,5 +289,7 @@ UCAN delegation is a powerful tool for managing access to your w3up resources. H
 Thanks for following along, and feel free to [get in touch](https://web3.storage/docs/community/help-and-support/) if you have any questions!
 
 [reference-client#createdelegation]: ../../api/w3up-client/classes/client.Client.md#createdelegation
+
 [reference-client#addproof]: ../../api/w3up-client/classes/client.Client.md#addproof
+
 [reference-client#addspace]: ../../api/w3up-client/classes/client.Client.md#addspace

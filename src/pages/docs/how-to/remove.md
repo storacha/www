@@ -23,7 +23,7 @@ Fortunately, this shouldn't make things any more complicated - we go into more d
 
 However, if you are a power user interacting with shard CIDs as well (e.g., using the client's `capability.store.*` or CLI's `w3 can store *` methods), then you need to be more cautious about removing shard CIDs from your account. (This is why the default for the client and CLI methods is for shards to be maintained after removing a content CID). You can read more about why you might want to interact with shard CIDs directly and the implications in the Upload vs. Store section.
 
-## Using the client or CLI
+## Using the client or CLI
 
 If you followed the Upload section, you should already have your client or CLI set up with an Agent for your Space. From there, to remove a content CID from your account, you'll generally be using:
 
@@ -90,4 +90,3 @@ To remove shard CIDs and upload CIDs separately, you'll generally do this by:
   - Remove the shard CIDs that you'd like to
     - For each shard CID, ensure no other uploaded content CIDs share the same shard (otherwise, the other content CIDs will no longer be fetchable)
     - Remove the shard CIDs one-by-one using `w3 can store rm <shardCID>`
-
