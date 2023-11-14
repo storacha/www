@@ -44,8 +44,8 @@ function Footer () {
           <h2 className='font-semibold pb-2 pt-16 md:pt-0'>Resources</h2>
           <nav>
             <a className='block py-2 hover:text-blue-400' href="/docs/quickstart">Quickstart guide</a>
-            <a className='block py-2 hover:text-blue-400' href="/faq">FAQ</a>
-            <a className='block py-2 hover:text-blue-400' href="/contact">Contact us</a>
+            <a className='block py-2 hover:text-blue-400' href="/docs/faq">FAQ</a>
+            <a className='block py-2 hover:text-blue-400' href="mailto:support@web3.storage">Contact us</a>
             <a className='block py-2 hover:text-blue-400' href="/docs/terms">Terms of use</a>
             <a className='block py-2 hover:text-blue-400' href="/docs/privacy">Privacy Policy</a>
             <a className='block py-2 hover:text-blue-400' href="https://status.web3.storage/">Status</a>
