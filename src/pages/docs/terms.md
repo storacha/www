@@ -20,7 +20,7 @@ All data uploaded to web3.storage is available to anyone who requests it using t
 
 ## Paid Accounts
 
-### Billing.
+### Billing
 
 In order to begin storing files via the Services, you will need to provide us with one or more Payment Methods. "Payment Method" means a current, valid method of payment, which may involve a third party or payment processing vendor. You can increase your storage limit and add paid features to your account by signing up for a paid subscription plan (“Paid Plan”).
 
@@ -30,23 +30,23 @@ When determining tier storage limits and Overages, we track usage for payment us
 
 You authorize us to charge any Payment Method associated with your account in case your primary Payment Method is declined or no longer available to us for payment of Fees you owe us. You remain responsible for any uncollected Fees. If a payment is not successfully settled, due to expiration, insufficient funds, or otherwise, and you do not cancel your account, we may suspend your access to the Paid Plan until we have successfully charged a valid Payment Method. For some Payment Methods, the issuer may charge you additional fees, such as foreign transaction fees or other fees relating to the processing of your Payment Method.
 
-### Cancellation.
+### Cancellation
 
 You can cancel your Paid Plan at any time, and you will be able to upload new Data to web3.storage through the end of your billing period. Payments are nonrefundable and there are no refunds or credits for partially used membership periods. After cancellation, data uploaded via a Paid Plan may not be available through our hosted IPFS infrastructure after the end of your billing period.
 
-### Plan Adjustments.
+### Plan Adjustments
 
 You may change your chosen tier at any point. You will be charged for the tier you’re subscribed to at the time of billing (plus any Overages for stored content over that tier’s limit). By selecting your tier, you consent to the limits associated with your chosen tier (as set forth in https://web3.storage/account/payment/); you also consent to the Overages described in this Agreement.
 
-### Changes.
+### Changes
 
 We reserve the right to change our Paid Plans or adjust pricing for our service or any components thereof in any manner and at any time, in our sole discretion and without notice. If we adjust the pricing of your Paid Plan, we will provide you with at least fourteen (14) days’ notice before these changes take effect. By continuing to use the Services, you agree to terms of this Agreement (including any updated terms).
 
-### Taxes.
+### Taxes
 
 The Fees do not include any taxes, levies, duties, or similar governmental assessments, including value-added, sales, use, or withholding taxes assessable by any domestic or foreign jurisdiction (“Taxes”). You agree that you’re responsible for any applicable Taxes, and that you will provide us with any applicable tax identification information that we may require by law to ensure our compliance with applicable tax regulations and authorities in applicable jurisdictions.
 
-### Overages.
+### Overages
 
 You agree to pay the following Overages fees for storage amounts exceeding your selected tier (for more information on tiers, see https://web3.storage/account/payment/). Overages will be billed to you at the beginning of your next billing cycle.
 
@@ -54,7 +54,7 @@ You agree to pay the following Overages fees for storage amounts exceeding your 
 
 You are entirely responsible for all data you upload or cause to be uploaded using the Services (“Content”) - and you’re also responsible for any harm resulting from that Content. For your own protection and the protection of our network & community, you may not use the Services for activities such as:
 
-### Scams, Spam, and Server Misuse:
+### Scams, Spam, and Server Misuse
 
 Posting or distributing Content that contains any viruses, malware, worms, Trojan horses, malicious code, or other harmful or destructive Content;
 Tricking users into revealing sensitive information to an unauthorized party (e.g., phishing) or misleading users as to the source of Content (e.g., spoofing);
@@ -63,13 +63,13 @@ Posting or distributing spam, including Content advertised via unwanted electron
 Unethical or unwanted commercial Content designed to drive traffic to third party sites or boost the search engine rankings of third party sites;
 Interfering with or disrupting the Services, or creating an undue burden on the Services or the networks or services connected to the Services, including (a) activity impacting the service level of other web3.storage users or (b) via a distributed denial of service attack.
 
-### Infringement of Others’ Rights:
+### Infringement of Others’ Rights
 
 Infringing the proprietary rights, including but not limited to the copyright, patent, trademark or trade secret rights, of any third party;
 Failing to comply with any third-party licenses relating to Content or failing to complete all necessary steps to pass any required license terms to end users;
 Violating the privacy or publicity rights of any third party.
 
-#### Other Restricted Purposes:
+#### Other Restricted Purposes
 
 Using the Services for solicitation of unlawful services or posting obscene material that is unlawful under applicable law;
 Inciting violence or threatening others, directly or indirectly;
