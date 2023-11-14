@@ -35,7 +35,7 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
 function Banner () {
   return (
     <div className='bg-zinc-950 text-white text-sm text-center p-3'>
-      Looking for the <strong>old</strong> web3.storage? Read more <a className='underline' href='https://blog.web3.storage'>about our changes</a> or <a className='underline' href='https://old.web3.storage'>log in</a> to the old web3.storage.
+      Looking for the <strong>old</strong> web3.storage? Read more <a className='underline' href='https://blog.web3.storage/posts/the-data-layer-is-here-with-the-new-web3-storage'>about our changes</a> or <a className='underline' href='https://old.web3.storage'>log in</a> to the old web3.storage.
     </div>
   )
 }
