@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/web3-storage/www/compare/www-v1.0.0...www-v1.0.1) (2023-11-14)
+
+
+### Bug Fixes
+
+* link banner to blogpost instead of root blog ([#20](https://github.com/web3-storage/www/issues/20)) ([c29300e](https://github.com/web3-storage/www/commit/c29300e1a7c2443a87eed38b388029e0b7a3e061))
+
 ## 1.0.0 (2023-11-14)
 
 
