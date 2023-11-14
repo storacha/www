@@ -43,11 +43,11 @@ function Footer () {
         <div className='md:w-1/4'>
           <h2 className='font-semibold pb-2 pt-16 md:pt-0'>Resources</h2>
           <nav>
-            <a className='block py-2 hover:text-blue-400' href="/quickstart">Quickstart guide</a>
+            <a className='block py-2 hover:text-blue-400' href="/docs/quickstart">Quickstart guide</a>
             <a className='block py-2 hover:text-blue-400' href="/faq">FAQ</a>
             <a className='block py-2 hover:text-blue-400' href="/contact">Contact us</a>
-            <a className='block py-2 hover:text-blue-400' href="/terms">Terms of use</a>
-            <a className='block py-2 hover:text-blue-400' href="/privacy">Privacy Policy</a>
+            <a className='block py-2 hover:text-blue-400' href="/docs/terms">Terms of use</a>
+            <a className='block py-2 hover:text-blue-400' href="/docs/privacy">Privacy Policy</a>
             <a className='block py-2 hover:text-blue-400' href="https://status.web3.storage/">Status</a>
           </nav>
         </div>
@@ -55,7 +55,7 @@ function Footer () {
           <h2 className='font-semibold pb-2 pt-8 md:pt-0'>Get started</h2>
           <nav>
             <a className='block py-2 hover:text-blue-400' href="https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#readme">Javascript client</a>
-            <a className='block py-2 hover:text-blue-400' href="/faq">CLI</a>
+            <a className='block py-2 hover:text-blue-400' href="/docs/w3cli">CLI</a>
             <a className='block py-2 hover:text-blue-400' href="https://console.web3.storage">Web UI</a>
             <a className='block py-2 hover:text-blue-400' href="https://github.com/web3-storage/web3.storage/issues/new/choose">Open an issue</a>
           </nav>
