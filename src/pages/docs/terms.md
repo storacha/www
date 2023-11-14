@@ -24,7 +24,7 @@ All data uploaded to web3.storage is available to anyone who requests it using t
 
 In order to begin storing files via the Services, you will need to provide us with one or more Payment Methods. "Payment Method" means a current, valid method of payment, which may involve a third party or payment processing vendor. You can increase your storage limit and add paid features to your account by signing up for a paid subscription plan (“Paid Plan”).
 
-You agree that you’ll pay the amounts set forth in https://web3.storage/account/payment/ for your chosen tier (“Subscription Charge”) plus any charges for additional usage beyond the storage limit of your selected tier during the previous month (“Overages”) (collectively, “Subscription Charge” and “Overages” are referred to as (the “Fees”) for each billing cycle).
+You agree that you’ll pay the amounts set forth in https://web3.storage/pricing/ for your chosen tier (“Subscription Charge”) plus any charges for additional usage beyond the storage limit of your selected tier during the previous month (“Overages”) (collectively, “Subscription Charge” and “Overages” are referred to as (the “Fees”) for each billing cycle).
 
 When determining tier storage limits and Overages, we track usage for payment using the volume of data associated with shard content identifiers/CIDs (CIDs referencing the actual data sent to web3.storage and stored) – usage is not tracked based on content CIDs (CIDs used to reference and access uploads in a format useful to users, like specific files and directories).
 
@@ -36,7 +36,7 @@ You can cancel your Paid Plan at any time, and you will be able to upload new Da
 
 ### Plan Adjustments
 
-You may change your chosen tier at any point. You will be charged for the tier you’re subscribed to at the time of billing (plus any Overages for stored content over that tier’s limit). By selecting your tier, you consent to the limits associated with your chosen tier (as set forth in https://web3.storage/account/payment/); you also consent to the Overages described in this Agreement.
+You may change your chosen tier at any point. You will be charged for the tier you’re subscribed to at the time of billing (plus any Overages for stored content over that tier’s limit). By selecting your tier, you consent to the limits associated with your chosen tier (as set forth in https://web3.storage/pricing/); you also consent to the Overages described in this Agreement.
 
 ### Changes
 
@@ -48,7 +48,7 @@ The Fees do not include any taxes, levies, duties, or similar governmental asses
 
 ### Overages
 
-You agree to pay the following Overages fees for storage amounts exceeding your selected tier (for more information on tiers, see https://web3.storage/account/payment/). Overages will be billed to you at the beginning of your next billing cycle.
+You agree to pay the following Overages fees for storage amounts exceeding your selected tier (for more information on tiers, see https://web3.storage/pricing/). Overages will be billed to you at the beginning of your next billing cycle.
 
 ## Acceptable Use
 
