@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/web3-storage/www/compare/www-v1.0.4...www-v1.1.0) (2023-11-14)
+
+
+### Features
+
+* update prod dnslink for _dnslink.web3.storage on release ([#30](https://github.com/web3-storage/www/issues/30)) ([075fbfe](https://github.com/web3-storage/www/commit/075fbfebc4eca78e385edffa8a5a69b574c5d52e))
+
 ## [1.0.4](https://github.com/web3-storage/www/compare/www-v1.0.3...www-v1.0.4) (2023-11-14)
 
 
