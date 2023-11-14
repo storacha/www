@@ -10,7 +10,7 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 1.3 Upload Size Limit. Individual uploads to the Upload Service may have a size limit per API call, as described in the API documentation available at <https://web3.storage/docs/reference/http-api/>.
 
-1.4 Tier-Based Size Limit. Individual uploads are subject to size limits based on Customer’s chosen pricing tier as described in the Pricing page available at <https://web3.storage/account/payment/>.
+1.4 Tier-Based Size Limit. Individual uploads are subject to size limits based on Customer’s chosen pricing tier as described in the Pricing page available at <https://web3.storage/pricing/>.
 
 ## 2. Definitions.
 
