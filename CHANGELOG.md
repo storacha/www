@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/web3-storage/www/compare/www-v1.0.1...www-v1.0.2) (2023-11-14)
+
+
+### Bug Fixes
+
+* footer privacy link ([#23](https://github.com/web3-storage/www/issues/23)) ([3e0db83](https://github.com/web3-storage/www/commit/3e0db83b62113901a565820d891bb7ad671937f1))
+
 ## [1.0.1](https://github.com/web3-storage/www/compare/www-v1.0.0...www-v1.0.1) (2023-11-14)
 
 
