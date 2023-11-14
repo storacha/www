@@ -3,9 +3,9 @@ import { DocsLogo } from './components/brand'
 const config = {
   logo: <DocsLogo>web3.storage/<span className='font-bold'>docs</span></DocsLogo>,
   project: {
-    link: 'https://github.com/web3.storage/w3up'
+    link: 'https://github.com/web3-storage/w3up'
   },
-  docsRepositoryBase: 'https://github.com/web3.storage/docs',
+  docsRepositoryBase: 'https://github.com/web3-storage/www/tree/main',
   useNextSeoProps() {
     return {
       titleTemplate: '%s ⁂ web3.storage'
