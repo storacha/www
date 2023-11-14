@@ -6,6 +6,7 @@
   "how-to": "How to",
   "concepts": "Concepts",
   "specs": {
+    "newWindow": true,
     "title": "Specs",
     "href": "https://github.com/web3-storage/specs"
   }
