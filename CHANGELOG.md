@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/web3-storage/www/compare/www-v1.0.3...www-v1.0.4) (2023-11-14)
+
+
+### Bug Fixes
+
+* button links ([#28](https://github.com/web3-storage/www/issues/28)) ([d2581bb](https://github.com/web3-storage/www/commit/d2581bb48adbb7929894a841839c5164c9395317))
+
 ## [1.0.3](https://github.com/web3-storage/www/compare/www-v1.0.2...www-v1.0.3) (2023-11-14)
 
 
