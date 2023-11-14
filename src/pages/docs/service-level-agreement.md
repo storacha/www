@@ -8,7 +8,7 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 1.2 Penalties. If any of the Services fails to meet the above service level, the Customer will receive a Service Discount on their next monthly bill, as further described in Section 6 of this SLA.
 
-1.3 Upload Size Limit. Individual uploads to the Upload Service may have a size limit per API call, as described in the API documentation available at <https://web3.storage/docs/reference/http-api/>.
+1.3 Upload Size Limit. Individual uploads to the Upload Service may encounter issues if they are over 750GB.
 
 1.4 Tier-Based Size Limit. Individual uploads are subject to size limits based on Customer’s chosen pricing tier as described in the Pricing page available at <https://web3.storage/pricing/>.
 
@@ -32,7 +32,7 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 2.9 "Services" means, collectively, the Upload Service and the Read Service.
 
-2.10 “Upload Service” refers to uploads through the HTTP API for file types and sizes supported by the API, as defined by the API docs available at <https://web3.storage/docs/reference/http-api/>.
+2.10 “Upload Service” refers to uploads through the website, client, and CLI for supported file types and sizes as defined by the docs available at https://web3.storage/docs/.
 
 2.11 “Read Service” refers to reading successfully uploaded data, using its CID, over [w3link](https://web3.storage/products/w3link/) or via Bitswap using IPFS nodes peered with web3.storage nodes.
 
