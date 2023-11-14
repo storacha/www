@@ -9,7 +9,7 @@ You first need to create and register a Space you'll upload to. A Space acts as 
 The easiest way to create and register a Space is by using the CLI
 
 1. Install the CLI from npm using your command line: `npm install -g @web3-storage/w3cli`
-2. Run `w3 authorize [alice@example.com](mailto:alice@example.com)` in the command line using your email address. This will send an email to your inbox with a link for validation.
+2. Run `w3 login [alice@example.com](mailto:alice@example.com)` in the command line using your email address. This will send an email to your inbox with a link for validation.
 3. Once you click on the validation link, you'll be taken to a webpage where you can enter your payment information and select a plan (like our Free tier).
 4. Create a new Space for storing your data and register it:
    w3 space create
