@@ -102,6 +102,18 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm
       - run: pnpm build
+      - name: Add to web3.storage
+        uses: web3-storage/add-to-web3@v2
+        id: ipfs
+        with:
+          path_to_add: ${{ env.outputDir }}
+          web3_token: ${{ secrets.WEB3_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update IPFS DNSLink https://web3.storage
+        run: npx dnslink-cloudflare --record _dnslink --domain web3.storage --link /ipfs/${{ steps.ipfs.outputs.cid }}
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_TOKEN }}
       - name: Deploy preview build to Cloudflare Pages
         uses: mathiasvr/command-output@v1.1.0
         id: cloudflare
