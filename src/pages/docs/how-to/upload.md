@@ -19,8 +19,8 @@ In the previous section, you created a Space that has a unique DID. To use the c
 If you followed the Create account and Space section, you will already have the CLI set up with a Space. However, you might be using the CLI on a new machine, in which case you can follow these instructions:
 
 1. (If not yet installed) Install the CLI from npm using your command line: `npm install -g @web3-storage/w3cli`.
-2. Run `w3 authorize [alice@example.com](mailto:alice@example.com)` in the command line using your email address. Click on the validation link sent to your email.
-3. After successfully running `authorize`, your CLI Agent has been delegated access to all Spaces associated with your email address. You can see a list of these Spaces using `w3 space ls` and select the one you'd like to upload to using `w3 space use \<space_did\>`.
+2. Run `w3 login [alice@example.com](mailto:alice@example.com)` in the command line using your email address. Click on the validation link sent to your email.
+3. After successfully running `login`, your CLI Agent has been delegated access to all Spaces associated with your email address. You can see a list of these Spaces using `w3 space ls` and select the one you'd like to upload to using `w3 space use \<space_did\>`.
 
 When the right Space is selected, you are ready to upload! You can do so by running `w3 up \<path\>`.
 
@@ -76,13 +76,13 @@ const client = await create()
 
 By default, clients will create a new [Agent](https://web3-storage.github.io/w3protocol/classes/_web3_storage_access.Agent.html) and put it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client) if it can't find an existing one to load (so the next time the client is initialized on the same device, it will use the same Agent).
 
-Then you can authorize your Agent with your email address. Calling authorize will cause an email to be sent to the given address.
+Then you can login your Agent with your email address. Calling login will cause an email to be sent to the given address.
 
 ```javascript
-await client.authorize('zaphod@beeblebrox.galaxy')
+await client.login('zaphod@beeblebrox.galaxy')
 ```
 
-Once a user clicks the confirmation link in the email, the authorize method will resolve. Make sure to check for errors, as authorize will fail if the email is not confirmed within the expiration timeout. Authorization needs to happen only once per agent. This also claims all delegations available with your email address, so from there, you can select the Space you'd like to use.
+Once a user clicks the confirmation link in the email, the login method will resolve. Make sure to check for errors, as login will fail if the email is not confirmed within the expiration timeout. Authorization needs to happen only once per agent. This also claims all delegations available with your email address, so from there, you can select the Space you'd like to use.
 
 ```javascript
 await client.setCurrentSpace(space.did()) # select the relevant Space DID that is associated with your account
