@@ -86,4 +86,4 @@ Replace `<YOUR CID>`, `<FILE NAME>`, and `<OUTPUT FILE>` with their respective v
 
 ## Next steps
 
-Next, you'll learn about how to [list](https://web3.storage/docs/how-to/list/)
+Next, you'll learn about how to [list](/docs/how-to/list/)
