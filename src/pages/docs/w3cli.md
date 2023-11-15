@@ -44,7 +44,7 @@ The DID for the new space will be printed to the console. It should look somethi
 did:key:z6MkixXechJLc3TWibQj9RN6AiFx8VoMY9HNB3Y97WcwK3fm
 ```
 
-You can now run `w3 spaces ls` to show a list of your spaces:
+You can now run `w3 space ls` to show a list of your spaces:
 
 ```bash
 * did:key:z6MkixXechJLc3TWibQj9RN6AiFx8VoMY9HNB3Y97WcwK3fm Documents

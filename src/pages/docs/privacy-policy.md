@@ -4,12 +4,12 @@
 
 This Privacy Policy governs all use of the web3.storage website (“web3.storage” or the “Website”), the w3link/w3s.link gateway (“Gateway”) and all content, services and products available at or through the Website or Gateway (collectively, “Services”).
 
-The Services are offered subject to your acceptance without modification of all the terms and conditions herein, and all other other operating rules, policies (including, without limitation, our [Terms of Service](/terms/) and procedures that may be updated from time to time.  By accessing or using any part of our Services you agree to be bound by the terms and conditions of the Privacy Policy.  If you do not agree to all of the terms and conditions of this Privacy Policy, then you may not access our Services.
+The Services are offered subject to your acceptance without modification of all the terms and conditions herein, and all other other operating rules, policies (including, without limitation, our [Terms of Service](/docs/terms/) and procedures that may be updated from time to time.  By accessing or using any part of our Services you agree to be bound by the terms and conditions of the Privacy Policy.  If you do not agree to all of the terms and conditions of this Privacy Policy, then you may not access our Services.
 
 We keep your personal information personal and private. We will not sell or rent your personal information to anyone. We will not share or otherwise disclose your personal information except as necessary to provide our Services or as otherwise described in this Privacy Policy without first providing you with notice and the opportunity to consent.
 By accessing or using any part of our Services, including the Websites, you agree to be bound by the terms and conditions of the Privacy Policy.  If you do not agree to all of the terms and conditions of this Privacy Policy, then you may not access our Services.
 
-The Services are offered subject to your acceptance without modification of all the terms and conditions herein, and all other other operating rules, policies (including, without limitation, our [Terms of Service](/terms/) and procedures that may be updated from time to time by Nitro Data LLC (collectively, the “Agreement”).
+The Services are offered subject to your acceptance without modification of all the terms and conditions herein, and all other other operating rules, policies (including, without limitation, our [Terms of Service](/docs/terms/) and procedures that may be updated from time to time by Nitro Data LLC (collectively, the “Agreement”).
 
 ### Who Do We Collect Information From?
 

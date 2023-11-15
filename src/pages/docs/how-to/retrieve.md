@@ -5,9 +5,9 @@ In this how-to guide, you'll learn several methods for retrieving data from web3
 All data stored using web3.storage is made available for retrieval via [IPFS](https://ipfs.io/), the InterPlanetary File System. IPFS is a distributed, peer-to-peer network for storing and sharing content-addressed data. This guide shows you several ways to retrieve your data from IPFS:
 
 - In your browser using an [HTTP gateway](/docs/how-to/retrieve/#using-an-ipfs-http-gateway).
-- Using the Saturn dCDN.
-- In your terminal using the [IPFS command-line tools](/docs/how-to/retrieve/#using-the-ipfs-command).
-- In your terminal using [curl](/docs/how-to/retrieve/#using-curl).
+- Using the [Saturn dCDN](https://saturn.tech/).
+- In your terminal using the [IPFS command-line tools](/docs/how-to/retrieve/#using-the-ipfs-command-line).
+- In your terminal using [curl or Powershell](/docs/how-to/retrieve/#using-curl-or-powershell).
 
 When retrieving any data, you'll be using the content CID of the upload (prefixed by `bafy…`).
 
@@ -15,7 +15,7 @@ When retrieving any data, you'll be using the content CID of the upload (prefixe
 
 You can easily fetch any data stored using web3.storage using an IPFS HTTP gateway. Because IPFS is a peer-to-peer, decentralized network, you can use any public HTTP gateway to fetch your data. In this guide, we'll use the gateway at w3s.link (which is optimized for data stored with web3.storage), but you can see more worldwide gateways on the [IPFS Public Gateway Checker](https://ipfs.github.io/public-gateway-checker/).
 
-You can use an IPFS gateway to view a list of all the files in that directory from your browser. To do so, simply create a gateway URL. For example, if your CID is bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu, you can make a URL for the w3s.link gateway as follows: `https://bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu.ipfs.w3s.link/`. Follow that link, and you'll see a page similar to this:
+You can use an IPFS gateway to view a list of all the files in that directory from your browser. To do so, simply create a gateway URL. For example, if your CID is `bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu`, you can make a URL for the w3s.link gateway as follows: `https://bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu.ipfs.w3s.link/`. Follow that link, and you'll see a page similar to this:
 
 If you want to link directly to a file within that directory, just add the file path after the CID portion of the link. For example: [bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu.ipfs.w3s.link/not-distributed.jpg](https://bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu.ipfs.w3s.link/not-distributed.jpg) could be used as a shareable link for your new favorite wallpaper.
 
@@ -29,7 +29,7 @@ When downloading files from an HTTP gateway, web browsers will set the default f
 
 <https://bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq.ipfs.w3s.link/treehouse.jpeg>
 
-In the link above, the CID bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq points to an IPFS directory listing, which maps from the filename treehouse.jpeg to the CID for the image itself.
+In the link above, the CID `bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq` points to an IPFS directory listing, which maps from the filename treehouse.jpeg to the CID for the image itself.
 
 Since the web3.storage client wraps your uploaded files in a directory by default, this is the most common kind of gateway link you're likely to need, and your users should get nice filenames when they download their content.
 
@@ -42,7 +42,7 @@ Both of the URLs above link directly to the CID of the image, without an associa
 
 Depending on which style of link you use, your browser will prompt you to save a file with a generic name like download, or with the CID as the filename.
 
-If you have such a link, you can override the default filename by adding a query string parameter to your link of the form ?filename=\<desired-filename>. For example, the following link will save as treehouse.jpeg, even though it links directly to the image by CID:
+If you have such a link, you can override the default filename by adding a query string parameter to your link of the form `?filename=<desired-filename>`. For example, the following link will save as treehouse.jpeg, even though it links directly to the image by CID:
 
 <https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/?filename=treehouse.jpeg>
 

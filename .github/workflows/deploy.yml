@@ -12,17 +12,15 @@ env:
   outputDir: out
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   preview:
     name: Preview
-    needs:
-      - test
+    if: (github.ref != 'refs/heads/main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm
+      - run: pnpm lint
+      - run: pnpm test
       - run: pnpm build
       - name: Add to web3.storage
         uses: web3-storage/add-to-web3@v2
@@ -32,11 +30,6 @@ jobs:
           web3_token: ${{ secrets.WEB3_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update IPFS DNSLink https://staging.web3.storage
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: npx dnslink-cloudflare --record staging --domain web3.storage --link /ipfs/${{ steps.ipfs.outputs.cid }}
-        env:
-          CF_API_TOKEN: ${{ secrets.CF_TOKEN }}
       - name: Deploy preview build to Cloudflare Pages
         uses: mathiasvr/command-output@v1.1.0
         id: cloudflare
@@ -59,7 +52,7 @@ jobs:
           number: ${{ steps.finder.outputs.pr }}
           message: |
             ### Website preview 🔗✨
-            - 🙂 https://w3s.link/ipfs/${{ steps.ipfs.outputs.cid }}
+            - 🙂 https://${{ steps.ipfs.outputs.cid }}.ipfs.w3s.link
             - ⛅️ ${{ steps.cloudflare_url.outputs.stdout }}
 
             [build log](/${{ github.repository }}/actions/runs/${{ github.run_id }})
@@ -67,40 +60,22 @@ jobs:
         run: |
           echo "
           ### Website preview 🔗✨
-            - 🙂 https://w3s.link/ipfs/${{ steps.ipfs.outputs.cid }}
-            - ⛅️ ${{ steps.cloudflare_url.outputs.stdout }}
-
-            [build log](/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-
-  changelog:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    name: Changelog
-    runs-on: ubuntu-latest
-    outputs:
-      releases_created: ${{ steps.tag-release.outputs.releases_created }}
-    steps:
-      - uses: GoogleCloudPlatform/release-please-action@v3
-        id: tag-release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: node
-          monorepo-tags: true
-          changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Other Changes","hidden":false}]'
+          - 🙂 https://${{ steps.ipfs.outputs.cid }}.ipfs.w3s.link
+          - ⛅️ ${{ steps.cloudflare_url.outputs.stdout }}
+          " >> $GITHUB_STEP_SUMMARY
 
   release:
     name: Release
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changelog.outputs.releases_created) || inputs.force_release
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     environment:
       name: production
       url: https://web3.storage
-    needs:
-      - test
-      - preview
-      - changelog
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm
+      - run: pnpm lint
+      - run: pnpm test
       - run: pnpm build
       - name: Add to web3.storage
         uses: web3-storage/add-to-web3@v2
@@ -122,3 +97,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      - name: Add Preview URLs as Job Summary
+        run: |
+          echo "
+          ### Deployed
+          ⁂ https://web3.storage
+
+          ### Snapshot urls 🔗✨
+            - 🙂 https://${{ steps.ipfs.outputs.cid }}.ipfs.w3s.link
+            - ⛅️ ${{ steps.cloudflare_url.outputs.stdout }}
+          " >> $GITHUB_STEP_SUMMARY
