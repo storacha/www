@@ -1,6 +1,6 @@
 # How to list files uploaded to web3.storage
 
-In this how-to guide, you'll learn about the different ways that you can list the files that you've uploaded to web3.storage. Once you've [stored some files](https://web3.storage/docs/how-tos/store/) using web3.storage, you'll want to see a list of what you've uplodaded. There are two ways you can do this:
+In this how-to guide, you'll learn about the different ways that you can list the files that you've uploaded to web3.storage. Once you've [stored some files](https://web3.storage/docs/how-to/store/) using web3.storage, you'll want to see a list of what you've uplodaded. There are two ways you can do this:
 
 - Programmatically using the web3.storage client or CLI
 - Using the web3.storage console
