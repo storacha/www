@@ -18,8 +18,6 @@ jobs:
   preview:
     name: Preview
     if: (github.ref != 'refs/heads/main')
-    needs:
-      - test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -55,7 +53,7 @@ jobs:
           number: ${{ steps.finder.outputs.pr }}
           message: |
             ### Website preview 🔗✨
-            - 🙂 https://w3s.link/ipfs/${{ steps.ipfs.outputs.cid }}
+            - 🙂 https://${{ steps.ipfs.outputs.cid }}.ipfs.w3s.link
             - ⛅️ ${{ steps.cloudflare_url.outputs.stdout }}
 
             [build log](/${{ github.repository }}/actions/runs/${{ github.run_id }})
@@ -63,8 +61,8 @@ jobs:
         run: |
           echo "
           ### Website preview 🔗✨
-            - 🙂 https://${{ steps.ipfs.outputs.cid }}.ipfs.w3s.link
-            - ⛅️ ${{ steps.cloudflare_url.outputs.stdout }}
+          - 🙂 https://${{ steps.ipfs.outputs.cid }}.ipfs.w3s.link
+          - ⛅️ ${{ steps.cloudflare_url.outputs.stdout }}
           " >> $GITHUB_STEP_SUMMARY
 
   release:
@@ -74,8 +72,6 @@ jobs:
     environment:
       name: production
       url: https://web3.storage
-    needs:
-      - test
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm
