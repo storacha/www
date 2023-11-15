@@ -12,9 +12,6 @@ env:
   outputDir: out
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   preview:
     name: Preview
     if: (github.ref != 'refs/heads/main')
@@ -22,6 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm
+      - run: pnpm lint
+      - run: pnpm test
       - run: pnpm build
       - name: Add to web3.storage
         uses: web3-storage/add-to-web3@v2
@@ -75,6 +74,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm
+      - run: pnpm lint
+      - run: pnpm test
       - run: pnpm build
       - name: Add to web3.storage
         uses: web3-storage/add-to-web3@v2
