@@ -42,7 +42,7 @@ Both of the URLs above link directly to the CID of the image, without an associa
 
 Depending on which style of link you use, your browser will prompt you to save a file with a generic name like download, or with the CID as the filename.
 
-If you have such a link, you can override the default filename by adding a query string parameter to your link of the form `?filename=\<desired-filename>`. For example, the following link will save as treehouse.jpeg, even though it links directly to the image by CID:
+If you have such a link, you can override the default filename by adding a query string parameter to your link of the form `?filename=<desired-filename>`. For example, the following link will save as treehouse.jpeg, even though it links directly to the image by CID:
 
 <https://bafkreifvallbyfxnedeseuvkkswt5u3hbdb2fexcygbyjqy5a5rzmhrzei.ipfs.w3s.link/?filename=treehouse.jpeg>
 
