@@ -360,6 +360,4 @@ function makeFileObjects () {
 
 ## Next steps
 
-Learn more about how to fetch your data using the CID in the next section, Retrieve.
-
-<https://web3.storage/docs/how-tos/retrieve/>
+Learn more about how to fetch your data using the CID in the next section, [retrieve](/docs/how-to/retrieve/).

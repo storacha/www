@@ -9,5 +9,3 @@ Because of the open nature of the Filecoin network allowing anyone to participat
 The great thing about IPFS is that, regardless of where your data is sitting (on web3.storage's dedicated servers, Filecoin, on your local IPFS node, or anywhere else), you access your data the same way - using the data's content address - and allows you to tune how many copies you have if you'd like, which has tradeoffs in terms of cost, availability, and read performance!
 
 When storing data on Filecoin, you enter storage "deals" that have a finite duration. web3.storage service currently renews deals for you to ensure your data deals never expire.
-
-<https://web3.storage/docs/concepts/w3link/>

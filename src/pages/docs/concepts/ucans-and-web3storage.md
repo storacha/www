@@ -1,6 +1,6 @@
 # UCANs and web3.storage
 
-For authorization, w3up services use [ucanto](https://github.com/web3-storage/ucanto), a Remote Procedure Call (RPC) framework built around [UCAN](https://ucan.xzy/), or User Controlled Authorization Networks. UCANs are a powerful capability-based authorization system that allows fine-grained sharing of permissions through a process called _delegation_ on top of [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
+For authorization, w3up services use [ucanto](https://github.com/web3-storage/ucanto), a Remote Procedure Call (RPC) framework built around [UCAN](https://ucan.xyz/), or User Controlled Authorization Networks. UCANs are a powerful capability-based authorization system that allows fine-grained sharing of permissions through a process called _delegation_ on top of [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
 
 You can think about UCAN replacing bearer tokens in traditional APIs for authorization with w3up. Since any actor can be represented by a cryptographic keypair and permissions can be delegated to them, users can interact with w3up directly in cases where a developer might have needed to previously run additional back-end infrastructure to keep API keys secure. This can be extended even to have end users using applications integrated with w3up using their own keypair-based identity.
 
