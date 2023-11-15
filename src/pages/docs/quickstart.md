@@ -31,7 +31,7 @@ npm install -g @web3-storage/w3cli
 You need to create a web3.storage account associated with an email address and set it up so you can start uploading to a Space. The Space is created locally and associated with a private key, and is then registered with web3.storage and associated with your email address. But don't worry about keeping track of the Space's private key! web3.storage's email authorization system allows this private key to be treated as a throwaway key.
 
 1. Run `w3 login alice@example.com` in the command line using your email address. This will sent an email to your inbox with a link for validation.
-2. Once you click on the validation link, you'll be taken to a webpage where you can select a plan (like our Free tier).
+2. Once you click on the validation link, you'll be taken to a webpage where you can select a plan (like our Starter tier).
 3. Create a new Space for storing your data and register it:
 
 ```sh
