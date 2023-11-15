@@ -6,8 +6,8 @@ All data stored using web3.storage is made available for retrieval via [IPFS](ht
 
 - In your browser using an [HTTP gateway](https://web3.storage/docs/how-to/retrieve/#using-an-ipfs-http-gateway).
 - Using the Saturn dCDN.
-- In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-to/retrieve/#using-the-ipfs-command-line).
-- In your terminal using [curl or Powershell](https://web3.storage/docs/how-to/retrieve/#using-curl-or-powershell).
+- In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-to/retrieve/#using-the-ipfs-command).
+- In your terminal using [curl](https://web3.storage/docs/how-to/retrieve/#using-curl).
 
 When retrieving any data, you'll be using the content CID of the upload (prefixed by `bafy…`).
 
