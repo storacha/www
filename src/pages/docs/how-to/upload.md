@@ -19,7 +19,7 @@ In the previous section, you created a Space that has a unique DID. To use the c
 If you followed the Create account and Space section, you will already have the CLI set up with a Space. However, you might be using the CLI on a new machine, in which case you can follow these instructions:
 
 1. (If not yet installed) Install the CLI from npm using your command line: `npm install -g @web3-storage/w3cli`.
-2. Run `w3 login [alice@example.com](mailto:alice@example.com)` in the command line using your email address. Click on the validation link sent to your email.
+2. Run `w3 login alice@example.com` in the command line using your email address. Click on the validation link sent to your email.
 3. After successfully running `login`, your CLI Agent has been delegated access to all Spaces associated with your email address. You can see a list of these Spaces using `w3 space ls` and select the one you'd like to upload to using `w3 space use \<space_did\>`.
 
 When the right Space is selected, you are ready to upload! You can do so by running `w3 up \<path\>`.
@@ -34,7 +34,7 @@ There are a few useful flags (check out the reference docs to see a full list):
 
 ## Using the Javascript client
 
-This section discusses using the web3.storage JavaScript client, w3up-client, with your (developer-owned) Space in your application. web3.storage's Javascript client provides a simple interface for storing data using syntax inspired by familiar web APIs such as [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)and [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
+This section discusses using the web3.storage JavaScript client, w3up-client, with your (developer-owned) Space in your application. web3.storage's Javascript client provides a simple interface for storing data using syntax inspired by familiar web APIs such as [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
 
 ```mermaid
 flowchart TD
@@ -55,7 +55,7 @@ npm install @web3-storage/w3up-client
 
 ### Creating a server-side client instance
 
-The package provides a [static](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#create)[create](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#create)[function](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#create) that returns a [Client](https://web3-storage.github.io/w3up-client/classes/client.Client.html)[object](https://web3-storage.github.io/w3up-client/classes/client.Client.html). How you initialize it depends on the backend environment.
+The package provides a [static create function](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#create) that returns a [Client object](https://web3-storage.github.io/w3up-client/classes/client.Client.html). How you initialize it depends on the backend environment.
 
 ### Claim delegation via email validation: For persistent backend only
 
@@ -153,7 +153,7 @@ const client = await Client.create({ principal, store: new MemoryStore() })
 
 ### Uploading to web3.storage
 
-Now that your backend client instance is set up with being able to interact with your Space, you're ready to upload! Call uploadFile to upload a single file, or uploadDirectory to upload multiple files.
+Now that your backend client instance is set up with being able to interact with your Space, you're ready to upload! Call `uploadFile` to upload a single file, or `uploadDirectory` to upload multiple files.
 
 There are two main options to getting content into your Space:
 
@@ -168,7 +168,7 @@ User-\>\>w3up-client in backend: Upload data
 w3up-client in backend-\>\>web3.storage service: Upload data
 ```
 
-You are already set up to upload using your client instance as data becomes available to your backend - you can call uploadFile or uploadDirectory with it.
+You are already set up to upload using your client instance as data becomes available to your backend - you can call `uploadFile` or uploadDirectory with it.
 
 ```javascript
 import { create } from '@web3-storage/w3up-client'
@@ -267,11 +267,11 @@ async function frontend() {
 
 You are now ready to upload using the client! In general, the easiest way to upload data is using the uploadFile or uploadDirectory method.
 
-uploadFile expects a "Blob like" input, which can be a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [File](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On node.js, see the [filesFromPath](https://github.com/web3-storage/files-from-path)[library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem. By default, files uploaded to web3.storage will be wrapped in an IPFS directory listing. This preserves the original filename and makes links more human-friendly than CID strings, which look like random gibberish.
+uploadFile expects a "Blob like" input, which can be a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [File](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On node.js, see the [filesFromPath library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem. By default, files uploaded to web3.storage will be wrapped in an IPFS directory listing. This preserves the original filename and makes links more human-friendly than CID strings, which look like random gibberish.
 
-uploadDirectory requires File-like objects instead of Blobs, as the file's name property is used to build the directory hierarchy.
+`uploadDirectory` requires File-like objects instead of Blobs, as the file's name property is used to build the directory hierarchy.
 
-**Tip** When uploading multiple files, give each file a unique name. All the files in a `storeDirectory` request will be bundled into one content archive, and linking to the files inside is much easier if each file has a unique, human-readable name.
+**Tip:** When uploading multiple files, give each file a unique name. All the files in a `storeDirectory` request will be bundled into one content archive, and linking to the files inside is much easier if each file has a unique, human-readable name.
 
 You can control the directory layout and create nested directory structures by using / delimited paths in your filenames:
 
@@ -326,7 +326,7 @@ function makeFileObjects () {
 }
 ```
 
-In Node.js, the [files-from-path](https://www.npmjs.com/package/files-from-path)[module](https://www.npmjs.com/package/files-from-path) module reads File objects from the local file system. The `getFilesFromPaths` helper asynchronously returns an array of Files that you can use directly with the put client method:
+In Node.js, the [filesFromPath library](https://github.com/web3-storage/files-from-path) reads File objects from the local file system. The `getFilesFromPaths` helper asynchronously returns an array of Files that you can use directly with the put client method:
 
 ```javascript
 import { getFilesFromPaths } from 'files-from-path'
