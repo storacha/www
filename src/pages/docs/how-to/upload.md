@@ -74,9 +74,9 @@ import { create } from '@web3-storage/w3up-client'
 const client = await create()
 ```
 
-By default, clients will create a new [Agent](https://web3-storage.github.io/w3protocol/classes/_web3_storage_access.Agent.html) and put it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client) if it can't find an existing one to load (so the next time the client is initialized on the same device, it will use the same Agent).
+By default, creating this [client](https://web3-storage.github.io/w3up/classes/_web3_storage_w3up_client.Client.html) will also create a new `@web3-storage/access` [`Agent`](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) configured to store persistent state using an appropriate [Driver](https://web3-storage.github.io/w3up/interfaces/_web3_storage_access.unknown.Driver.html) ([StoreIndexedDB](https://web3-storage.github.io/w3up/classes/_web3_storage_access.StoreIndexedDB.html) in the browser and [StoreConf](https://web3-storage.github.io/w3up/classes/_web3_storage_access.StoreConf.html) in node.js). Because the state is persisted, the next time a `w3up-client` Client is created on the same device, it will use the same persisted state (e.g. it will remember any UCANs saved last time).
 
-Then you can login your Agent with your email address. Calling login will cause an email to be sent to the given address.
+Once you have created a client, you can login with your email address. Calling login will cause an email to be sent to the given address.
 
 ```javascript
 await client.login('zaphod@beeblebrox.galaxy')
