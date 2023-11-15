@@ -4,10 +4,10 @@ In this how-to guide, you'll learn several methods for retrieving data from web3
 
 All data stored using web3.storage is made available for retrieval via [IPFS](https://ipfs.io/), the InterPlanetary File System. IPFS is a distributed, peer-to-peer network for storing and sharing content-addressed data. This guide shows you several ways to retrieve your data from IPFS:
 
-- In your browser using an [HTTP gateway](https://web3.storage/docs/how-tos/retrieve/#using-an-ipfs-http-gateway).
+- In your browser using an [HTTP gateway](https://web3.storage/docs/how-to/retrieve/#using-an-ipfs-http-gateway).
 - Using the Saturn dCDN.
-- In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-tos/retrieve/#using-the-ipfs-command-line).
-- In your terminal using [curl or Powershell](https://web3.storage/docs/how-tos/retrieve/#using-curl-or-powershell).
+- In your terminal using the [IPFS command-line tools](https://web3.storage/docs/how-to/retrieve/#using-the-ipfs-command-line).
+- In your terminal using [curl or Powershell](https://web3.storage/docs/how-to/retrieve/#using-curl-or-powershell).
 
 When retrieving any data, you'll be using the content CID of the upload (prefixed by `bafy…`).
 
