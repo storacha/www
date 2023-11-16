@@ -1,5 +1,6 @@
 {
-  "create-account": "Create account and space",
+  "create-account": "Create an account",
+  "create-space": "Create a space",
   "upload": "Upload",
   "retrieve": "Retrieve",
   "list": "List",

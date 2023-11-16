@@ -76,7 +76,7 @@ const client = await create()
 
 By default, clients will create a new [Agent](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) and put it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client) if it can't find an existing one to load (so the next time the client is initialized on the same device, it will use the same Agent).
 
-Then you can login your Agent with your email address. Calling login will cause an email to be sent to the given address.
+Once you have created a client, you can login with your email address. Calling login will cause an email to be sent to the given address.
 
 ```javascript
 await client.login('zaphod@beeblebrox.galaxy')
