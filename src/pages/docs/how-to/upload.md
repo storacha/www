@@ -16,15 +16,15 @@ In the previous section, you created a Space that has a unique DID. To use the c
 
 ## Using the Command line `w3cli`
 
-If you followed the Create account and Space section, you will already have the CLI set up with a Space. However, you might be using the CLI on a new machine, in which case you can follow these instructions:
+If you followed the [Create account](create-account) and [Create Space](create-space) sections, you will already have the CLI set up with a Space. However, you might be using the CLI on a new machine, in which case you can follow these instructions:
 
 1. (If not yet installed) Install the CLI from npm using your command line: `npm install -g @web3-storage/w3cli`.
 2. Run `w3 login alice@example.com` in the command line using your email address. Click on the validation link sent to your email.
-3. After successfully running `login`, your CLI Agent has been delegated access to all Spaces associated with your email address. You can see a list of these Spaces using `w3 space ls` and select the one you'd like to upload to using `w3 space use \<space_did\>`.
+3. After successfully running `login`, your CLI Agent has been delegated access to all Spaces associated with your email address. You can see a list of these Spaces using `w3 space ls` and select the one you'd like to upload to using `w3 space use <space_did>`.
 
-When the right Space is selected, you are ready to upload! You can do so by running `w3 up \<path\>`.
+When the right Space is selected, you are ready to upload! You can do so by running `w3 up <path>`.
 
-There are a few useful flags (check out the reference docs to see a full list):
+There are a few useful flags (check out the reference docs or `w3 up --help` to see a full list):
 
 ```shell
 --no-wrap    # Don't wrap input files with a directory.
@@ -38,7 +38,7 @@ This section discusses using the web3.storage JavaScript client, w3up-client, wi
 
 ```mermaid
 flowchart TD
-B[w3up-client instance] --\>|Automatic if specific Agent is not passed when client object created|B(Pass local Agent DID and key)
+B[w3up-client instance] --\>|Automatic if specific AgentData is not passed when client object created|B(Pass local AgentData)
 S --\> C(Get UCAN delegation from Space to Agent)
 C --\> D(Upload to Space using Agent)
 ```
@@ -55,7 +55,7 @@ npm install @web3-storage/w3up-client
 
 ### Creating a server-side client instance
 
-The package provides a [static create function](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#create) that returns a [Client object](https://web3-storage.github.io/w3up-client/classes/client.Client.html). How you initialize it depends on the backend environment.
+The package provides a [static create function](https://web3-storage.github.io/w3up/functions/_web3_storage_w3up_client.create.html) that returns a [Client object](https://web3-storage.github.io/w3up/classes/_web3_storage_w3up_client.Client.html). How you initialize it depends on the backend environment.
 
 ### Claim delegation via email validation: For persistent backend only
 
@@ -74,7 +74,7 @@ import { create } from '@web3-storage/w3up-client'
 const client = await create()
 ```
 
-By default, clients will create a new [Agent](https://web3-storage.github.io/w3protocol/classes/_web3_storage_access.Agent.html) and put it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client) if it can't find an existing one to load (so the next time the client is initialized on the same device, it will use the same Agent).
+By default, clients will create a new [Agent](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) and put it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client) if it can't find an existing one to load (so the next time the client is initialized on the same device, it will use the same Agent).
 
 Then you can login your Agent with your email address. Calling login will cause an email to be sent to the given address.
 
@@ -99,7 +99,7 @@ Developer-\>\>Developer: Delegate UCAN from Space to Agent
 Developer-\>\>Client: Here is my Agent private key and UCAN delegating permissions
 ```
 
-An option that works for any backend environment is to define an Agent and delegate a UCAN from your Space to this Agent before initializing the client. This is especially useful if you're using the client in a serverless Node environment (e.g., Lambda).
+An option that works for any backend environment is to define an Agent and delegate a UCAN from your Space to this Agent before initializing the client. This is especially useful if you're using the client in a serverless Node environment (e.g., AWS Lambda).
 
 In your command line wherever the CLI is configured with the Space you want to use (e.g., where you created the Space):
 
@@ -148,7 +148,7 @@ If you're doing this in a non-persistent or serverless backend, you might consid
 
 ```javascript
 import { StoreMemory } from '@web3-storage/access/stores/store-memory'
-const client = await Client.create({ principal, store: new MemoryStore() })
+const client = await Client.create({ principal, store: new StoreMemory() })
 ```
 
 ### Uploading to web3.storage
@@ -184,7 +184,7 @@ const directoryCid = await client.storeDirectory(files)
 
 In the example above, `directoryCid` resolves to an IPFS directory.
 
-\### Delegate UCAN for your user to upload directly
+### Delegate UCAN for your user to upload directly
 
 ```mermaid
 sequenceDiagram
