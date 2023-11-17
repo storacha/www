@@ -34,7 +34,7 @@ There are a few useful flags (check out the reference docs or `w3 up --help` to 
 
 ## Using the Javascript client
 
-This section discusses using the web3.storage JavaScript client, w3up-client, with your (developer-owned) Space in your application. web3.storage's Javascript client provides a simple interface for storing data using syntax inspired by familiar web APIs such as [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
+This section discusses using the web3.storage JavaScript client, `w3up-client`, with your (developer-owned) Space in your application. web3.storage's Javascript client provides a simple interface for storing data using syntax inspired by familiar web APIs such as [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
 
 ```mermaid
 flowchart TD
@@ -43,7 +43,7 @@ S --\> C(Get UCAN delegation from Space to Agent)
 C --\> D(Upload to Space using Agent)
 ```
 
-All uses of w3up-client to upload with web3.storage follow the flow above.
+All uses of `w3up-client` to upload with web3.storage follow the flow above.
 
 ### Installing the client
 
@@ -53,11 +53,23 @@ In your JavaScript project, add the web3.storage package to your dependencies:
 npm install @web3-storage/w3up-client
 ```
 
-### Creating a server-side client instance
+### Creating a client instance
 
-The package provides a [static create function](https://web3-storage.github.io/w3up/functions/_web3_storage_w3up_client.create.html) that returns a [Client object](https://web3-storage.github.io/w3up/classes/_web3_storage_w3up_client.Client.html). How you initialize it depends on the backend environment.
+The package provides a [static create function](https://web3-storage.github.io/w3up/functions/_web3_storage_w3up_client.create.html) that returns a [Client object](https://web3-storage.github.io/w3up/classes/_web3_storage_w3up_client.Client.html). How you initialize it depends on the environment the client is used in: **persistent** or **ephemeral**.
 
-### Claim delegation via email validation: For persistent backend only
+Examples of persistent environments:
+
+* A browser application
+* A terminal application
+* An installed application (e.g. Electron)
+
+Examples of ephemeral environments:
+
+* AWS Lambda or server side workers
+* Running inside Docker instances
+* CI
+
+### Claim delegation via email validation: For persistent environment only
 
 ```mermaid
 sequenceDiagram
@@ -67,14 +79,14 @@ Client--\>\>web3.storage service: Email address validated
 web3.storage service-\>\>Client: Here is a UCAN delegating permission from Space DID to Agent DID
 ```
 
-You can use web3.storage's email authorization flow to give permissions to your server-side client. This can be good if your backend environment will be persistent (otherwise it would be prohibitive to click an email validation link every time the client is re-instantiated.
+You can use web3.storage's email authorization flow to give permissions to your server-side client. This can be good if your environment will be persistent (otherwise it would be prohibitive to click an email validation link every time the client is re-instantiated).
 
 ```javascript
 import { create } from '@web3-storage/w3up-client'
 const client = await create()
 ```
 
-By default, clients will create a new [Agent](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) and put it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client) if it can't find an existing one to load (so the next time the client is initialized on the same device, it will use the same Agent).
+By default, clients will create a new [Agent](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) and store all state associated with it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client). The next time the client is initialized on the same device, it will load the same Agent state.
 
 Once you have created a client, you can login with your email address. Calling login will cause an email to be sent to the given address.
 
@@ -85,7 +97,7 @@ await client.login('zaphod@beeblebrox.galaxy')
 Once a user clicks the confirmation link in the email, the login method will resolve. Make sure to check for errors, as login will fail if the email is not confirmed within the expiration timeout. Authorization needs to happen only once per agent. This also claims all delegations available with your email address, so from there, you can select the Space you'd like to use.
 
 ```javascript
-await client.setCurrentSpace(space.did()) # select the relevant Space DID that is associated with your account
+await client.setCurrentSpace('did:key:...') // select the relevant Space DID that is associated with your account
 ```
 
 ### Bring your own Agent
@@ -101,26 +113,32 @@ Developer-\>\>Client: Here is my Agent private key and UCAN delegating permissio
 
 An option that works for any backend environment is to define an Agent and delegate a UCAN from your Space to this Agent before initializing the client. This is especially useful if you're using the client in a serverless Node environment (e.g., AWS Lambda).
 
-In your command line wherever the CLI is configured with the Space you want to use (e.g., where you created the Space):
+In your command line where `w3cli` is configured with the Space you want to use (e.g., where you created the Space):
 
 ```shell
-# the following command returns what will be your Agent private key and DID
+# The following command returns what will be your Agent private key and DID
 # store the private key in environment variable KEY
 npx ucan-key ed --json
 
-# the following command returns the UCAN that will delegate
-# make sure `w3 space use` is set to the Space you intend on using
-# if you want to limit permissions being passed to the Agent, you can specify which permissions to give, e.g., `--can 'store/add' --can 'upload/add'` limits to just being able to upload
+# The following command creates a UCAN delegation from the w3cli agent to the
+# agent you generated above.
+#
+# Use `w3 space use` prior to this to set the Space you intend on delegating
+# access to.
+#
+# If you want to limit permissions being passed to the Agent, you can specify
+# permissions to give, e.g., `--can 'store/add' --can 'upload/add'` limits to
+# just being able to upload.
 w3 delegation create <did_from_ucan-key_command_above> | base64
 
-# store the output in environment variable PROOF
+# Store the output in environment variable PROOF
 ```
 
 Then, when you initialize and configure the client, you can pass in this Agent and UCAN.
 
 ```javascript
-import { create } from '@web3-storage/w3up-client'
-import * as Signer from '@ucanto/principal/ed25519' // Agents on Node should use Ed25519 keys
+import * as Client from '@web3-storage/w3up-client'
+import * as Signer from '@ucanto/principal/ed25519'
 
 async function main () {
   // Load client with specific private key
@@ -153,7 +171,7 @@ const client = await Client.create({ principal, store: new StoreMemory() })
 
 ### Uploading to web3.storage
 
-Now that your backend client instance is set up with being able to interact with your Space, you're ready to upload! Call `uploadFile` to upload a single file, or `uploadDirectory` to upload multiple files.
+Now that your client instance is setup to interact with your Space, you're ready to upload! Call `uploadFile` to upload a single file, or `uploadDirectory` to upload multiple files.
 
 There are two main options to getting content into your Space:
 
@@ -168,7 +186,7 @@ User-\>\>w3up-client in backend: Upload data
 w3up-client in backend-\>\>web3.storage service: Upload data
 ```
 
-You are already set up to upload using your client instance as data becomes available to your backend - you can call `uploadFile` or uploadDirectory with it.
+You are already set up to upload using your client instance as data becomes available to your backend - you can call `uploadFile` or `uploadDirectory` with it.
 
 ```javascript
 import { create } from '@web3-storage/w3up-client'
@@ -200,64 +218,64 @@ w3up-client in user-\>\>web3.storage service: Upload data
 Your backend instance can also be used to delegate upload permissions directly to your user to upload. The code snippet below shows an example of how you might set up a client instance in your application frontend and how it might interact with your backend client. You can see how the frontend client Agent DID is used for the backend client to delegate permissions to; from there, it will be the frontend client that will call the `upload` method.
 
 ```javascript
-import { CarReader } from '@ipld/car';
-import * as DID from '@ipld/dag-ucan/did';
-import * as Delegation from '@ucanto/core/delegation';
-import { importDAG } from '@ucanto/core/delegation';
-import * as Signer from '@ucanto/principal/ed25519';
-import * as Client from '@web3-storage/w3up-client';
+import { CarReader } from '@ipld/car'
+import * as DID from '@ipld/dag-ucan/did'
+import * as Delegation from '@ucanto/core/delegation'
+import { importDAG } from '@ucanto/core/delegation'
+import * as Signer from '@ucanto/principal/ed25519'
+import * as Client from '@web3-storage/w3up-client'
 
-async function backend(did: string) {
+async function backend(did) {
   // Load client with specific private key
-  const principal = Signer.parse(process.env.KEY);
-  const client = await Client.create({ principal });
+  const principal = Signer.parse(process.env.KEY)
+  const client = await Client.create({ principal })
 
   // Add proof that this agent has been delegated capabilities on the space
-  const proof = await parseProof(process.env.PROOF);
-  const space = await client.addSpace(proof);
-  await client.setCurrentSpace(space.did());
+  const proof = await parseProof(process.env.PROOF)
+  const space = await client.addSpace(proof)
+  await client.setCurrentSpace(space.did())
 
   // Create a delegation for a specific DID
-  const audience = DID.parse(did);
-  const abilities = ['store/add', 'upload/add'];
-  const expiration = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // 24 hours from now
+  const audience = DID.parse(did)
+  const abilities = ['store/add', 'upload/add']
+  const expiration = Math.floor(Date.now() / 1000) + 60 * 60 * 24 // 24 hours from now
   const delegation = await client.createDelegation(audience, abilities, {
     expiration,
-  });
+  })
 
   // Serialize the delegation and send it to the client
-  const archive = await delegation.archive();
-  return archive.ok;
+  const archive = await delegation.archive()
+  return archive.ok
 }
 
 /** @param {string} data Base64 encoded CAR file */
 async function parseProof(data) {
-  const blocks = [];
-  const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'));
+  const blocks = []
+  const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'))
   for await (const block of reader.blocks()) {
-    blocks.push(block);
+    blocks.push(block)
   }
-  return importDAG(blocks);
+  return importDAG(blocks)
 }
 
 async function frontend() {
   // Create a new client
-  const client = await Client.create();
+  const client = await Client.create()
 
   // Fetch the delegation from the backend
-  const apiUrl = `/api/w3up-delegation/${client.agent().did()}`;
-  const response = await fetch(apiUrl);
-  const data = await response.arrayBuffer();
+  const apiUrl = `/api/w3up-delegation/${client.agent().did()}`
+  const response = await fetch(apiUrl)
+  const data = await response.arrayBuffer()
 
   // Deserialize the delegation
-  const delegation = await Delegation.extract(new Uint8Array(data));
+  const delegation = await Delegation.extract(new Uint8Array(data))
   if (!delegation.ok) {
-    throw new Error('Failed to extract delegation');
+    throw new Error('Failed to extract delegation')
   }
 
   // Add proof that this agent has been delegated capabilities on the space
-  const space = await client.addSpace(delegation.ok);
-  client.setCurrentSpace(space.did());
+  const space = await client.addSpace(delegation.ok)
+  client.setCurrentSpace(space.did())
 
   // READY to go!
 }
@@ -265,11 +283,11 @@ async function frontend() {
 
 ### Preparing files and uploading
 
-You are now ready to upload using the client! In general, the easiest way to upload data is using the uploadFile or uploadDirectory method.
+You are now ready to upload using the client! In general, the easiest way to upload data is using the `uploadFile` or `uploadDirectory` method.
 
-uploadFile expects a "Blob like" input, which can be a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [File](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On node.js, see the [filesFromPath library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem. By default, files uploaded to web3.storage will be wrapped in an IPFS directory listing. This preserves the original filename and makes links more human-friendly than CID strings, which look like random gibberish.
+`uploadFile` expects a "Blob like" input, which can be a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [File](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On node.js, see the [filesFromPath library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem. By default, files uploaded to web3.storage will be wrapped in an IPFS directory listing. This preserves the original filename and makes links more human-friendly than CID strings, which look like random gibberish.
 
-`uploadDirectory` requires File-like objects instead of Blobs, as the file's name property is used to build the directory hierarchy.
+`uploadDirectory` requires `File`-like objects instead of `Blob`s, as the file's name property is used to build the directory hierarchy.
 
 **Tip:** When uploading multiple files, give each file a unique name. All the files in a `storeDirectory` request will be bundled into one content archive, and linking to the files inside is much easier if each file has a unique, human-readable name.
 
@@ -277,9 +295,9 @@ You can control the directory layout and create nested directory structures by u
 
 ```javascript
 const files = [
-new File(['some-file-content'], 'readme.md'),
-new File(['import foo'], 'src/main.py'),
-new File([someBinaryData], 'images/example.png'),
+  new File(['some-file-content'], 'readme.md'),
+  new File(['import foo'], 'src/main.py'),
+  new File([someBinaryData], 'images/example.png'),
 ]
 
 const directoryCid = await client.storeDirectory(files)
@@ -326,7 +344,7 @@ function makeFileObjects () {
 }
 ```
 
-In Node.js, the [filesFromPath library](https://github.com/web3-storage/files-from-path) reads File objects from the local file system. The `getFilesFromPaths` helper asynchronously returns an array of Files that you can use directly with the put client method:
+In Node.js, the [filesFromPath library](https://github.com/web3-storage/files-from-path) reads File objects from the local file system. The `getFilesFromPaths` helper asynchronously returns an array of Files that you can use directly with the `uploadDirectory` client method:
 
 ```javascript
 import { getFilesFromPaths } from 'files-from-path'

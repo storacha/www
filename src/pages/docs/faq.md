@@ -13,7 +13,7 @@ We wrote it as the solution to address increasing adoption of web3.storage, whic
 
 ## How do I store data on web3.storage that is already available over the IPFS network without having to download and reupload it myself?
 
-To keep costs low, we no longer offer an implementation of the Pinning Service API. But fear not, you can just download a copy of your content in CAR file form (e.g., access your data via `{cid}.ipfs.dweb.link/path?format=car`) and upload that directly using w3up. We’re working on Beam to make it as easy as possible to do this!
+To keep costs low, we no longer offer an implementation of the Pinning Service API. But fear not, you can just download a copy of your content in CAR file form (e.g., access your data via `https://{cid}.ipfs.dweb.link/path?format=car`) and upload that directly using w3up. We’re working on a new product to make it as easy as possible to do this!
 
 ## How can I delete items from web3.storage?
 

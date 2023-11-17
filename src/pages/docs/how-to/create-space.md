@@ -6,7 +6,7 @@ A Space acts as a namespace for your uploads. It is created locally, offline, an
 
 ## Using the CLI
 
-The easiest way to create and register a Space is by using the CLI
+The easiest way to create and register a Space is by using the CLI.
 
 1. Install the CLI from npm using your command line: `npm install -g @web3-storage/w3cli`
 2. initiate space creation for a new Space:
@@ -25,3 +25,10 @@ The easiest way to create and register a Space is by using the CLI
 Separately, you can visit [console.web3.storage](https://console.web3.storage/), sign up with your email and select a plan, and create a space using the UI, but we recommend that developers get familiar with the CLI since it's a powerful tool for many things you might want to do.
 
 The Space you create can be used to [upload](/docs/how-to/upload/) data using the CLI, the w3up client, or when you log into the web console.
+
+## Using the JS library
+
+1. Install the client library from npm using your command line: `npm install @web3-storage/w3up-client`.
+2. Call `client.createSpace('Documents')` and wait for the promise to resolve.
+
+Note: the space must be provisioned by an account before it can be used for uploads. See [our guide](/docs/w3up-client/#create-and-register-a-space) for details.
