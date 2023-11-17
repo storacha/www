@@ -5,7 +5,7 @@ You can easily integrate web3.storage into your JavaScript apps using `w3up-clie
 In this guide, we'll walk through the following steps:
 
 1. [Installing the client library](#install)
-2. [Creating and registering your first space](#create-and-register-a-space)
+2. [Creating and provisioning your first space](#create-and-provision-a-space)
 3. [Uploading a file or directory](#upload-files)
 4. [Viewing your file with IPFS](#view-your-file-on-an-ipfs-gateway)
 
@@ -34,13 +34,11 @@ const client = await create()
 
 See the [w3up-client README](https://github.com/w3up/packages/w3up-client) for more creation options.
 
-## Create and register a space
+## Create and provision a space
 
-When you upload things to web3.storage, each upload is associated with a "space," which is a unique identifier that acts as a namespace for your content.
+When you upload things to web3.storage, each upload is associated with a "space", which is a unique identifier that acts as a namespace for your content. Spaces are identified by DID using keys created locally on your devices.
 
-Spaces are identified by DID using keys created locally on your devices. To use a space for uploads, it needs to be registered with the storage service by providing an email address.
-
-To create a space using `w3up-client`, use the `createSpace` client method
+To create a space using `w3up-client`, use the `createSpace` client method:
 
 ```js
 const space = await client.createSpace('my-awesome-space')
@@ -48,31 +46,55 @@ const space = await client.createSpace('my-awesome-space')
 
 The name parameter is optional. If provided, it will be stored in your client's local state store and can be used to provide a friendly name for user interfaces.
 
-After creating a Space, you'll need to register it with the w3up service before you can upload data.
+To use a space for uploads, it needs to be provisioned with the storage service, and can be done so with an account. To login or create an account, call the `login` client method:
 
-First, set the space as your "current" space using the `setCurrentSpace`, passing in the DID of the `space` object you created above:
+```js
+const myAccount = await client.login('zaphod@beeblebrox.galaxy')
+```
+
+Calling `login` cause an email to be sent to the given address, unless the client is already logged in. Once a user clicks the confirmation link in the email, the promise returned by the `login` method will resolve. Make sure to check for errors, as `login` will fail if the email is not confirmed within the expiration timeout.
+
+If your account does not yet have a payment plan, you'll be prompted to choose one after your email address has been verified. You will need a payment plan in order to provision your space. You can use the following code to wait for a payment plan to be selected:
+
+```js
+// wait for payment plan to be selected
+while (true) {
+  const res = await myAccount.plan.get()
+  if (res.ok) break
+  console.log('Waiting for payment plan to be selected...')
+  await new Promise(resolve => setTimeout(resolve, 1000))
+}
+```
+
+Now you may provision your space with your account:
+
+```js
+await myAccount.provision(space.did())
+```
+
+Once provisioned, it's a good idea to setup recovery, so that when you move to a different device you can still access your space:
+
+```js
+await space.createRecovery(myAccount.did())
+```
+
+Finally, save your space to your agent's state store:
+
+```js
+await space.save()
+```
+
+If your agent has no other spaces, saving the space will set it as the "current space" in your agent. If you already have other spaces, you may want to set it as the current:
 
 ```js
 await client.setCurrentSpace(space.did())
 ```
 
-Next, call the `registerSpace`, passing in an email address to register as the primary contact for the space:
-
-```js
-try {
-  await client.registerSpace('zaphod@beeblebrox.galaxy')
-} catch (err) {
-  console.error('registration failed: ', err)
-}
-```
-
-Calling `registerSpace` will cause an email to be sent to the given address. Once a user clicks the confirmation link in the email, the `registerSpace` method will resolve. Make sure to check for errors, as `registerSpace` will fail if the email is not confirmed within the expiration timeout.
-
-Now that you've registered a space, you're ready to upload files!
+ℹ️ Note: creating a space and provisioning it needs to happen only **once**!
 
 ## Upload files
 
-Now that you've created and registered a space, you're ready to upload files to web3.storage!
+Now that you've created and provisioned a space, you're ready to upload files to web3.storage!
 
 Call `uploadFile` to upload a single file, or `uploadDirectory` to upload multiple files.
 

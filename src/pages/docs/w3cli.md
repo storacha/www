@@ -5,7 +5,7 @@ You can get started using web3.storage right away from your command line using `
 In this guide, we'll walk through the following steps:
 
 1. [Installing the `w3` tool](#install)
-2. [Creating and registering your first space](#create-your-first-space)
+2. [Creating and provisioning your first space](#create-your-first-space)
 3. [Uploading a file or directory](#upload-files)
 4. [Viewing your file with IPFS](#view-your-file-with-ipfs)
 
@@ -51,14 +51,6 @@ You can now run `w3 space ls` to show a list of your spaces:
 ```
 
 The `*` symbol indicates that the `Documents` space is currently active. If you make multiple spaces, you can switch between them with `w3 space use`, passing in the name or DID of the space you want to activate.
-
-Before you can upload, you'll need to register the new space with the web3.storage service using `w3 space register`:
-
-```bash
-w3 space register you@mail-provider.net
-```
-
-This command will wait for you to check your email and click the confirmation link that was sent to your address. Once you confirm your email, you'll see a success message and are ready to upload.
 
 ## Upload files
 

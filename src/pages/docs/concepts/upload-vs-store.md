@@ -33,7 +33,7 @@ However, if you're interested in learning more about how web3.storage uses both,
 
 ## Upload vs. Store
 
-There are two similar-sounding, complementary, but separate concepts in web3.storage: Upload and Store. The place you most readily see this is in the lower-level client methods like `Client.capabilities.upload.*` and `Client.capabilities.store.*`, and CLI methods like `w3 can upload *`, and `w3 can store *`.
+There are two similar-sounding, complementary, but separate concepts in web3.storage: Upload and Store. The place you most readily see this is in the lower-level client methods like `client.capability.upload.*` and `client.capability.store.*`, and CLI methods like `w3 can upload *`, and `w3 can store *`.
 
 The main difference is that upload methods interact with content CIDs and store methods interact with shard CIDs. However, both are needed to make your uploads available to the IPFS network!
 
@@ -65,6 +65,6 @@ This results in only a single copy of each file being stored, but you being able
 
 web3.storage tracks usage for payment (i.e., how much storage is utilized by a user) using the volume of data associated with shard CIDs. This should make sense after learning about the difference between `store` and `upload` - web3.storage is storing the CAR shards themselves, and `upload`s are more users tracking.
 
-Fortunately, this shouldn't make things any more complicated - we go into more detail below, but in general, when you remove a content CID from your account, you'll want to remove the shard CIDs as well (e.g., in the client calling `Client.remove(contentCID, shards=true)`).
+Fortunately, this shouldn't make things any more complicated - we go into more detail below, but in general, when you remove a content CID from your account, you'll want to remove the shard CIDs as well (e.g., in the client calling `client.remove(contentCID, { shards: true })`).
 
 However, if you are a power user interacting with shard CIDs as well (like in the previous section), then you need to be more cautious about removing shard CIDs from your account. (This is why the default for the client and CLI methods is for shards to be maintained after removing a content CID). Learn more about how to do this in the Remove section.

@@ -1,6 +1,6 @@
 # How to list files uploaded to web3.storage
 
-In this how-to guide, you'll learn about the different ways that you can list the files that you've uploaded to web3.storage. Once you've stored some files using web3.storage, you'll want to see a list of what you've uplodaded. There are two ways you can do this:
+In this how-to guide, you'll learn about the different ways that you can list the files that you've uploaded to web3.storage. Once you've stored some files using web3.storage, you'll want to see a list of what you've uploaded. There are two ways you can do this:
 
 - Programmatically using the web3.storage client or CLI
 - Using the web3.storage console
@@ -13,7 +13,7 @@ For instructions on how to set up your client instance or CLI, check out the Upl
 
 Today, like other developer object storage solutions, there is no sorting or querying by timestamp to keep things scalable.
 
-You can get nested list of shard CIDs, or look up what the shard CIDs are for an individual upload. Client and CLI. If you'd like to learn more check out Upload vs. Store section
+You can get a nested list of shard CIDs, or look up what the shard CIDs are for an individual upload. Client and CLI. If you'd like to learn more check out Upload vs. Store section
 
 ## Using the console web UI
 
