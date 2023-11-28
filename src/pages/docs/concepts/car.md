@@ -41,22 +41,22 @@ npm install -g ipfs-car
 The --pack flag will create a new CAR file from a collection of input files:
 
 ```sh
-ipfs-car --pack path/to/files --output path/to/write/a.car
+ipfs-car pack path/to/files --output path/to/write/a.car
 ```
 
 Extract files from a CAR with --unpack:
 
 ```sh
-ipfs-car --unpack path/to/my.car --output path/to/unpack/files/to
+ipfs-car unpack path/to/my.car --output path/to/unpack/files/to
 ```
 
 List the contents of a CAR with --list:
 
 ```sh
-ipfs-car --list path/to/my.car
+ipfs-car list path/to/my.car
 ```
 
-For more usage information, run ipfs-car --help.
+For more usage information, run `ipfs-car --help`.
 
 ### Kubo
 
@@ -105,8 +105,8 @@ async function storeCarFile(filename) {
   const inStream = createReadStream(filename)
   const car = await CarReader.fromIterable(inStream)
   const client = makeStorageClient()
-  const cid = await client.uploadCar(car)
-  console.log('Stored CAR file! CID:',cid)
+  const cid = await client.uploadCAR(car)
+  console.log('Stored CAR file! CID:', cid)
 }
 ```
 

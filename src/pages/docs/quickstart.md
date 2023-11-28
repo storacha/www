@@ -7,7 +7,7 @@ Ready to get started using web3.storage? Get up and running in minutes by follow
 3. Upload a file.
 4. Get your uploaded file using your browser or curl.
 
-This guide uses our CLI, w3cli, since it's the fastest way to get started using web3.storage programmatically. In the "How-to" section of the docs, we also include instructions on using the Javascript client or web interface to create an account, store data, and more.
+This guide uses our CLI, w3cli, since it's the fastest way to get started using web3.storage. In the "How-to" section of the docs, we also include instructions on using the Javascript client or web interface to create an account, store data, and more.
 
 ## You will need
 
@@ -36,8 +36,6 @@ You need to create a web3.storage account associated with an email address and s
 
 ```sh
 w3 space create Documents # pick a good name!
-
-w3 space register
 ```
 
 ## Upload
@@ -61,7 +59,7 @@ https://w3s.link/ipfs/bafybeib4ht2a53pttgipw6mgckqqhmgkifnmh2glzsju2c6ait5ibnkow
 
 ## Get your file
 
-Your upload is now available over the public IPFS network using the content CID of your upload. The easiest way to fetch it is using the w3s.link gateway using the link that `w3 up` provided. w3s.link is optimized for content uploaded to web3.storage.
+Your upload is now available over the public IPFS network using the content CID of your upload. The easiest way to fetch it is using the the link that `w3 up` provided to the w3s.link gateway. w3s.link is optimized for content uploaded to web3.storage.
 
 ```sh
 curl -L 'https://w3s.link/ipfs/bafybeib4ht2a53pttgipw6mgckqqhmgkifnmh2glzsju2c6ait5ibnkow4/lets-go.txt'
