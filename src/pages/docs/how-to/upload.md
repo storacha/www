@@ -86,7 +86,7 @@ import { create } from '@web3-storage/w3up-client'
 const client = await create()
 ```
 
-By default, clients will create a new [Agent](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) and store all state associated with it in a persistent local [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client). The next time the client is initialized on the same device, it will load the same Agent state.
+By default, constructing a client like this will re-use state persisted by other clients because `create` constructs the w3up [Client](https://web3-storage.github.io/w3up/classes/_web3_storage_w3up_client.Client.html)'s access [Agent](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) with [AgentData](https://web3-storage.github.io/w3up/classes/_web3_storage_access.AgentData.html) backed by a storage [Driver](https://web3-storage.github.io/w3up/interfaces/_web3_storage_access.unknown.Driver.html) ([IndexedDBDriver](https://web3-storage.github.io/w3up/classes/_web3_storage_access.unknown.IndexedDBDriver.html) in the browser and [ConfDriver](https://web3-storage.github.io/w3up/classes/_web3_storage_access.unknown.ConfDriver.html) otherwise) that persists the AgentData between processes and client instances.
 
 Once you have created a client, you can login with your email address. Calling login will cause an email to be sent to the given address.
 
