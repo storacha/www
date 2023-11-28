@@ -77,7 +77,7 @@ export default function HomePage () {
           <div className='max-w-lg'>
             <h2 className='font-bold text-4xl leading-relaxed'>Get started with web3.storage</h2>
             <p className='pt-8 text-xl font-light leading-loose'>Choose your own way to store and retrieve using Web3.Storage. Use your email address to get 5 GiB storage for free, with paid plans starting at $10.</p>
-            <p className='pt-8'><ButtonLink href='/start'>Create an account</ButtonLink></p>
+            <p className='pt-8'><ButtonLink href='https://console.web3.storage'>Create an account</ButtonLink></p>
           </div>
           <div className='text-center flex-auto'>
             <Image alt="Cluster of logos for the technologies that make web3.storage work" src={ImageIconCluster} className='hidden lg:inline-block lg:w-full lg:max-w-md opacity-80' />
