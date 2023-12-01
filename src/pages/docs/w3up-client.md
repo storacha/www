@@ -32,7 +32,7 @@ import { create } from '@web3-storage/w3up-client'
 const client = await create()
 ```
 
-See the [w3up-client README](https://github.com/w3up/packages/w3up-client) for more creation options.
+See the [w3up-client README](https://github.com/web3-storage/w3up/blob/main/packages/w3up-client/README.md) for more creation options.
 
 ## Create and provision a space
 
