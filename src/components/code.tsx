@@ -8,7 +8,7 @@ import { filesFromPaths } from 'files-from-path'
 const client = await Client.create()
 
 // first time setup!
-if (!client.accounts().length) {
+if (!Object.keys(client.accounts()).length) {
   // waits for you to click the link in your email to verify your identity
   const account = await client.login('you@example.org')
 
