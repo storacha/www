@@ -11,13 +11,10 @@ const client = await Client.create()
 if (!Object.keys(client.accounts()).length) {
   // waits for you to click the link in your email to verify your identity
   const account = await client.login('you@example.org')
-
   // create a space for your uploads
   const space = await client.createSpace('lets-go')
-
   // save the space to the store, and set as "current"
   await space.save()
-
   // associate this space with your account
   await account.provision(space.did())
 }
