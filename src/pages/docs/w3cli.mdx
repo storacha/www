@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # `w3cli`
 
 You can get started using web3.storage right away from your command line using `w3`, our command line interface tool.
@@ -5,14 +7,16 @@ You can get started using web3.storage right away from your command line using `
 In this guide, we'll walk through the following steps:
 
 1. [Installing the `w3` tool](#install)
-2. [Creating and provisioning your first space](#create-your-first-space)
-3. [Uploading a file or directory](#upload-files)
-4. [Viewing your file with IPFS](#view-your-file-with-ipfs)
+2. [Standalone binaries](#standalone-binaries)
+3. [Creating and provisioning your first space](#create-your-first-space)
+4. [Uploading a file or directory](#upload-files)
+5. [Viewing your file with IPFS](#view-your-file-with-ipfs)
 
 ## Install
 
 You'll need [Node](https://nodejs.com) version 18 or higher, with NPM version 7 or higher to complete this guide.
-You can check your local versions like this
+
+You can check your local versions like this:
 
 ```bash
 node --version && npm --version
@@ -25,6 +29,16 @@ npm install -g @web3-storage/w3cli
 ```
 
 Once the install is complete, you'll have a `w3` command available. Try running `w3 --help` to get an idea of what's possible.
+
+## Standalone binaries
+
+<Callout type="warning">
+  These binaries are built from the Go client codebase which is not as fully featured as the JS client.
+</Callout>
+
+Pre-compiled, standalone binaries are now available for MacOS, Linux and Windows: [Download latest release](https://github.com/web3-storage/go-w3up/releases/latest).
+
+Please ensure you [read the documentation for using the Go CLI](https://github.com/web3-storage/go-w3up#cli). These binaries are built from the Go client codebase which is not as fully featured as the JS client. Currently to use the Go CLI tool you will need to obtain a delegation created by the JS CLI or [console](https://console.web3.storage).
 
 ## Create your first space
 

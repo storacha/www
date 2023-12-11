@@ -1,14 +1,20 @@
+import { Callout } from 'nextra/components'
+
 # How to upload data using web3.storage
 
 In this how-to guide, you'll learn how to store data programmatically for your development projects using the web3.storage client library in JavaScript using your (developer-owned) Space. This includes various architecture options for the data pipeline for your users to upload to web3.storage, which then makes your data available on the decentralized IPFS network with persistent long-term storage provided by Filecoin.
 
 Later in this section, we also cover uploading data using the CLI or web console. If you just want to quickly store a few files using web3.storage rather than include upload functionality in an app or service you're building, you may want to hop down there.
 
-**CAUTION**
+<Callout type="error" emoji="⚠️❗">
+  **Public Data 🌎**<br/>
+  All data uploaded to w3up is available to anyone who requests it using the correct CID. Do not store any private or sensitive information in an unencrypted form using w3up.
+</Callout>
 
-⚠️❗ Public Data 🌎: All data uploaded to w3up is available to anyone who requests it using the correct CID. Do not store any private or sensitive information in an unencrypted form using w3up.
-
-⚠️❗ Permanent Data ♾️: Removing files from w3up will remove them from the file listing for your account, but that doesn't prevent nodes on the decentralized storage network from retaining copies of the data indefinitely. web3.storage itself generally retains and charges users for any uploaded data for a minimum of 30 days. Do not use w3up for data that may need to be permanently deleted in the future.
+<Callout type="error" emoji="⚠️❗">
+  **Permanent Data ♾️**<br/>
+  Removing files from w3up will remove them from the file listing for your account, but that doesn't prevent nodes on the decentralized storage network from retaining copies of the data indefinitely. web3.storage itself generally retains and charges users for any uploaded data for a minimum of 30 days. Do not use w3up for data that may need to be permanently deleted in the future.
+</Callout>
 
 ## web3.storage API authorization
 
