@@ -1,5 +1,87 @@
-import { Callout } from 'nextra/components'
+import { Callout, Tabs } from 'nextra/components'
 
 # Get Filecoin information for a Piece
 
-To retrieve a [Data Aggregation Proof](/docs/concepts/filecoin-podsi#data-aggregation-proof) (including PoDSI) you can issue a `filecoin/info` invocation to the web3.storage service.
+To retrieve a [Data Aggregation Proof](/docs/concepts/podsi#data-aggregation-proof) (including [PoDSI](/docs/concepts/podsi)) you can issue a `filecoin/info` invocation to the web3.storage service.
+
+<Tabs items={['JS client', 'CLI']}>
+  <Tabs.Tab>
+    Piece CIDs are calculated by the client before data is uploaded and are made available in the `onShardStored` callback of `uploadFile`, `uploadDirectory` or `uploadCAR`.
+
+    <Callout type="info">
+      If you did not store the piece CID when your content was uploaded you can query [content claims](https://www.npmjs.com/package/@web3-storage/content-claims) for an equivalency claim.
+    </Callout>
+
+    Later, you can use the piece CID to retrieve a [Data Aggregation Proof](/docs/concepts/podsi#data-aggregation-proof):
+
+    ```js
+    const result = await client.capability.filecoin.info(piece)
+    ```
+
+    The result contains aggregate piece CIDs and inclusion proofs (PoDSI):
+
+    ```js
+    for (const { aggregate, inclusion } of result.ok.aggregates) {
+      console.log(`Aggregate CID: ${aggregate}`)
+      console.log(`Inclusion Proof: ${inclusion}`)
+    }
+    ```
+
+    Inclusion proofs can be verified using the `@web3-storage/data-segment` library:
+
+    ```js
+    import { Proof, Piece } from '@web3-storage/data-segment'
+
+    const result = Proof.verify(inclusion.subtree, {
+      tree: Piece.fromLink(aggregate).root,
+      node: Piece.fromLink(piece).root
+    })
+    ```
+
+    The result also contains details of storage providers and deals the aggregate appears in:
+
+    ```js
+    for (const { provider, aux } of result.ok.deals) {
+      console.log(`Storage Provider: f0${provider}`)
+      console.log(`Deal ID: ${aux.dataSource.dealID}`)
+    }
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Piece CIDs are calculated by the client before data is uploaded and will be printed to the terminal if you pass the `--verbose` option to `w3 up`.
+
+    <Callout type="info">
+      If you did not store the piece CID when your content was uploaded you can query [content claims](https://www.npmjs.com/package/@web3-storage/content-claims) for an equivalency claim.
+    </Callout>
+
+    Later, you can use the piece CID to print out [Data Aggregation Proof](/docs/concepts/podsi#data-aggregation-proof) information:
+
+    ```sh
+    $ w3 can filecoin info bafkzcibe52kq2dtip2bmrrw5qhphsa35onsxxvkuxl33dnotq2allfpz7tdxlhc5di
+
+    Piece CID: bafkzcibe52kq2dtip2bmrrw5qhphsa35onsxxvkuxl33dnotq2allfpz7tdxlhc5di
+    Deals: 
+      Aggregate: bafkzcibcaapbrpjpxk32treyrtw5kamyh5ayxoj7rp4obkeoloydktubycnkufy
+       Provider: 1392893
+        Deal ID: 65895671
+    
+      Aggregate: bafkzcibcaapbrpjpxk32treyrtw5kamyh5ayxoj7rp4obkeoloydktubycnkufy
+       Provider: 1771403
+        Deal ID: 65895759
+    
+      Aggregate: bafkzcibcaapbrpjpxk32treyrtw5kamyh5ayxoj7rp4obkeoloydktubycnkufy
+       Provider: 97777
+        Deal ID: 65903995
+    
+      Aggregate: bafkzcibcaapbrpjpxk32treyrtw5kamyh5ayxoj7rp4obkeoloydktubycnkufy
+       Provider: 717969
+        Deal ID: 65922477
+    
+      Aggregate: bafkzcibcaapbrpjpxk32treyrtw5kamyh5ayxoj7rp4obkeoloydktubycnkufy
+       Provider: 20378
+        Deal ID: 65929686
+    ```
+
+    
+  </Tabs.Tab>
+</Tabs>

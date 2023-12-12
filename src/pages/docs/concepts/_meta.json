@@ -5,7 +5,7 @@
   "architecture-options": "Architecture options",
   "car": "Content Archive (CAR) files",
   "filecoin-storage": "Filecoin",
-  "filecoin-podsi": "Proof of Data Segment Inclusion (PoDSI)",
+  "podsi": "Proof of Data Segment Inclusion (PoDSI)",
   "ipfs-gateways": "IPFS Gateways",
   "did": {
     "display": "hidden"

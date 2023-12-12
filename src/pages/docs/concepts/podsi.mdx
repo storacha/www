@@ -1,4 +1,4 @@
-import { Callout } from 'nextra/components'
+import { Callout, Steps } from 'nextra/components'
 
 # Proof of Data Segment Inclusion (PoDSI)
 
@@ -36,10 +36,6 @@ bafkzcibe52kq2dtip2bmrrw5qhphsa35onsxxvkuxl33dnotq2allfpz7tdxlhc5di
 
 The IPLD codec for the above multihash is `0x1011` (fr32-sha2-256-trunc254-padded-binary-tree). You can [inspect this CID on cid.ipfs.tech](https://cid.ipfs.tech/#bafkzcibe52kq2dtip2bmrrw5qhphsa35onsxxvkuxl33dnotq2allfpz7tdxlhc5di).
 
-## Verifiable aggregation
-
-
-
 ## Proof of Data Segment Inclusion (PoDSI)
 
 PoDSI enables clients using data aggregation services like web3.storage to verify the correct aggregation of their data and allow proving of this fact to third parties.
@@ -75,4 +71,52 @@ The above example does not visualize _all_ the information that a PoDSI contains
 
 ## Data Aggregation Proof
 
-A data aggregation proof is a PoDSI, _plus_ information that ties an aggregate piece to a Filecoin Storage Provider. At time of writing this one or more Deal IDs.
+A data aggregation proof is a [PoDSI](#proof-of-data-segment-inclusion-podsi), _plus_ information that ties an aggregate piece to a Filecoin Storage Provider. At time of writing this one or more **Deal ID**s.
+
+## Verifiable Aggregation Pipeline
+
+The web3.storage aggregation pipeline is fully verifiable thanks to [UCAN](/docs/concepts/ucans-and-web3storage)s. Your piece can be tracked through the pipeline via signed UCAN receipts.
+
+There are 4 roles in the aggregation pipeline:
+
+1. **Storefront** - facilitates data storage services to applications and users, getting the requested data stored into Filecoin deals asynchronously.
+1. **Aggregator** - aggregates smaller data (Filecoin Pieces) into a larger piece that can effectively be stored with a Filecoin Storage Provider.
+1. **Dealer** - arranges deals with Filecoin Storage Probviders for the aggregates.
+1. **Deal Tracker** - follows the filecoin chain to keep track of successful deals.
+
+Roughly speaking, a piece progresses through the pipeline via the following stages:
+
+<Steps>
+### `filecoin/offer`
+
+The client submits a piece to the _storefront_ (web3.storage) for aggregation and storage in Filecoin storage providers. The reciept for this invocation contains two links for async tasks:
+
+1. `filecoin/submit` - allows the client to continue following the receipt chain through the aggregation pipeline. It is executed after the _storefront_ has verified the piece CID corresponds to the shard CID.
+1. `filecoin/accept` - a "short cut" to the end of the pipeline, where the data aggregation proof will eventually become available. It is executed when the _dealer_ has successfully stored an aggregate containing the submitted piece in one or more Filecoin Storage Providers.
+ 
+### `filecoin/submit`
+ 
+The _storefront_ issues a receipt for `filecoin/submit` to indicate it has verified the offered piece and submitted it to the pipeline. The reciept for this invocation contains a link for an async task `piece/offer`, which is executed when the storefront offers the piece to an _aggregator_.
+
+### `piece/offer`
+
+The _aggregator_ issues a receipt for `piece/offer` when the storefront offers a piece to be aggregated. The reciept contains a link for an async task `piece/accept`, which is executed when the piece has been included in an aggregate.
+
+### `piece/accept`
+
+The _aggregator_ issues `piece/accept` receipts when an aggregate is big enough. _Every_ piece in the aggregate is issued a receipt which includes a [Proof of Data Segment Inclusion (PoDSI)](#proof-of-data-segment-inclusion-podsi). The reciept contains a link for an async task `aggregate/offer`, which is executed when the _aggregator_ offers the aggregate to a _dealer_.
+
+### `aggregate/offer`
+
+The _dealer_ issues an `aggregate/offer` receipt when the aggregator offers a piece to be stored by Filecoin Storeage Providers. The reciept contains a link for an async task `aggregate/accept`, which is executed when the aggregate has been stored by at least one Filecoin Storage Provider.
+
+### `aggregate/accept`
+
+The _dealer_ issues an `aggregate/accept` receipt when an aggregate has been stored by at least one Filecoin Storage Provider. The receipt includes information that ties an aggregate to a Storage Provider which is used in the next step to create a [Data Aggregation Proof](#data-aggregation-proof).
+
+### `filecoin/accept`
+
+The _storefront_ periodically checks for an `aggregate/accept` receipt for offered aggregates. When an aggregate is accepted, the _storefront_ issues `filecoin/accept` receipts for each piece in the aggregate. The receipt includes a [Data Aggregation Proof](#data-aggregation-proof). This is the end of the pipeline.
+</Steps>
+
+[Spec for w3filecoin pipeline](https://github.com/web3-storage/specs/blob/main/w3-filecoin.md).
