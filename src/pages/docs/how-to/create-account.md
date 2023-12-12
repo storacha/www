@@ -2,7 +2,7 @@
 
 In this how-to guide, you'll learn how to to create a w3up account.
 
-Anyone can use console.web3.storage to create an account and manage their storage using a web browser. Developers can use the `w3cli` command line interface or the `w3up-client` Javascript library. We recommend that developers get familiar with the `w3cli` since it's a powerful tool for many things you might want to do.
+Anyone can use [console.web3.storage](https://console.web3.storage) to create an account and manage their storage using a web browser. Developers can use the `w3cli` command line interface or the `w3up-client` Javascript library. We recommend that developers get familiar with the `w3cli` since it's a powerful tool for many things you might want to do.
 
 ## Using the CLI
 

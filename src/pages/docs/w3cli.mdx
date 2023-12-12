@@ -7,10 +7,9 @@ You can get started using web3.storage right away from your command line using `
 In this guide, we'll walk through the following steps:
 
 1. [Installing the `w3` tool](#install)
-2. [Standalone binaries](#standalone-binaries)
-3. [Creating and provisioning your first space](#create-your-first-space)
-4. [Uploading a file or directory](#upload-files)
-5. [Viewing your file with IPFS](#view-your-file-with-ipfs)
+2. [Creating and provisioning your first space](#create-your-first-space)
+3. [Uploading a file or directory](#upload-files)
+4. [Viewing your file with IPFS](#view-your-file-with-ipfs)
 
 ## Install
 
@@ -30,7 +29,7 @@ npm install -g @web3-storage/w3cli
 
 Once the install is complete, you'll have a `w3` command available. Try running `w3 --help` to get an idea of what's possible.
 
-## Standalone binaries
+### Standalone binaries
 
 <Callout type="warning">
   These binaries are built from the Go client codebase which is not as fully featured as the JS client.
@@ -42,11 +41,11 @@ Please ensure you [read the documentation for using the Go CLI](https://github.c
 
 ## Create your first space
 
-When you upload things to web3.storage, each upload is associated with a <abbr id="space">"space,"</abbr> which is a unique identifier that acts as a namespace for your content.
+When you upload things to web3.storage, each upload is associated with a <abbr id="space">"space"</abbr>, which is a unique identifier that acts as a namespace for your content.
 
 Spaces are identified by <abbr id="did">DID</abbr> using keys created locally on your devices. To use a space for uploads, it needs to be registered with the storage service by providing an email address.
 
-To create a space using the `w3` command line tool, use the `w3 space create` command. You can optionally give your space a "friendly" name, which acts like an alias for the space's DID and can make it easier to tell your spaces apart. In the example below, we'll use the name `Documents`:
+To create a space using the `w3` command line tool, use the `w3 space create` command. You should give your space a "friendly" name, which acts like an alias for the space's DID and can make it easier to tell your spaces apart. In the example below, we'll use the name `Documents`:
 
 ```bash
 w3 space create Documents
@@ -84,4 +83,4 @@ When uploading directories, files beginning with a `.` character are ignored by 
 
 ## View your file with IPFS
 
-When your upload completes, you should see a link to your files on the `w3s.link` <abbr id="gateway">IPFS gateway</abbr>. Just click the link to see your files!
+When your upload completes, you should see a link to your files on the `w3s.link` <abbr id="gateway">IPFS gateway</abbr>. Just click the link to see your file!

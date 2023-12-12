@@ -203,7 +203,7 @@ const path = process.env.PATH_TO_FILES
 const files = await filesFromPaths([path])
 
 const client = await create()
-const directoryCid = await client.storeDirectory(files)
+const directoryCid = await client.uploadDirectory(files)
 ```
 
 In the example above, `directoryCid` resolves to an IPFS directory.
@@ -295,7 +295,7 @@ You are now ready to upload using the client! In general, the easiest way to upl
 
 `uploadDirectory` requires `File`-like objects instead of `Blob`s, as the file's name property is used to build the directory hierarchy.
 
-**Tip:** When uploading multiple files, give each file a unique name. All the files in a `storeDirectory` request will be bundled into one content archive, and linking to the files inside is much easier if each file has a unique, human-readable name.
+**Tip:** When uploading multiple files, give each file a unique name. All the files in a `uploadDirectory` request will be bundled into one content archive, and linking to the files inside is much easier if each file has a unique, human-readable name.
 
 You can control the directory layout and create nested directory structures by using / delimited paths in your filenames:
 
@@ -306,7 +306,7 @@ const files = [
   new File([someBinaryData], 'images/example.png'),
 ]
 
-const directoryCid = await client.storeDirectory(files)
+const directoryCid = await client.uploadDirectory(files)
 ```
 
 In the example above, directoryCid resolves to an IPFS directory with the following layout:
@@ -350,10 +350,10 @@ function makeFileObjects () {
 }
 ```
 
-In Node.js, the [filesFromPath library](https://github.com/web3-storage/files-from-path) reads File objects from the local file system. The `getFilesFromPaths` helper asynchronously returns an array of Files that you can use directly with the `uploadDirectory` client method:
+In Node.js, the [`files-from-path` library](https://github.com/web3-storage/files-from-path) reads File objects from the local file system. The `filesFromPaths` helper asynchronously returns an array of Files that you can use directly with the `uploadDirectory` client method:
 
 ```javascript
-import { getFilesFromPaths } from 'files-from-path'
+import { filesFromPaths } from 'files-from-path'
 ```
 
 If you expect to be loading a lot of large files, you may be better served by the [filesFromPath](https://github.com/web3-storage/files-from-path#filesfrompath)[helper](https://github.com/web3-storage/files-from-path#filesfrompath). It reduces memory pressure by yielding File objects one by one as they're loaded from disk, instead of loading everything into memory. You can then issue multiple put requests to send each file to web3.storage.
@@ -362,7 +362,7 @@ You can also manually create File objects by importing a Node.js implementation 
 
 ```javascript
 async function getFiles (path) {
-  const files = await getFilesFromPath(path)
+  const files = await filesFromPaths([path])
   console.log(`read ${files.length} file(s) from ${path}`)
   return files
 }

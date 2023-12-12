@@ -30,7 +30,7 @@ npm install -g @web3-storage/w3cli
 
 You need to create a web3.storage account associated with an email address and set it up so you can start uploading to a Space. The Space is created locally and associated with a private key, and is then registered with web3.storage and associated with your email address. But don't worry about keeping track of the Space's private key! web3.storage's email authorization system allows this private key to be treated as a throwaway key.
 
-1. Run `w3 login alice@example.com` in the command line using your email address. This will sent an email to your inbox with a link for validation.
+1. Run `w3 login alice@example.com` in the command line using your email address. This will send an email to your inbox with a link for validation.
 2. Once you click on the validation link, you'll be taken to a webpage where you can select a plan (like our Starter tier).
 3. Create a new Space for storing your data and register it:
 
@@ -43,13 +43,13 @@ w3 space create Documents # pick a good name!
 You can now upload a file or directory using the command line:
 
 ```sh
-$ w3 up lets-go.txt
+w3 up lets-go.txt
   1 file 0.6KB
 ⁂ Stored 1 file
 ⁂ https://w3s.link/ipfs/bafybeib4ht2a53pttgipw6mgckqqhmgkifnmh2glzsju2c6ait5ibnkow4
 ```
 
-The CLI content-addresses your files, packs them into 1 or more CAR files, and uploads them to web3.storage for indexing and inclusion in Filecoin storage deals. It will show an http gateway URL that includes the content CID (content identifier) of your upload e.g:
+The CLI content-addresses your files, packs them into 1 or more CAR files, and uploads them to web3.storage for indexing and inclusion in Filecoin storage deals. It will show an HTTP gateway URL that includes the content CID (content identifier) of your upload e.g:
 
 https://w3s.link/ipfs/bafybeib4ht2a53pttgipw6mgckqqhmgkifnmh2glzsju2c6ait5ibnkow4
 
@@ -59,7 +59,7 @@ https://w3s.link/ipfs/bafybeib4ht2a53pttgipw6mgckqqhmgkifnmh2glzsju2c6ait5ibnkow
 
 ## Get your file
 
-Your upload is now available over the public IPFS network using the content CID of your upload. The easiest way to fetch it is using the the link that `w3 up` provided to the w3s.link gateway. w3s.link is optimized for content uploaded to web3.storage.
+Your upload is now available over the public IPFS network using the content CID of your upload. The easiest way to fetch it is using the link that `w3 up` provided to the w3s.link gateway. w3s.link is optimized for content uploaded to web3.storage.
 
 ```sh
 curl -L 'https://w3s.link/ipfs/bafybeib4ht2a53pttgipw6mgckqqhmgkifnmh2glzsju2c6ait5ibnkow4/lets-go.txt'
@@ -90,6 +90,6 @@ __  _  __  ____  \_ |__  \_____  \      _______/  |_   ____  _______ _____      
 Congratulations! You've just covered the basics of web3.storage. To learn more, take a look at these useful resources:
 
 - For a deep dive into storing files, including using the Javascript client to do so, visit the [Upload how-to guide](/docs/how-to/upload).
-- Read more about the power of UCANs and IPFS, and learn about the various options to integrate web3.storage with your application.
-- Try out our image gallery example to see how easy it is to take advantage of these decentralized protocols using web3.storage.
-- Visit the reference API section for more details on what else you can do with the web3.storage client and how to integrate it into your own projects.
+- Read more about the power of [UCANs and IPFS](/docs/concepts/ucans-and-web3storage), and learn about the various options to integrate web3.storage with your application.
+<!-- - Try out our image gallery example to see how easy it is to take advantage of these decentralized protocols using web3.storage.
+- Visit the reference API section for more details on what else you can do with the web3.storage client and how to integrate it into your own projects. -->

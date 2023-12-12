@@ -1,6 +1,6 @@
 # How to create a space
 
-In this how-to guide, you'll learn how to create a web3.storage Space to organize stored uploads. For an overview of the various ways web3.storage can be integrated with your application, check out ["Architecture Options"](/docs/concepts-architecture-options/).
+In this how-to guide, you'll learn how to create a web3.storage Space to organize stored data. For an overview of the various ways web3.storage can be integrated with your application, check out [Architecture Options](/docs/concepts-architecture-options/).
 
 A Space acts as a namespace for your uploads. It is created locally, offline, and associated with a cryptographic key pair (identified by the [`did:key`](https://w3c-ccg.github.io/did-method-key/) of the public key). You can register this Space with your [web3.storage account](/docs/how-to/create-account/) to take responsibility for the uploads in the space. Once you do this, you don't need to worry about keeping track of the Space's private key, because your web3.storage account has been authorized to use the Space.
 
@@ -13,7 +13,7 @@ The easiest way to create and register a Space is by using the CLI.
    ```shell
    w3 space create
    ```
-3. w3cli will ask "What would you like to call this space?". Give the space a name that will help you distinguish it from other spaces, then press the enter key. Can't spt come up with one? Try "my first space"
+3. w3cli will ask "What would you like to call this space?". Give the space a name that will help you distinguish it from other spaces, then press the enter key. Can't come up with one? Try "my first space"
 4. w3cli will say "🔑 You need to save the following secret recovery key somewhere safe!…"
    - press the enter key to reveal the recovery phrase.
    - save the recovery phrase somewhere safe if you want to be able to recover control of the space in case you lose access to the computer you used to create the space
