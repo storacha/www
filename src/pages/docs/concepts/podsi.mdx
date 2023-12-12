@@ -117,6 +117,7 @@ The _dealer_ issues an `aggregate/accept` receipt when an aggregate has been sto
 ### `filecoin/accept`
 
 The _storefront_ periodically checks for an `aggregate/accept` receipt for offered aggregates. When an aggregate is accepted, the _storefront_ issues `filecoin/accept` receipts for each piece in the aggregate. The receipt includes a [Data Aggregation Proof](#data-aggregation-proof). This is the end of the pipeline.
+
 </Steps>
 
 [Spec for w3filecoin pipeline](https://github.com/web3-storage/specs/blob/main/w3-filecoin.md).
