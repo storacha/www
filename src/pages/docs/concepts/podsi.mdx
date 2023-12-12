@@ -4,6 +4,10 @@ import { Callout, Steps } from 'nextra/components'
 
 Data uploaded to web3.storage is aggregated together with data from other users of the service. When an aggregate is big enough, it is stored with multiple Filecoin Storage Providers.
 
+<Callout type="info">
+  Storage Providers have minimum size requirements for data storage. Therefore it is necessary to aggregate data to satisfy the requirements. The minimum is typically between 16 and 32GB.
+</Callout>
+
 The web3.storage service uses **Proof of Data Segment Inclusion** (PoDSI), which allows clients to verify the correct aggregation of their data and prove this fact to third parties.
 
 ## Shard CIDs
