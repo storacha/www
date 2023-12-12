@@ -1,0 +1,127 @@
+import { Callout, Steps } from 'nextra/components'
+
+# Proof of Data Segment Inclusion (PoDSI)
+
+Data uploaded to web3.storage is aggregated together with data from other users of the service. When an aggregate is big enough, it is stored with multiple Filecoin Storage Providers.
+
+<Callout type="info">
+  Storage Providers have minimum size requirements for data storage. Therefore it is necessary to aggregate data to satisfy the requirements. The minimum is typically between 16 and 32GB.
+</Callout>
+
+The web3.storage service uses **Proof of Data Segment Inclusion** (PoDSI), which allows clients to verify the correct aggregation of their data and prove this fact to third parties.
+
+## Shard CIDs
+
+Data uploaded to web3.storage is packed up and sent as CAR files. We call these _shards_, and each one is referenced by it's shard CID.
+
+```sh
+# example CAR shard CID
+bagbaieralcueppbj7cpxhlsfuokxatqzqdutb47mgs44myg7dsmktsb34zxa
+```
+
+The IPLD codec for a CAR shard CID is `0x0202`. You can [inspect this CID on cid.ipfs.tech](https://cid.ipfs.tech/#bagbaieralcueppbj7cpxhlsfuokxatqzqdutb47mgs44myg7dsmktsb34zxa). It is **not** your content root CID - that's a different CID that refers to the root node of a DAG that has been built from your data. The shard CID is a hash of the (CAR) file your DAG has been packed into.
+
+<Callout type="info">
+  Your content may be split between 1 or more shards.
+</Callout>
+
+## Piece CIDs
+
+Piece CIDs are the primary means of referencing data stored in a sector of a Filecoin Storage Provider. Each piece CID is loosely equivalent to a corresponding [shard CID](#shard-cids).
+
+The piece CIDs used in web3.storage are v2 piece CIDs since these also encode tree _height_ information. On chain and in various chain explorers online you may see v1 piece CIDs displayed. You can convert from v2 to v1 but not v1 to v2, unless you also know the tree height.
+
+[FRC-0069 documentation for Piece CID v2](https://github.com/filecoin-project/FIPs/blob/master/FRCs/frc-0069.md).
+
+```sh
+# example piece v2 CID
+bafkzcibe52kq2dtip2bmrrw5qhphsa35onsxxvkuxl33dnotq2allfpz7tdxlhc5di
+```
+
+The IPLD codec for the above multihash is `0x1011` (fr32-sha2-256-trunc254-padded-binary-tree). You can [inspect this CID on cid.ipfs.tech](https://cid.ipfs.tech/#bafkzcibe52kq2dtip2bmrrw5qhphsa35onsxxvkuxl33dnotq2allfpz7tdxlhc5di).
+
+## Proof of Data Segment Inclusion (PoDSI)
+
+PoDSI enables clients using data aggregation services like web3.storage to verify the correct aggregation of their data and allow proving of this fact to third parties.
+
+Put simply, it is a proof that a smaller piece (a segment) has been included in a larger piece (an aggregate).
+
+[FRC-0058 documentation for PoDSI](https://github.com/filecoin-project/FIPs/blob/master/FRCs/frc-0058.md).
+
+```sh
+# example merkle proof showing path from aggregate (piece) CID to segment (piece) CID
+bafkzcibcaapbrpjpxk32treyrtw5kamyh5ayxoj7rp4obkeoloydktubycnkufy
+└─┬ bafkzcibcaapie6hlazrzph5ui3dx2xxhkie3qbju35shf2bhsdhocrgbp5i2opq
+  └─┬ bafkzcibcaaorabhed2eafo5l7xhwiqycjqp24dfidpxtanhdi53uz33anbjpsma
+    └─┬ bafkzcibcaaojol2me7hy6z2egwmr24otf3pklb2ybxu6qo7fqmwj7avmqise2mi
+      └─┬ bafkzcibcaans72xvshaijv5ew3nnr7ytn32fesfhwkmh3bm42uqtmmckim3jcdy
+        └─┬ bafkzcibcaanc4f4qf2fgmmmt6svgqkk3bkgek3xcubrp6zliq4ldtuhcgt3lcmi
+          └─┬ bafkzcibcaam5ab7crtl3upsf24prtm7egprc4uamwmdy65or5ttx3tvtiipfypi
+            └─┬ bafkzcibcaamdx5p77d4mvlhalb4le4l2mdgkivjqnr4y6yuccdyvda72wctwmoy
+              └─┬ bafkzcibcaal6br6ujd6rlazb4grghepfitehzhxowh7zsbte33gvvcvzetnuuaa
+                └─┬ bafkzcibcaalnrywyaaduk63o6vbewveipgvgn4hd6fbx7z3hfyrcxiakj2bzefa
+                  └─┬ bafkzcibcaakuwcl737abdrpbanbtyhzrwwlqzjvshenvyfda5d66zbnkyuf5cey
+                    └─┬ bafkzcibcaakdjuz3vxhpsh4z5enxfsphdquyufqki4jwfq6xwmpmzyzzvkzicfi
+                      └─┬ bafkzcibcaajvatl2odwkinga5qdngzqhxkuv4np2vjmm2yzia6el3zktd2lc6ki
+                        └─┬ bafkzcibcaajk3bjkzabhi53fmdmc2rgmbqhanpkmxoqrg6nvd4lmomu4klvc2lq
+                          └─┬ bafkzcibcaaiua66kdlvtfpgbrhoyha32wemunseubsszahixj2io2zjvthxxypq
+                            └─┬ bafkzcibcaaift45zx5rhxe4tucqjwpekucnij54onv4n52njju4zg7e2insaiea
+                              └── bafkzcibe52kq2dtip2bmrrw5qhphsa35onsxxvkuxl33dnotq2allfpz7tdxlhc5di
+```
+
+<Callout type="info">
+The above example does not visualize _all_ the information that a PoDSI contains, just the direct path from aggregate (piece) CID to segment (piece) CID.
+</Callout>
+
+## Data Aggregation Proof
+
+A data aggregation proof is a [PoDSI](#proof-of-data-segment-inclusion-podsi), _plus_ information that ties an aggregate piece to a Filecoin Storage Provider. At time of writing this one or more **Deal ID**s.
+
+## Verifiable Aggregation Pipeline
+
+The web3.storage aggregation pipeline is fully verifiable thanks to [UCAN](/docs/concepts/ucans-and-web3storage)s. Your piece can be tracked through the pipeline via signed UCAN receipts.
+
+There are 4 roles in the aggregation pipeline:
+
+1. **Storefront** - facilitates data storage services to applications and users, getting the requested data stored into Filecoin deals asynchronously.
+1. **Aggregator** - aggregates smaller data (Filecoin Pieces) into a larger piece that can effectively be stored with a Filecoin Storage Provider.
+1. **Dealer** - arranges deals with Filecoin Storage Probviders for the aggregates.
+1. **Deal Tracker** - follows the filecoin chain to keep track of successful deals.
+
+Roughly speaking, a piece progresses through the pipeline via the following stages:
+
+<Steps>
+### `filecoin/offer`
+
+The client submits a piece to the _storefront_ (web3.storage) for aggregation and storage in Filecoin storage providers. The receipt for this invocation contains two links for async tasks:
+
+1. `filecoin/submit` - allows the client to continue following the receipt chain through the aggregation pipeline. It is executed after the _storefront_ has verified the piece CID corresponds to the shard CID.
+1. `filecoin/accept` - a "short cut" to the end of the pipeline, where the data aggregation proof will eventually become available. It is executed when the _dealer_ has successfully stored an aggregate containing the submitted piece in one or more Filecoin Storage Providers.
+ 
+### `filecoin/submit`
+ 
+The _storefront_ issues a receipt for `filecoin/submit` to indicate it has verified the offered piece and submitted it to the pipeline. The receipt for this invocation contains a link for an async task `piece/offer`, which is executed when the storefront offers the piece to an _aggregator_.
+
+### `piece/offer`
+
+The _aggregator_ issues a receipt for `piece/offer` when the storefront offers a piece to be aggregated. The receipt contains a link for an async task `piece/accept`, which is executed when the piece has been included in an aggregate.
+
+### `piece/accept`
+
+The _aggregator_ issues `piece/accept` receipts when an aggregate is big enough. _Every_ piece in the aggregate is issued a receipt which includes a [Proof of Data Segment Inclusion (PoDSI)](#proof-of-data-segment-inclusion-podsi). The receipt contains a link for an async task `aggregate/offer`, which is executed when the _aggregator_ offers the aggregate to a _dealer_.
+
+### `aggregate/offer`
+
+The _dealer_ issues an `aggregate/offer` receipt when the aggregator offers a piece to be stored by Filecoin Storeage Providers. The receipt contains a link for an async task `aggregate/accept`, which is executed when the aggregate has been stored by at least one Filecoin Storage Provider.
+
+### `aggregate/accept`
+
+The _dealer_ issues an `aggregate/accept` receipt when an aggregate has been stored by at least one Filecoin Storage Provider. The receipt includes information that ties an aggregate to a Storage Provider which is used in the next step to create a [Data Aggregation Proof](#data-aggregation-proof).
+
+### `filecoin/accept`
+
+The _storefront_ periodically checks for an `aggregate/accept` receipt for offered aggregates. When an aggregate is accepted, the _storefront_ issues `filecoin/accept` receipts for each piece in the aggregate. The receipt includes a [Data Aggregation Proof](#data-aggregation-proof). This is the end of the pipeline.
+
+</Steps>
+
+[Spec for w3filecoin pipeline](https://github.com/web3-storage/specs/blob/main/w3-filecoin.md).

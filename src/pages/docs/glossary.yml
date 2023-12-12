@@ -135,6 +135,19 @@
     When delegating permissions, the issuer is the agent who currently possesses 
     the given permissions and is delegating them to another agent (the audience).
 
+- id: podsi
+  name: PoDSI
+  definition: Proof of Data Segment Inclusion.
+  details: |
+    PoDSI enables clients using data aggregation services like web3.storage to
+    verify the correct aggregation of their data and allow proving of this fact
+    to third parties.
+
+    Put simply, it is a proof that a smaller piece (a segment) has been
+    included in a larger piece (an aggregate).
+
+    https://github.com/filecoin-project/FIPs/blob/master/FRCs/frc-0058.md
+
 - id: space
   definition: A unique identifier that acts as a "namespace" for uploaded content.
   details: |
