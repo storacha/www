@@ -12,5 +12,6 @@
   "receipts": {
     "title": "Query UCAN receipts",
     "display": "hidden"
-  }
+  },
+  "filecoin-info": "Get Filecoin info"
 }
