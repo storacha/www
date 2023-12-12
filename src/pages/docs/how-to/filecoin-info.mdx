@@ -4,7 +4,7 @@ import { Callout, Tabs } from 'nextra/components'
 
 To retrieve a [Data Aggregation Proof](/docs/concepts/podsi#data-aggregation-proof) (including [PoDSI](/docs/concepts/podsi)) you can issue a `filecoin/info` invocation to the web3.storage service.
 
-<Tabs items={['JS client', 'CLI']}>
+<Tabs items={\['JS client', 'CLI']}>
   <Tabs.Tab>
     Piece CIDs are calculated by the client before data is uploaded and are made available in the `onShardStored` callback of `uploadFile`, `uploadDirectory` or `uploadCAR`.
 
