@@ -1,14 +1,20 @@
+import { Callout } from 'nextra/components'
+
 # Removing data from your account
 
 You might want to remove data from being associated with your account. You can do so using the JS client, CLI, or web console.
 
 Note that there is a minimum 30 day retention period for uploaded data, and even once removed, the data might persist on the public IPFS network.
 
-**CAUTION**
+<Callout type="error" emoji="⚠️❗">
+  **Public Data 🌎**<br/>
+  All data uploaded to w3up is available to anyone who requests it using the correct CID. Do not store any private or sensitive information in an unencrypted form using w3up.
+</Callout>
 
-⚠️❗ Public Data 🌎: All data uploaded to w3up is available to anyone who requests it using the correct CID. Do not store any private or sensitive information in an unencrypted form using w3up.
-
-⚠️❗ Permanent Data ♾️: Removing files from w3up will remove them from the file listing for your account, but that doesn't prevent nodes on the decentralized storage network from retaining copies of the data indefinitely. web3.storage itself generally retains and charges users for any uploaded data for a minimum of 30 days. Do not use w3up for data that may need to be permanently deleted in the future.
+<Callout type="error" emoji="⚠️❗">
+  **Permanent Data ♾️**<br/>
+  Removing files from w3up will remove them from the file listing for your account, but that doesn't prevent nodes on the decentralized storage network from retaining copies of the data indefinitely. web3.storage itself generally retains and charges users for any uploaded data for a minimum of 30 days. Do not use w3up for data that may need to be permanently deleted in the future.
+</Callout>
 
 ## Removing uploads (content CIDs) vs. stores (shard CIDs)
 

@@ -1,0 +1,181 @@
+import { Callout } from 'nextra/components'
+import { Steps } from 'nextra/components'
+
+# `go-w3up`
+
+<Callout type="warning">
+  The Go client is under heavily development and is not as fully featured as the [JS client](/docs/w3up-client).
+</Callout>
+
+You can easily integrate web3.storage into your Go apps using `go-w3up`, our Go client for the w3up platform.
+
+In this guide, we'll walk through the following steps:
+
+1. [Installing the client library](#install)
+1. [Generating a DID](#generate-a-did)
+1. [Obtaining proofs](#obtain-proofs)
+1. [Loading your private key and proofs](#load-priviate-key-and-proofs)
+1. [Uploading a CAR file](#upload-a-car)
+
+## Install
+
+You'll need [Go](https://go.dev/) version 1.21.4 or higher.
+
+In addition to the w3up library you're also likely to need elements of `go-ucanto` - a library for performing UCAN RPC calls. Add the libraries to your project's dependencies:
+
+```bash
+go get github.com/web3.storage/go-w3up
+go get github.com/web3.storage/go-ucanto
+```
+
+## Generate a DID
+
+You can use `ucan-key` to generate a private key and DID for use with the library. Install Node.js and then use the `ucan-key` module:
+
+```sh
+npx ucan-key ed
+```
+
+Output should look something like:
+
+```sh
+# did:key:z6Mkh9TtUbFJcUHhMmS9dEbqpBbHPbL9oxg1zziWn1CYCNZ2
+MgCb+bRGl02JqlWMPUxCyntxlYj0T/zLtR2tn8LFvw6+Yke0BKAP/OUu2tXpd+tniEoOzB3pxqxHZpRhrZl1UYUeraT0=
+```
+
+<Callout>
+  Save the private key (starting `Mg...`) to a file `private.key`.
+</Callout>
+
+## Obtain proofs
+
+Proofs are delegations to your DID enabling it to perform tasks. Currently the best way to obtain proofs that will allow you to interact with the web3.storage API is to use the w3up JS CLI:
+
+<Steps>
+### Generate a DID
+
+[Generate a DID](#generate-a-did) and make a note of it (the string starting with `did:key:...`)
+
+### Install w3 CLI
+
+```sh
+npm install -g @web3-storage/w3cli
+```
+
+### Create a space
+
+```sh
+w3 space create [NAME]
+```
+
+### Delegate capabilities to your DID
+
+```sh
+w3 delegation create -c 'store/*' -c 'upload/*' [DID] -o proof.ucan
+```
+</Steps>
+
+<Callout>
+  Make a note of the space DID from above. You'll need it later.
+</Callout>
+
+## Load private key and proofs
+
+To interact with the web3.storage API you need your private key to sign UCAN invocations and a proof that your key has been delegated capabilities to perform tasks:
+
+```go
+package main
+
+import (
+  "ioutil"
+
+  "github.com/web3-storage/go-ucanto/did"
+  "github.com/web3-storage/go-ucanto/principal/ed25519/signer"
+  "github.com/web3-storage/go-w3up/delegation"
+)
+
+// space that the client will interact with
+space, _ := did.Parse("did:key:z6MkwDuRThQcyWjqNsK54yKAmzfsiH6BTkASyiucThMtHt1y")
+
+// private key to sign UCAN invocations with
+priv, _ := ioutil.ReadFile("path/to/private.key")
+issuer, _ := signer.Parse(priv)
+
+// UCAN proof(s) that the signer can perform tasks in this space (a delegation chain)
+prfbytes, _ := ioutil.ReadFile("path/to/proof.ucan")
+proof, _ := delegation.ExtractProof(b)
+```
+
+## Upload a CAR
+
+Once you have loaded your space DID, your private key and your delegation proofs, you can upload a CAR to web3.storage.
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"net/http"
+
+	"github.com/ipfs/go-cid"
+	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
+	"github.com/multiformats/go-multihash"
+	"github.com/web3-storage/go-w3up/capability/storeadd"
+	"github.com/web3-storage/go-w3up/client"
+)
+
+func main() {
+  data, _ := ioutil.ReadFile("path/to/my.car")
+
+  // generate the CID for the CAR
+  mh, _ := multihash.Sum(data, multihash.SHA2_256, -1)
+  link := cidlink.Link{Cid: cid.NewCidV1(0x0202, mh)}
+
+  rcpt, _ := client.StoreAdd(
+    issuer,
+    space,
+    &storeadd.Caveat{Link: link, Size: len(data)},
+    client.WithProofs(proofs),
+  )
+
+  // "upload" means it needs to be uploaded, "done" means it is already done!
+  if rcpt.Out().Ok().Status == "upload" {
+    hr, _ := http.NewRequest("PUT", *rcpt.Out().Ok().Url, bytes.NewReader(data))
+
+    hdr := map[string][]string{}
+    for k, v := range rcpt.Out().Ok().Headers.Values {
+      hdr[k] = []string{v}
+    }
+
+    hr.Header = hdr
+    hr.ContentLength = len(data)
+    httpClient := http.Client{}
+    res, _ := httpClient.Do(hr)
+    res.Body.Close()
+  }
+
+  fmt.Println(link.String())
+}
+```
+
+<Callout type="warning">
+  Maximum upload size is 4,261,412,864 bytes (around 4GB). To upload CAR files larger than this, please use the [sharding utility](https://github.com/web3-storage/go-w3up/blob/main/car/sharding/sharding.go) to split the CAR into multiple shards.
+</Callout>
+
+A DAG can be sharded amongst multiple CAR files (see maximum upload size above). To tie together multiple stored CAR files to a content root CID you can register an "upload". An "upload" is a content root CID + a set of CAR shards that it is contained within.
+
+<Callout type="info">
+  You can register an upload with just one "shard". It is best practice to always register an upload even if there is only 1 shard.
+</Callout>
+
+Registering an upload is simple:
+
+```go
+rcpt, _ := client.UploadAdd(
+  issuer,
+  space,
+  &uploadadd.Caveat{Root: root, Shards: shards},
+  client.WithProofs(proofs),
+)
+```
