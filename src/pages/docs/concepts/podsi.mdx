@@ -89,22 +89,22 @@ Roughly speaking, a piece progresses through the pipeline via the following stag
 <Steps>
 ### `filecoin/offer`
 
-The client submits a piece to the _storefront_ (web3.storage) for aggregation and storage in Filecoin storage providers. The reciept for this invocation contains two links for async tasks:
+The client submits a piece to the _storefront_ (web3.storage) for aggregation and storage in Filecoin storage providers. The receipt for this invocation contains two links for async tasks:
 
 1. `filecoin/submit` - allows the client to continue following the receipt chain through the aggregation pipeline. It is executed after the _storefront_ has verified the piece CID corresponds to the shard CID.
 1. `filecoin/accept` - a "short cut" to the end of the pipeline, where the data aggregation proof will eventually become available. It is executed when the _dealer_ has successfully stored an aggregate containing the submitted piece in one or more Filecoin Storage Providers.
  
 ### `filecoin/submit`
  
-The _storefront_ issues a receipt for `filecoin/submit` to indicate it has verified the offered piece and submitted it to the pipeline. The reciept for this invocation contains a link for an async task `piece/offer`, which is executed when the storefront offers the piece to an _aggregator_.
+The _storefront_ issues a receipt for `filecoin/submit` to indicate it has verified the offered piece and submitted it to the pipeline. The receipt for this invocation contains a link for an async task `piece/offer`, which is executed when the storefront offers the piece to an _aggregator_.
 
 ### `piece/offer`
 
-The _aggregator_ issues a receipt for `piece/offer` when the storefront offers a piece to be aggregated. The reciept contains a link for an async task `piece/accept`, which is executed when the piece has been included in an aggregate.
+The _aggregator_ issues a receipt for `piece/offer` when the storefront offers a piece to be aggregated. The receipt contains a link for an async task `piece/accept`, which is executed when the piece has been included in an aggregate.
 
 ### `piece/accept`
 
-The _aggregator_ issues `piece/accept` receipts when an aggregate is big enough. _Every_ piece in the aggregate is issued a receipt which includes a [Proof of Data Segment Inclusion (PoDSI)](#proof-of-data-segment-inclusion-podsi). The reciept contains a link for an async task `aggregate/offer`, which is executed when the _aggregator_ offers the aggregate to a _dealer_.
+The _aggregator_ issues `piece/accept` receipts when an aggregate is big enough. _Every_ piece in the aggregate is issued a receipt which includes a [Proof of Data Segment Inclusion (PoDSI)](#proof-of-data-segment-inclusion-podsi). The receipt contains a link for an async task `aggregate/offer`, which is executed when the _aggregator_ offers the aggregate to a _dealer_.
 
 ### `aggregate/offer`
 
