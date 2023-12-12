@@ -23,7 +23,7 @@ However, once a file is uploaded to web3.storage, there cannot be a guarantee th
 
 ## Are there client libraries other than Javascript?
 
-Yes! There is now a [client in Go](/docs/go-w3up). However, it is heavily under development and not yet fully featured. Alternatively, you can use the CLI for many programmatic use cases.
+Yes! There is a [client in Go](/docs/go-w3up). However, it is heavily under development at the time of writing and not yet fully featured. Alternatively, you can use the CLI for many programmatic use cases.
 
 ## How can I edit a file or add files to a folder?
 
