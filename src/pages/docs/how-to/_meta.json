@@ -13,5 +13,6 @@
     "title": "Query UCAN receipts",
     "display": "hidden"
   },
-  "filecoin-info": "Get Filecoin info"
+  "filecoin-info": "Get Filecoin info",
+  "w3name": "Mutate pointers"
 }
