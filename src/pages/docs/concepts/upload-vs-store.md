@@ -2,8 +2,8 @@
 
 There are two types of content identifiers (CIDs) that web3.storage interacts with:
 
-1. Content CIDs: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
-2. Shard CIDs: The CID of the serialized shards of data itself that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
+1. **Content CIDs**: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
+2. **Shard CIDs**: The CID of the serialized shards of data itself that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
 
 One example of where you might see both is uploading a large file with the CLI:
 
