@@ -48,11 +48,11 @@ If you have managed your shard CIDs and upload CIDs separately (e.g., used `clie
 To remove shard CIDs and upload CIDs separately, you'll generally do this by:
 
 1. Determine shards to remove (skip this step if you already know!):
-    - Client: `client.capability.upload.list(contentCID)`
-    - CLI: `w3 can upload ls <contentCID> --shards`
+   - Client: `client.capability.upload.list(contentCID)`
+   - CLI: `w3 can upload ls <contentCID> --shards`
 1. Remove the upload:
-    - Client: `client.capability.upload.remove(contentCID)`
-    - CLI: `w3 can upload rm <contentCID>`
+   - Client: `client.capability.upload.remove(contentCID)`
+   - CLI: `w3 can upload rm <contentCID>`
 1. Remove each of the shards (ensure first that no other content is using that shard!):
-    - Client: `client.capability.store.remove(shardCID)`
-    - CLI: `w3 can store rm <shardCID>`
+   - Client: `client.capability.store.remove(shardCID)`
+   - CLI: `w3 can store rm <shardCID>`
