@@ -2,7 +2,7 @@ import Image from 'next/image'
 import ImageIconCluster from '@/../public/images/index/cluster-1.png'
 import { W3UPClientExample } from '@/components/code'
 import { NavLink, ButtonLink, Header } from '@/components/nav'
-import up from '@web3-storage/upload-client'
+import * as up from '@web3-storage/upload-client'
 
 export default function HomePage () {
   console.log('up', up)
