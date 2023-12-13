@@ -1,0 +1,48 @@
+import { Callout } from 'nextra/components'
+
+# How to list files uploaded to web3.storage
+
+In this how-to guide, you'll learn about the different ways that you can list the files that you've uploaded to web3.storage. Once you've stored some files using web3.storage, you'll want to see a list of what you've uploaded. There are two ways you can do this:
+
+- Programmatically using the JS client or CLI
+- Using the web3.storage console
+
+## Using the JS client or CLI
+
+You can also access a listing of your uploads from your code using the web3.storage client. In the example below, this guide walks through how to use the JavaScript client library to fetch a complete listing of all the data you've uploaded using web3.storage.
+
+For instructions on how to set up your client instance or CLI, check out the [Upload](/docs/how-to/upload/) section.
+
+Today, like other developer object storage solutions, there is no sorting or querying by timestamp to keep things scalable.
+
+- Client: `client.capability.upload.list({ cursor: '', size: 25 })`
+- CLI: `w3 ls`
+
+In the client the listing is paginated. The result contains a `cursor` that can be used to continue listing uploads. Pass the `cursor` in the result as an _option_ to the next call to receive the next page of results. The `size` option allows you to change the number of items that are returned per page.
+
+In the CLI, you can use the `--shards` option to print for each upload the list of shards (CAR CIDs) that the uploaded data is contained within. You can learn about the relationship between uploads and shards in the [Upload vs. Store](/docs/concepts/upload-vs-store/) section.
+
+<Callout type="info">
+  The `w3 ls` command automatically pages through the listing and prints the results.
+</Callout>
+
+### Listing shards
+
+Each upload is comprised of one or more shards. You can get a list of all shard CIDs in a Space, or look up what the shard CIDs are for an individual upload.
+
+- Client: `client.capability.store.list({ cursor: '', size: 25 })`
+- CLI: `w3 can store ls --cursor "" --size 25`
+
+The listings are paginated. The result contains a `cursor` that can be used to continue listing uploads. Pass the `cursor` in the result as an _option_ to the next call to receive the next page of results. The `size` option allows you to change the number of items that are returned per page.
+
+A list of shards for a given upload can be retrieved like this:
+
+- Client: `client.capability.upload.get(contentCID)`
+
+You can learn about the relationship between uploads and shards in the [Upload vs. Store](/docs/concepts/upload-vs-store/) section.
+
+## Using the console web UI
+
+You can see a list of everything you've uploaded to web3.storage in the [console](https://console.web3.storage) web app. If you don't need to work with this list programmatically, using the website may be a simpler choice.
+
+This console provides a convenient overview of your stored data, including links to view your files in your browser via an [IPFS gateway](https://docs.ipfs.io/concepts/ipfs-gateway/) and information about how the data is being stored on the decentralized storage networks that web3.storage uses under the hood.
