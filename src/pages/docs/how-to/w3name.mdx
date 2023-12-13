@@ -18,7 +18,7 @@ In this guide, we'll discover how to use the JavaScript `w3name` package to crea
   IPNS is a secure, local-first protocol, but does not always resolve performantly when needing to fetch the absolute latest update to a name (which is a requirement for most application use-cases) from the public IPFS network (e.g., over a local Kubo instance or public gateway). You can read more about this [here.](https://docs.ipfs.tech/concepts/ipns/#tradeoffs-between-consistency-vs-availability). As a result, w3name's recommended usage for use cases where performance and consistency are both important is [via an endpoint hosted by web3.storage](#getting-the-latest-revision). We plan on offering a new naming protocol at some point that can be used for application use cases without relying on any centralized infrastructure.
 </Callout>
 
-# What's in a name?
+## What's in a name?
 
 w3name is similar to the Domain Name System (DNS), in that it allows you to query for an identifier and resolve the latest value. Unlike DNS, however, you cannot choose your own identifiers, and the "names" produced by IPNS and w3name are not human-readable, like `web3.storage` or `ipfs.io`.
 
@@ -31,7 +31,7 @@ Each "name" maps to a "record", which contains:
 
 Because the verification key is embedded in the name, all names created with w3name are "self-certifying," meaning that you can validate any record published to that name without needing any other authority or "source of truth" than the name itself.
 
-# Getting started
+## Getting started
 
 The easiest way to use the [w3name](https://www.npmjs.com/package/w3name) service is with the w3name JavaScript library, which provides methods for creating, signing, publishing and resolving records.
 
@@ -73,7 +73,7 @@ console.log('created new name: ', name.toString());
 So far, the signing key for your new name only exists in memory. To save it for publishing updates, see [Saving and loading keys](#saving-and-loading-keys) below.
 </Callout>
 
-# Publishing the first revision
+## Publishing the first revision
 
 We created a name, but so far there's no value associated with it.
 
@@ -94,7 +94,7 @@ We now have a `revision` object that's ready to publish, but so far it's only in
 await Name.publish(revision, name.key);
 ```
 
-# Publishing an updated revision
+## Publishing an updated revision
 
 Each revision contains a sequence number, which must be incremented when publishing a new revision. Once you've published the initial revision, you can use the `Name.increment` function to create a new revision based on the previously published one.
 
@@ -125,7 +125,8 @@ const revision = await Name.resolve(name);
 console.log('Resolved value:', revision.value);
 ```
 
-# Saving and loading keys
+## Saving and loading keys
+
 To create revisions to a name after publication, you'll need the original signing key. You can get the binary representation of a name with the `key.bytes` property, which can then be saved to disk or stored in a secure key management system.
 
 ```javascript
@@ -153,5 +154,5 @@ async function loadSigningKey(filename) {
   Be careful where you save your keys! Your private signing keys allow the holder to update your published records. Be careful to save your keys to a secure location, and never store your private keys in a source code repository.
 </Callout>
 
-# Rate limits
+## Rate limits
 The w3name API is rate limited at 30 requests per 10 seconds per IP.
