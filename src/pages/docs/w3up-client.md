@@ -52,7 +52,7 @@ To use a space for uploads, it needs to be provisioned with the storage service,
 const myAccount = await client.login('zaphod@beeblebrox.galaxy')
 ```
 
-Calling `login` cause an email to be sent to the given address, unless the client is already logged in. Once a user clicks the confirmation link in the email, the promise returned by the `login` method will resolve. Make sure to check for errors, as `login` will fail if the email is not confirmed within the expiration timeout.
+Calling `login` causes an email to be sent to the given address, unless the client is already logged in. Once a user clicks the confirmation link in the email, the promise returned by the `login` method will resolve. Make sure to check for errors, as `login` will fail if the email is not confirmed within the expiration timeout.
 
 If your account does not yet have a payment plan, you'll be prompted to choose one after your email address has been verified. You will need a payment plan in order to provision your space. You can use the following code to wait for a payment plan to be selected:
 
@@ -98,7 +98,7 @@ Now that you've created and provisioned a space, you're ready to upload files to
 
 Call `uploadFile` to upload a single file, or `uploadDirectory` to upload multiple files.
 
-`uploadFile` expects a "Blob like" input, which can be a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On node.js, see the [`filesFromPath` library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem.
+`uploadFile` expects a "Blob like" input, which can be a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On Node.js, see the [`files-from-path` library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem.
 
 `uploadDirectory` requires `File`-like objects instead of `Blob`s, as the file's `name` property is used to build the directory hierarchy.
 
@@ -127,9 +127,9 @@ In the example above, `directoryCid` resolves to an IPFS directory with the foll
 
 ## View your file on an IPFS gateway
 
-The `uploadFile` and `uploadDirectory` methods described in the previous step both return a CID, or Content Identifier, encoded as a string.
+The `uploadFile` and `uploadDirectory` methods described in the previous step both return a CID, or Content Identifier - a unique hash of the data.
 
-To create a link to view your file on an IPFS gateway, create a URL of the form `https://${cid}.ipfs.${gatewayHost}`, where `${cid}` is the CID of the content you want to view, and `${gatewayHost}` is the domain of the gateway. To use our own gateway at `w3s.link`, your url would be `https://${cid}.ipfs.w3s.link`.
+To create a link to view your file on an IPFS gateway, create a URL of the form `https://${cid}.ipfs.${gatewayHost}`, where `${cid}` is the CID of the content you want to view, and `${gatewayHost}` is the domain of the gateway. To use our own gateway at `w3s.link`, your URL would be `https://${cid}.ipfs.w3s.link`.
 
 Opening the gateway URL in a browser will take you to your uploaded file, or a directory listing of files, depending on what you uploaded.
 

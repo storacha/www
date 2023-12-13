@@ -8,7 +8,7 @@ To make IPFS data accessible outside of the peer-to-peer network, [special IPFS 
 
 As more browsers like [Brave](https://brave.com/ipfs-support/) and [Opera](https://blogs.opera.com/tips-and-tricks/2021/02/opera-crypto-files-for-keeps-ipfs-unstoppable-domains/) adopt native IPFS support, the need for gateways will naturally lessen over time. Today, you can reach the widest audience by using HTTP gateways in your web applications, but it's a great idea to also surface the original ipfs:// URI for your content, so that IPFS-native browsers can access the content directly through Bitswap.
 
-For more information about fetching content that you uploaded through an IPFS HTTP gateway, see the Retrieve section.
+For more information about fetching content that you uploaded through an IPFS HTTP gateway, see the [Retrieve section](/docs/how-to/retrieve).
 
 ## Types of gateway
 
@@ -36,6 +36,6 @@ A "subdomain style" gateway URL puts the CID into the host portion of the URL, a
 
 If the CID points to a directory listing, you can use the path portion of the URL to specify the filename:
 
-<https://bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my.ipfs.w3s.link/hi-gateway.txt>
+https://bafybeid4gwmvbza257a7rx52bheeplwlaogshu4rgse3eaudfkfm7tx2my.ipfs.w3s.link/hi-gateway.txt
 
 This is the preferred style for serving web assets over HTTP gateways, because web browsers provide security isolation on a per-domain basis. Using the subdomain style, every CID gets its own "namespace" for things like cookies and local storage, which isolates things from other web content stored on IPFS.

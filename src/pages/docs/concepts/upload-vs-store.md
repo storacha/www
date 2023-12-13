@@ -1,35 +1,41 @@
 # Upload vs. Store capabilities in web3.storage
 
-There are two types of content identifiers (CIDs) that web3.storage interacts with:
+There are three types of content identifiers (CIDs) that web3.storage interacts with:
 
-1. Content CIDs: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
-2. Shard CIDs: The CID of the serialized shards of data itself that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
+1. **Content CIDs**: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are generally prefixed by `bafy…`.
+2. **Shard CIDs**: The CID of the serialized shards of data itself that are produced client-side, sent to web3.storage, and stored. These CIDs are generally prefixed by `bag…`.
+3. **Piece CIDs**: The primary means of referencing data stored in a sector of a Filecoin Storage Provider. You can think of them as another way to reference a shard. These CIDs are generally prefixed by `bafk…`.
 
-One example of where you might see both is uploading a large file with the CLI:
+One example of where you might see all three is uploading a large file with the CLI:
 
 ```sh
-w3 up gb.file
- 1 file (1GB)
-bagbaierao...
-bagbaieraq...
-bagbaieraj...
-bagbaierai...
-bagbaierax...
-bagbaieraf...
-bagbaierac...
-bagbaierax...
-bagbaierax...
-bagbaiera4...
-
+w3 up gb.file --verbose
+  1 file 1.0GB
+  bagbaierakgivx2igjaydgkdholxohq77gsmjceb44wghn6l7rcxjnxlb2ysq 132.1MB
+   └── Piece CID: bafkzcibextmt6fvx6vkm56k3je76dirfpwzbqhs75agxen7yidv5lo5usnfdbetzcu
+  bagbaiera5hekddouwxfgue3wrbe5ddwcefr6l7z3majbqsjk3rxlruziw4nq 132.1MB
+   └── Piece CID: bafkzcibextmt6fujkiyd45vkvyd2gppji2wzcpsvu72y3sshzppmi2wnxp4q5pblay
+  bagbaierazfqaaabmnaksetr4ivqu7ytchnikygij7g26cycbjbbnfja6oxfa 132.1MB
+   └── Piece CID: bafkzcibextmt6ftpb5xepzfvg4ot5bv7uhuplrdbdrwnznpwnpaempif4i76gxbmdm
+  bagbaiera3elp7gxxbwvgyrgzrjjqsrhefofnr4t2zayktvkamqbjxfuundoa 132.1MB
+   └── Piece CID: bafkzcibextmt6frkjuqg6pxgqaq2zi5ktwsprflbikk2cnqshxifvsumntmqedgrba
+  bagbaieraamcctnhnqvwzuf7zhg4jyedg5c76fqn625wi7pico4xtnid5bgba 132.1MB
+   └── Piece CID: bafkzcibextmt6frloqsvau6qhwzfndrh55ahdjech52ddhspakf4gnxwksuks6uiem
+  bagbaiera6kel2dvxaiowgtj563kic2ftosnzqwue7etiph242w7w5s262fha 132.1MB
+   └── Piece CID: bafkzcibextmt6frcrmqxujkfxiy34yutheho55cwhlaqdypafjkhgusphcn5kyp3da
+  bagbaieranxcdfpqqqvmyugisyxmautsduivwrsm4jg2x2akys4ia3u4oyh7q 59.0MB
+   └── Piece CID: bafkzcibfzxlncayvf3ndiybf3hpigkfd4o27oqrfgmpr6y7ut5nhcyjdtjhqsvstwyqq
+  bagbaierakynqcaqedv2brd6qs772s3uqnrxwa62guoeqqjq2bi6kr76vfvla 132.1MB
+   └── Piece CID: bafkzcibextmt6fvobnshzubgtr4szqsztg35yjkoczy3bry74zfy2bu5fm2x5caefq
 ⁂ Stored 1 file
-⁂ https://w3s.link/ipfs/bafybeiaxwvg4...
+⁂ https://w3s.link/ipfs/bafybeidt227tuki2axtb3xcolwd5fw7relv6hfwxrlhgxjzyzwh4cowymy
 ```
 
-The CLI sharded the 1GB upload into 10 shards, each with a `bag…`-prefixed CID. The content CID of the file itself is included in the `w3s.link/ipfs/bafy…` link at the bottom.
+The CLI sharded the ~1GB upload into 8 shards, each with a `bag…`-prefixed CID. The content CID of the file itself is included in the `w3s.link/ipfs/bafy…` link at the bottom.
 
 In the vast majority of cases, users should focus on content CIDs, as this is what they'll be using to fetch their content. If you stick with using the recommended client and CLI methods, then you won't really have to ever worry about the shard CIDs.
 
-However, if you're interested in learning more about how web3.storage uses both, read on!
+However, if you're interested in learning more about how web3.storage uses all three, read on!
 
 ## Upload vs. Store
 
@@ -68,3 +74,7 @@ web3.storage tracks usage for payment (i.e., how much storage is utilized by a u
 Fortunately, this shouldn't make things any more complicated - we go into more detail below, but in general, when you remove a content CID from your account, you'll want to remove the shard CIDs as well (e.g., in the client calling `client.remove(contentCID, { shards: true })`).
 
 However, if you are a power user interacting with shard CIDs as well (like in the previous section), then you need to be more cautious about removing shard CIDs from your account. (This is why the default for the client and CLI methods is for shards to be maintained after removing a content CID). Learn more about how to do this in the Remove section.
+
+## When should I care about Piece CIDs?
+
+Piece CIDs are how you can reference your data when it is stored in Filecoin Storage Providers. You can think of Piece CIDs as another way to reference a shard - they are in fact calculated from shard data. Piece CIDs are used in [PoDSI (Proof of Data Segment Inclusion)](/docs/concepts/podsi/) - a proof that a piece is included in a larger piece, which allows users and third parties to prove their data is stored with a Filecoin Storage Provider.

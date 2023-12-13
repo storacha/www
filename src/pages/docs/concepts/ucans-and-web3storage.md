@@ -26,17 +26,18 @@ The delegation from a Space to your Agent that w3up-client needs can be passed e
 
 ### Delegation to other actors
 
-Just like Spaces can delegate permissions to Agents you own, you can also delegate permissions to other actors' Agents. One common application of this could be you delegating permission to upload to your Space to your users. Here's a code snippet demonstrating this from the Upload section:
+Just like Spaces can delegate permissions to Agents you own, you can also delegate permissions to other actors' Agents. One common application of this could be you delegating permission to upload to your Space to your users. Here's a code snippet demonstrating this:
 
-```javascript
+**Backend**
+
+```js
 import { CarReader } from '@ipld/car'
 import * as DID from '@ipld/dag-ucan/did'
 import * as Delegation from '@ucanto/core/delegation'
-import { importDAG } from '@ucanto/core/delegation'
 import * as Signer from '@ucanto/principal/ed25519'
 import * as Client from '@web3-storage/w3up-client'
 
-async function backend(did: string) {
+async function backend(did) {
   // Load client with specific private key
   const principal = Signer.parse(process.env.KEY)
   const client = await Client.create({ principal })
@@ -49,10 +50,8 @@ async function backend(did: string) {
   // Create a delegation for a specific DID
   const audience = DID.parse(did)
   const abilities = ['store/add', 'upload/add']
-  const expiration = Math.floor(Date.now() / 1000) + 60 * 60 * 24 // 24 hours from now
-  const delegation = await client.createDelegation(audience, abilities, {
-    expiration,
-  })
+  const expiration = Math.floor(Date.now() / 1000) + (60 * 60 * 24) // 24 hours from now
+  const delegation = await client.createDelegation(audience, abilities, { expiration })
 
   // Serialize the delegation and send it to the client
   const archive = await delegation.archive()
@@ -66,22 +65,34 @@ async function parseProof(data) {
   for await (const block of reader.blocks()) {
     blocks.push(block)
   }
-  return importDAG(blocks)
+  return Delegation.importDAG(blocks)
 }
+```
+
+When the `backend` function is called in the developer's backend:
+- It's passed the DID of the user's Agent
+- Backend client initializes with an Agent that has permission to the developer's Space
+- It then generates a UCAN delegated to the user Agent DID passed in with only the `store/add` and `upload/add` abilities (to give the user ability to upload) and set to expire in 24 hours
+
+**Frontend**
+
+```js
+import * as Delegation from '@ucanto/core/delegation'
+import * as Client from '@web3-storage/w3up-client'
 
 async function frontend() {
   // Create a new client
   const client = await Client.create()
 
   // Fetch the delegation from the backend
-  const apiUrl = `/api/w3up-delegation/${client.agent().did()}` // backend method is exposed at this API URL
+  const apiUrl = `/api/w3up-delegation/${client.agent().did()}`
   const response = await fetch(apiUrl)
   const data = await response.arrayBuffer()
 
   // Deserialize the delegation
   const delegation = await Delegation.extract(new Uint8Array(data))
   if (!delegation.ok) {
-    throw new Error('Failed to extract delegation')
+    throw new Error('Failed to extract delegation', { cause: delegation.error })
   }
 
   // Add proof that this agent has been delegated capabilities on the space
@@ -92,16 +103,10 @@ async function frontend() {
 }
 ```
 
-You can see the following flow:
-
-- When `backend` function is called in the developer's backend:
-  - It's passed the DID of the user's Agent
-  - Backend client initializes with an Agent that has permission to the developer's Space
-  - It then generates a UCAN delegated to the user Agent DID passed in with only the `store/add` and `upload/add` abilities (to give the user ability to upload) and set to expire in 24 hours
-- When `frontend` function is called in the user's environment:
-  - An Agent DID is created
-  - The `backend` function hosted at an API endpoint is called, passing in the Agent DID
-  - The client is set up with a UCAN delegating upload capabilities to the Agent
-  - It's now ready to upload!
+When the `frontend` function is called in the user's environment:
+- An Agent DID is created
+- The `backend` function hosted at an API endpoint is called, passing in the Agent DID
+- The client is set up with a UCAN delegating upload capabilities to the Agent
+- It's now ready to upload!
 
 However, there's other interesting possibilities - for instance, you could create an app where your users make Spaces and delegate permission to your app to read their uploads. Read the [Architecture options](/docs/concepts/architecture-options/) section to explore more.
