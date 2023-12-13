@@ -14,7 +14,7 @@ All records created and updated using w3name are signed locally with each user's
 
 In this guide, we'll discover how to use the JavaScript `w3name` package to create and manage name records for data stored with web3.storage.
 
-<Callout type="error" emoji="⚠️">
+<Callout type="warning">
   IPNS is a secure, local-first protocol, but does not always resolve performantly when needing to fetch the absolute latest update to a name (which is a requirement for most application use-cases) from the public IPFS network (e.g., over a local Kubo instance or public gateway). You can read more about this [here.](https://docs.ipfs.tech/concepts/ipns/#tradeoffs-between-consistency-vs-availability). As a result, w3name's recommended usage for use cases where performance and consistency are both important is [via an endpoint hosted by web3.storage](#getting-the-latest-revision). We plan on offering a new naming protocol at some point that can be used for application use cases without relying on any centralized infrastructure.
 </Callout>
 
