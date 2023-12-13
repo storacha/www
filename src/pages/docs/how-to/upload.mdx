@@ -16,15 +16,15 @@ Later in this section, we also cover uploading data using the CLI or web console
   Removing files from w3up will remove them from the file listing for your account, but that doesn't prevent nodes on the decentralized storage network from retaining copies of the data indefinitely. web3.storage itself generally retains and charges users for any uploaded data for a minimum of 30 days. Do not use w3up for data that may need to be permanently deleted in the future.
 </Callout>
 
-## web3.storage API authorization
+{/* ## web3.storage API authorization
 
-In the previous section, you created a Space that has a unique DID. To use the client to upload data to this Space, you need to give it permission to do so. This is done by passing an Agent into the client and a UCAN token delegating permissions to this Agent. An Agent has a DID with an underlying private key (like a Space), but can be thought of as parallel to a login session (whereas the Space can be thought of more like a bucket or account). To learn more about how UCAN works and how web3.storage uses it, read our docs on UCAN authorization.
+In the previous section, you created a Space that has a unique DID. To use the client to upload data to this Space, you need to give it permission to do so. This is done by passing an Agent into the client and a UCAN token delegating permissions to this Agent. An Agent has a DID with an underlying private key (like a Space), but can be thought of as parallel to a login session (whereas the Space can be thought of more like a bucket or account). To learn more about how UCAN works and how web3.storage uses it, read our docs on UCAN authorization. */}
 
-## Using the Command line `w3cli`
+## Using the CLI
 
-If you followed the [Create account](create-account) and [Create Space](create-space) sections, you will already have the CLI set up with a Space. However, you might be using the CLI on a new machine, in which case you can follow these instructions:
+If you followed the [Create Account](create-account) and [Create Space](create-space) sections, you will already have the CLI set up with a Space. However, you might be using the CLI on a new machine, in which case you can follow these instructions:
 
-1. (If not yet installed) Install the CLI from npm using your command line: `npm install -g @web3-storage/w3cli`.
+1. Install the CLI from npm using your command line: `npm install -g @web3-storage/w3cli`.
 2. Run `w3 login alice@example.com` in the command line using your email address. Click on the validation link sent to your email.
 3. After successfully running `login`, your CLI Agent has been delegated access to all Spaces associated with your email address. You can see a list of these Spaces using `w3 space ls` and select the one you'd like to upload to using `w3 space use <space_did>`.
 
@@ -38,18 +38,7 @@ There are a few useful flags (check out the reference docs or `w3 up --help` to 
 -c, --car    # File is a CAR file.
 ```
 
-## Using the Javascript client
-
-This section discusses using the web3.storage JavaScript client, `w3up-client`, with your (developer-owned) Space in your application. web3.storage's Javascript client provides a simple interface for storing data using syntax inspired by familiar web APIs such as [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
-
-```mermaid
-flowchart TD
-B[w3up-client instance] --\>|Automatic if specific AgentData is not passed when client object created|S(Pass local AgentData)
-S --\> C(Get UCAN delegation from Space to Agent)
-C --\> D(Upload to Space using Agent)
-```
-
-All uses of `w3up-client` to upload with web3.storage follow the flow above.
+## Using the JS client
 
 ### Installing the client
 
@@ -63,36 +52,44 @@ npm install @web3-storage/w3up-client
 
 The package provides a [static create function](https://web3-storage.github.io/w3up/functions/_web3_storage_w3up_client.create.html) that returns a [Client object](https://web3-storage.github.io/w3up/classes/_web3_storage_w3up_client.Client.html). How you initialize it depends on the environment the client is used in: **persistent** or **ephemeral**.
 
-Examples of persistent environments:
+Examples of **persistent** environments:
 
 * A browser application
 * A terminal application
 * An installed application (e.g. Electron)
 
-Examples of ephemeral environments:
+Examples of **ephemeral** environments:
 
 * AWS Lambda or server side workers
 * Running inside Docker instances
 * CI
 
-### Claim delegation via email validation: For persistent environment only
+#### Claim delegations via email validation
+
+<Callout type="warning">
+  For persistent environment only
+</Callout>
+
+A new client can claim access to their existing Spaces by validating their email address.
 
 ```mermaid
 sequenceDiagram
 Client-\>\>web3.storage service: Here is my email address and Agent DID
 web3.storage service--\>\>Client: Please click the link to validate
 Client--\>\>web3.storage service: Email address validated
-web3.storage service-\>\>Client: Here is a UCAN delegating permission from Space DID to Agent DID
+web3.storage service-\>\>Client: Here is a UCAN attesting that your Agent DID belongs to your email
 ```
 
-You can use web3.storage's email authorization flow to give permissions to your server-side client. This can be good if your environment will be persistent (otherwise it would be prohibitive to click an email validation link every time the client is re-instantiated).
+You can use web3.storage's email authorization flow to give permissions to your client. This can be good if your environment will be persistent (otherwise it would be prohibitive to click an email validation link every time the client is re-instantiated).
+
+When a Space is created, access permissions are delegated to your email address. We use a special kind of DID for this, a `did:mailto:`. These UCANs are stashed with the web3.storage service. When you validate your email address with a new Agent DID, web3.storage issues a UCAN attestation, that says your Agent DID is owned by your email address. It also returns the UCAN permissions you previously stashed. You can then use the returned UCANs, along with the attestation to prove you are authorized to perform actions.
 
 ```javascript
 import { create } from '@web3-storage/w3up-client'
 const client = await create()
 ```
 
-By default, constructing a client like this will re-use state persisted by other clients because `create` constructs the w3up [Client](https://web3-storage.github.io/w3up/classes/_web3_storage_w3up_client.Client.html)'s access [Agent](https://web3-storage.github.io/w3up/classes/_web3_storage_access.Agent.html) with [AgentData](https://web3-storage.github.io/w3up/classes/_web3_storage_access.AgentData.html) backed by a storage [Driver](https://web3-storage.github.io/w3up/interfaces/_web3_storage_access.unknown.Driver.html) ([IndexedDBDriver](https://web3-storage.github.io/w3up/classes/_web3_storage_access.unknown.IndexedDBDriver.html) in the browser and [ConfDriver](https://web3-storage.github.io/w3up/classes/_web3_storage_access.unknown.ConfDriver.html) otherwise) that persists the AgentData between processes and client instances.
+By default, constructing a client like this will re-use state persisted by other clients because `create` constructs the client with a store that persists data between processes and client instances.
 
 Once you have created a client, you can login with your email address. Calling login will cause an email to be sent to the given address.
 
@@ -106,9 +103,11 @@ Once a user clicks the confirmation link in the email, the login method will res
 await client.setCurrentSpace('did:key:...') // select the relevant Space DID that is associated with your account
 ```
 
-### Bring your own Agent
+#### Bring your own delegations
 
-For any backend (including non-persistent and/or serverless)
+<Callout type="info">
+  For any backend (including non-persistent and/or serverless)
+</Callout>
 
 ```mermaid
 sequenceDiagram
@@ -117,14 +116,15 @@ Developer-\>\>Developer: Delegate UCAN from Space to Agent
 Developer-\>\>Client: Here is my Agent private key and UCAN delegating permissions
 ```
 
-An option that works for any backend environment is to define an Agent and delegate a UCAN from your Space to this Agent before initializing the client. This is especially useful if you're using the client in a serverless Node environment (e.g., AWS Lambda).
+An option that works for any backend environment is for a developer to create and provision a Space, and then delegate access to a different Agent DID that will be used by the client. This is especially useful if you're using the client in a serverless environment (e.g., AWS Lambda).
 
 In your command line where `w3cli` is configured with the Space you want to use (e.g., where you created the Space):
 
 ```shell
 # The following command returns what will be your Agent private key and DID
-# store the private key in environment variable KEY
-npx ucan-key ed --json
+npx ucan-key ed
+
+# ❗️ Store the private key (starting "Mg...") in environment variable KEY
 
 # The following command creates a UCAN delegation from the w3cli agent to the
 # agent you generated above.
@@ -137,7 +137,7 @@ npx ucan-key ed --json
 # just being able to upload.
 w3 delegation create <did_from_ucan-key_command_above> | base64
 
-# Store the output in environment variable PROOF
+# ❗️ Store the output in environment variable PROOF
 ```
 
 Then, when you initialize and configure the client, you can pass in this Agent and UCAN.
@@ -157,7 +157,7 @@ async function main () {
   // READY to go!
 }
 
-/** @param {string} data Base64 encoded CAR file \*/
+/** @param {string} data Base64 encoded CAR file */
 async function parseProof (data) {
   const blocks = []
   const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'))
@@ -188,8 +188,8 @@ There are two main options to getting content into your Space:
 
 ```mermaid
 sequenceDiagram
-User-\>\>w3up-client in backend: Upload data
-w3up-client in backend-\>\>web3.storage service: Upload data
+User-\>\>Application Backend: Upload data
+Application Backend-\>\>web3.storage service: Upload data
 ```
 
 You are already set up to upload using your client instance as data becomes available to your backend - you can call `uploadFile` or `uploadDirectory` with it.
@@ -212,22 +212,23 @@ In the example above, `directoryCid` resolves to an IPFS directory.
 
 ```mermaid
 sequenceDiagram
-participant w3up-client in user
-participant w3up-client in backend
+participant User
+participant Application Backend
 participant web3.storage service
-w3up-client in user-\>\>w3up-client in user: Client instantiated with default Agent
-w3up-client in user-\>\>w3up-client in backend: Request delegation with user's Agent DID
-w3up-client in backend-\>\>w3up-client in user: Send delegation from Space to user's Agent DID
-w3up-client in user-\>\>web3.storage service: Upload data
+User-\>\>User: Client instantiated with default Agent
+User-\>\>Application Backend: Request delegation with user's Agent DID
+Application Backend-\>\>User: Send delegation from Space to user's Agent DID
+User-\>\>web3.storage service: Upload data
 ```
 
 Your backend instance can also be used to delegate upload permissions directly to your user to upload. The code snippet below shows an example of how you might set up a client instance in your application frontend and how it might interact with your backend client. You can see how the frontend client Agent DID is used for the backend client to delegate permissions to; from there, it will be the frontend client that will call the `upload` method.
 
-```javascript
+**Backend**
+
+```js
 import { CarReader } from '@ipld/car'
 import * as DID from '@ipld/dag-ucan/did'
 import * as Delegation from '@ucanto/core/delegation'
-import { importDAG } from '@ucanto/core/delegation'
 import * as Signer from '@ucanto/principal/ed25519'
 import * as Client from '@web3-storage/w3up-client'
 
@@ -244,10 +245,8 @@ async function backend(did) {
   // Create a delegation for a specific DID
   const audience = DID.parse(did)
   const abilities = ['store/add', 'upload/add']
-  const expiration = Math.floor(Date.now() / 1000) + 60 * 60 * 24 // 24 hours from now
-  const delegation = await client.createDelegation(audience, abilities, {
-    expiration,
-  })
+  const expiration = Math.floor(Date.now() / 1000) + (60 * 60 * 24) // 24 hours from now
+  const delegation = await client.createDelegation(audience, abilities, { expiration })
 
   // Serialize the delegation and send it to the client
   const archive = await delegation.archive()
@@ -261,8 +260,15 @@ async function parseProof(data) {
   for await (const block of reader.blocks()) {
     blocks.push(block)
   }
-  return importDAG(blocks)
+  return Delegation.importDAG(blocks)
 }
+```
+
+**Frontend**
+
+```js
+import * as Delegation from '@ucanto/core/delegation'
+import * as Client from '@web3-storage/w3up-client'
 
 async function frontend() {
   // Create a new client
@@ -276,7 +282,7 @@ async function frontend() {
   // Deserialize the delegation
   const delegation = await Delegation.extract(new Uint8Array(data))
   if (!delegation.ok) {
-    throw new Error('Failed to extract delegation')
+    throw new Error('Failed to extract delegation', { cause: delegation.error })
   }
 
   // Add proof that this agent has been delegated capabilities on the space
@@ -291,11 +297,13 @@ async function frontend() {
 
 You are now ready to upload using the client! In general, the easiest way to upload data is using the `uploadFile` or `uploadDirectory` method.
 
-`uploadFile` expects a "Blob like" input, which can be a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [File](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On node.js, see the [filesFromPath library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem. By default, files uploaded to web3.storage will be wrapped in an IPFS directory listing. This preserves the original filename and makes links more human-friendly than CID strings, which look like random gibberish.
+`uploadFile` expects a "Blob like" input, which can be a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [File](https://developer.mozilla.org/en-US/docs/Web/API/File) when running in a browser. On Node.js, see the [`files-from-path` library](https://github.com/web3-storage/files-from-path), which can load compatible objects from the local filesystem. By default, files uploaded to web3.storage will be wrapped in an IPFS directory listing. This preserves the original filename and makes links more human-friendly than CID strings, which look like random gibberish.
 
 `uploadDirectory` requires `File`-like objects instead of `Blob`s, as the file's name property is used to build the directory hierarchy.
 
-**Tip:** When uploading multiple files, give each file a unique name. All the files in a `uploadDirectory` request will be bundled into one content archive, and linking to the files inside is much easier if each file has a unique, human-readable name.
+<Callout>
+  When uploading multiple files, give each file a unique name. All the files in a `uploadDirectory` request will be bundled into one content archive, and linking to the files inside is much easier if each file has a unique, human-readable name.
+</Callout>
 
 You can control the directory layout and create nested directory structures by using / delimited paths in your filenames:
 
@@ -317,7 +325,7 @@ In the example above, directoryCid resolves to an IPFS directory with the follow
 |  └──example.png
 ├──readme.md
 └──src
-└──main.py
+   └──main.py
 ```
 
 There are a few different ways of creating `File` objects available, depending on your platform.
@@ -355,8 +363,6 @@ In Node.js, the [`files-from-path` library](https://github.com/web3-storage/file
 ```javascript
 import { filesFromPaths } from 'files-from-path'
 ```
-
-If you expect to be loading a lot of large files, you may be better served by the [filesFromPath](https://github.com/web3-storage/files-from-path#filesfrompath)[helper](https://github.com/web3-storage/files-from-path#filesfrompath). It reduces memory pressure by yielding File objects one by one as they're loaded from disk, instead of loading everything into memory. You can then issue multiple put requests to send each file to web3.storage.
 
 You can also manually create File objects by importing a Node.js implementation of File from the web3.storage package. This is useful when you want to store data created by your application, instead of files from the user's computer.
 

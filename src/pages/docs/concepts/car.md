@@ -44,13 +44,13 @@ The --pack flag will create a new CAR file from a collection of input files:
 ipfs-car pack path/to/files --output path/to/write/a.car
 ```
 
-Extract files from a CAR with --unpack:
+Extract files from a CAR with `--unpack`:
 
 ```sh
 ipfs-car unpack path/to/my.car --output path/to/unpack/files/to
 ```
 
-List the contents of a CAR with --list:
+List the contents of a CAR with `--list`:
 
 ```sh
 ipfs-car list path/to/my.car

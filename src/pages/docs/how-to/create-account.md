@@ -19,7 +19,7 @@ The easiest way to create an account is by using `w3cli`.
 2. If you don't have an account, the website will ask you for your email address. Enter your email address and submit the form.
 3. Check your email for a message from web3.storage including a link to confirm your intention to authenticate using the email you provided.
 
-## Using the JS library
+## Using the JS client
 
 1. Install the client library from npm using your command line: `npm install @web3-storage/w3up-client`.
 2. Call `client.login('alice@example.com')`, and wait for the promise to resolve. This will send an email to your inbox with a link for validation.

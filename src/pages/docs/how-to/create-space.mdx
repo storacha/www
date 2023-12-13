@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # How to create a space
 
 In this how-to guide, you'll learn how to create a web3.storage Space to organize stored data. For an overview of the various ways web3.storage can be integrated with your application, check out [Architecture Options](/docs/concepts-architecture-options/).
@@ -26,9 +28,11 @@ Separately, you can visit [console.web3.storage](https://console.web3.storage/),
 
 The Space you create can be used to [upload](/docs/how-to/upload/) data using the CLI, the w3up client, or when you log into the web console.
 
-## Using the JS library
+## Using the JS client
 
 1. Install the client library from npm using your command line: `npm install @web3-storage/w3up-client`.
 2. Call `client.createSpace('Documents')` and wait for the promise to resolve.
 
-Note: the space must be provisioned by an account before it can be used for uploads. See [our guide](/docs/w3up-client/#create-and-register-a-space) for details.
+<Callout>
+  The space must be provisioned by an account before it can be used for uploads. See [our guide](/docs/w3up-client/#create-and-provision-a-space) for details.
+</Callout>
