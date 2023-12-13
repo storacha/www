@@ -53,13 +53,6 @@ You can create a new IPNS name with the Name.create function:
 const name = await Name.create();
 ```
 
-This example above uses the [`await` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await), because `Name.create()` returns a `Promise`. To use `await`, the code must be placed inside an [`async` function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Alternatively, you can resolve the promise using `.then()`, for example:
-
-```javascript
-Name.create().then(name => {
-  // do something with name here.
-});
-```
 
 You can see the name as a string by calling .toString() on it:
 
