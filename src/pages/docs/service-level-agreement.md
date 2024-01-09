@@ -70,17 +70,15 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 (f) Attributable to the acts or omissions of Customer or Customer’s employees, agents, contractors, or vendors, or anyone gaining access to Company’s Services by means of Customer’s Authorized Users’ accounts or equipment;
 
-(g) Caused by Customer attempting to upload incompatible data types or raw files larger than 100 MB via the Upload Service;
+(g) Caused by timeouts caused by tooling used by the Customer;
 
 (i) Caused by Customer attempting to upload files via the web3.storage website;
 
-(j) Caused by Customer attempting to store files via the pinning service API;
+(j) Due to failures of infrastructure used to read data from web3.storage, including inaccessibility of public gateways;
 
-(k) Due to failures of infrastructure used to read data from web3.storage, including inaccessibility of public gateways;
+(k) That resulted from Customer’s use of gateways not peered with web3.storage (i.e., not listed on <https://github.com/web3-storage/web3.storage/blob/main/PEERS>);
 
-(l)  That resulted from Customer’s use of gateways not peered with web3.storage (i.e., not listed on <https://github.com/web3-storage/web3.storage/blob/main/PEERS>);
-
-(m) That resulted from a brief delay in data availability on IPFS following initial data upload and indexing.
+(l) That resulted from a brief delay in data availability on IPFS following initial data upload and indexing.
 
 ## 5. Service Discounts.
 
