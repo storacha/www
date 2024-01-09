@@ -76,7 +76,7 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 (j) Due to failures of infrastructure used to read data from web3.storage, including inaccessibility of public gateways;
 
-(k)  That resulted from Customer’s use of gateways not peered with web3.storage (i.e., not listed on <https://github.com/web3-storage/web3.storage/blob/main/PEERS>);
+(k) That resulted from Customer’s use of gateways not peered with web3.storage (i.e., not listed on <https://github.com/web3-storage/web3.storage/blob/main/PEERS>);
 
 (l) That resulted from a brief delay in data availability on IPFS following initial data upload and indexing.
 
