@@ -139,6 +139,7 @@ w3 delegation create <did_from_ucan-key_command_above> | base64
 Then, when you initialize and configure the client, you can pass in this Agent and UCAN.
 
 ```javascript
+import * as Delegation from '@ucanto/core/delegation'
 import * as Client from '@web3-storage/w3up-client'
 import * as Signer from '@ucanto/principal/ed25519'
 
@@ -160,7 +161,7 @@ async function parseProof (data) {
   for await (const block of reader.blocks()) {
     blocks.push(block)
   }
-  return importDAG(blocks)
+  return Delegation.importDAG(blocks)
 }
 ```
 
