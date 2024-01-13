@@ -2,10 +2,15 @@ import Image from 'next/image'
 import ImageIconCluster from '@/../public/images/index/cluster-1.png'
 import { W3UPClientExample } from '@/components/code'
 import { NavLink, ButtonLink, Header } from '@/components/nav'
+import * as ipfsUtils from 'ipfs-utils'
+import * as ipfsUtilsFetch from 'ipfs-utils/src/http/fetch.js'
 
 export default function HomePage () {
+  console.log('ipfsUtils', ipfsUtils)
+  console.log('ipfsUtilsFetch', ipfsUtilsFetch)
   return (
     <main>
+      Hi Ben
       <section className='md:pb-48 bg-grad md:one-corn'>
         <Header />
         <div className='max-w-6xl mx-auto pt-20 md:pt-28 md:flex justify-items-stretch items-start'>

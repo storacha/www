@@ -11,6 +11,8 @@
     "test": "echo 'no tests yet'"
   },
   "dependencies": {
+    "@web3-storage/upload-client": "^12.3.2",
+    "ipfs-utils": "^9.0.14",
     "next": "14.0.1",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
