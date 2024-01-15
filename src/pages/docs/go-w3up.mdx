@@ -30,10 +30,19 @@ go get github.com/web3.storage/go-ucanto
 
 ## Generate a DID
 
-You can use `ucan-key` to generate a private key and DID for use with the library. Install Node.js and then use the `ucan-key` module:
+Currently the best way to generate a DID is to use the w3up JS CLI:
+
+<Steps>
+### Install w3 CLI
 
 ```sh
-npx ucan-key ed
+npm install -g @web3-storage/w3cli
+```
+
+### Generate a DID
+
+```sh
+w3 key create
 ```
 
 Output should look something like:
@@ -42,6 +51,7 @@ Output should look something like:
 # did:key:z6Mkh9TtUbFJcUHhMmS9dEbqpBbHPbL9oxg1zziWn1CYCNZ2
 MgCb+bRGl02JqlWMPUxCyntxlYj0T/zLtR2tn8LFvw6+Yke0BKAP/OUu2tXpd+tniEoOzB3pxqxHZpRhrZl1UYUeraT0=
 ```
+</Steps>
 
 <Callout>
   Save the private key (starting `Mg...`) to a file `private.key`.
@@ -52,15 +62,15 @@ MgCb+bRGl02JqlWMPUxCyntxlYj0T/zLtR2tn8LFvw6+Yke0BKAP/OUu2tXpd+tniEoOzB3pxqxHZpRh
 Proofs are delegations to your DID enabling it to perform tasks. Currently the best way to obtain proofs that will allow you to interact with the web3.storage API is to use the w3up JS CLI:
 
 <Steps>
-### Generate a DID
-
-[Generate a DID](#generate-a-did) and make a note of it (the string starting with `did:key:...`)
-
 ### Install w3 CLI
 
 ```sh
 npm install -g @web3-storage/w3cli
 ```
+
+### Generate a DID
+
+[Generate a DID](#generate-a-did) and make a note of it (the string starting with `did:key:...`)
 
 ### Create a space
 
