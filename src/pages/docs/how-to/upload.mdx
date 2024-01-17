@@ -139,13 +139,17 @@ w3 delegation create <did_from_ucan-key_command_above> | base64
 Then, when you initialize and configure the client, you can pass in this Agent and UCAN.
 
 ```javascript
+import { StoreMemory } from '@web3-storage/access/stores/store-memory'
 import * as Client from '@web3-storage/w3up-client'
+import { importDAG } from '@ucanto/core/delegation'
+import { CarReader } from '@ipld/car'
 import * as Signer from '@ucanto/principal/ed25519'
 
 async function main () {
   // Load client with specific private key
   const principal = Signer.parse(process.env.KEY)
-  const client = await Client.create({ principal })
+  const store = new StoreMemory()
+  const client = await Client.create({ principal, store })
   // Add proof that this agent has been delegated capabilities on the space
   const proof = await parseProof(process.env.PROOF)
   const space = await client.addSpace(proof)
