@@ -1,0 +1,188 @@
+import { Callout } from 'nextra/components'
+
+# How to upload from CI
+
+> Publish files to IPFS and Filecoin via web3.storage from a Continuous Integration server. 
+
+Using `w3cli` locally, the steps are
+
+- [Create a space](#create-a-space) that you want CI to upload to _(or use an existing one)_
+- [Create a signing key](#create-a-signing-key) for CI to use with `w3 key create`
+- [Create a proof](#create-a-proof) that delegates capabilities to upload to your space to that key
+
+Then in the CI environment
+
+- [Install `w3cli` from npm](#install-w3cli-in-ci)
+- [Import the signing key](#import-the-signing-key) by setting it as `W3_PRINCIPAL` in the env
+- [Import the proof](#import-the-proof) by passing it to `w3 space add`
+- [Upload your files](#upload-your-files) with `w3 up`
+
+<Callout type='info'>
+  Using Github? Use the **add-to-web3** Action **https://github.com/marketplace/actions/add-to-web3**
+</Callout>
+
+## Example
+
+Using `w3cli` locally create a signing key and a proof.
+
+```shell
+# Create key and did. Use the output `key` value as W3_PRINCIPAL in CI.
+$ w3 key create --json > ci-key.json
+
+# Extract the did as $AUDIENCE
+$ AUDIENCE=$(jq -r .did ci-key.json)
+
+# Create a signed proof that you delegate capabilties to that key. 
+$ w3 delegation create $AUDIENCE -c store/add -c upload/add --base64
+mAYIEAP8OEaJlcm9vdHOAZ3ZlcnNpb24BwwUBcRIg+oHTbzShh1WzBo9ISkonCW+KAcy/+zW8Zb...
+
+# Pass the output to `w3 space add` in ci
+```
+
+Then on the CI side (in [github flavour](https://github.com/web3-storage/add-to-web3/blob/abc09576bd0f06e881b250012cc94c535b2d577f/action.yml#L42-L54))
+
+```yaml
+steps:
+  - run: npm install -g @web3-storage/w3cli
+
+  - run: w3 space add ${{ inputs.proof }}
+    env:
+      W3_PRINCIPAL: ${{ inputs.secret_key }}
+
+  - run: w3 up ${{ inputs.path_to_add }}
+    env:
+      W3_PRINCIPAL: ${{ inputs.secret_key }}
+```
+
+The rest of this document explains the process in more detail.
+
+## Create a space 
+
+On your local machine with [w3cli] installed and logged in (see: https://web3.storage/docs/quickstart/) run 
+
+```
+w3 space create
+```
+
+and follow the instructions. (See: https://web3.storage/docs/how-to/create-space/#using-the-cli if you get stuck.)
+
+If you want to use an existing space, make sure it is set as your current space using `w3 space ls` and `w3 space use`
+
+## Create a signing key
+
+On your local machine, use [w3cli] to generate a new a new Ed25519 privagte signing key for CI to use.
+
+```shell
+# Use the `did` in the input to the next command. 
+# Use `key` as your `secret_key` for add_to_web3.
+$ w3 key create --json
+{
+  "did": "did:key:z6Mk...",
+  "key": "MgCaT7Se2QX9..."
+}
+```
+
+Keep the `key` safe. It will be used by CI to sign requests to web3.storage. 
+
+The `did` from the command above is the public decentalised identifier for that private `key`.
+
+## Create a proof
+
+On your local machine, use [w3cli] to delegate capabilties to upload to our space to the public DID for the signing key we created.
+
+Our CI environment doesn't need to list our uploads or change our billing plan so we only delegate the `store/add` and `upload/add` capabilities to it.
+
+Pass the `did` for the signing key as the audience parameter. We are delegating capabilities to that key.
+
+```shell
+$ AUDIENCE=did:key:z6Mk...
+
+# Delegate capabilities to the `did` we created above.
+$ w3 delegation create $AUDIENCE -c 'store/add' -c 'upload/add' --base64
+mAYIEAP8OEaJlcm9vdHOAZ3ZlcnNpb24BwwUBcRIg+oHTbzShh1WzBo9ISkonCW+KAcy/+zW8Zb...
+```
+
+The output is a base64 encoded UCAN proof, signed by your local key. It can only be used as proof by the signing key we specified by the DID we passed in.
+
+Now we have a signing key and a proof we can use in the CI environment.
+
+## Install `w3cli` in CI
+
+Install it from npm with the --global flag to make the `w3` command available.
+
+```shell
+$ npm i --global @web3-storage/w3cli
+```
+
+## Import the signing key
+
+Set `W3_PRINCIPAL=<the signing key>` in the CI environment. The `w3` commmand will use the value as the signing key to use. see: https://github.com/web3-storage/w3cli?tab=readme-ov-file#w3_principal
+
+The value is the `key` we created above with `w3 key create`. The `key` must be the one for the `did` that was used to create the proof.
+
+## Import the proof
+
+Set `W3_PROOF=<the proof>` in the CI environment. 
+
+In your CI job definition, run the `w3 space add` command to import the proof that it can upload to the space we created.
+
+```shell
+$ w3 space add $W3_PROOF
+```
+
+## Upload your files
+
+In your CI job definition, run the `w3 up` command to upload the files you want to publish on IPFS and store in Filecoin.
+
+```shell
+$ w3 up <path to files>
+```
+
+that path might be the `dist` or `output` directory of a previous step that built your static website or collected some stats from a job.
+
+Once that command returns succesfully, you are done, your files are content addressed and available over IPFS.
+
+If you want to capture the CID for your uploads pass the `--json` flag and use `jq` to extract it
+
+```shell
+# write the output as json to a file
+$ w3 up <path to files> --json > ./w3_up_output.json
+
+# extract the root cid from the output and set it as an env var.
+$ CID=$(jq --raw-output '.root."/"' ./w3_up_output.json)
+```
+
+## Github Action: add-to-web3
+
+The [add-to-web3] action is lightweight wrapper around [w3cli]. You create the key and proof as before, and the action configures and runs `w3` in CI for you.
+
+Use it in your Github Workflow like this
+
+```yaml
+uses: web3-storage/add-to-web3@v3
+id: w3up
+with:
+  path_to_add: 'dist'
+  secret_key: ${{ secrets.W3_PRINCIPAL }}
+  proof: ${{ secrets.W3_PROOF }}
+
+# use the outputs in subsequent steps
+# "bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
+- run: echo ${{ steps.w3up.outputs.cid }}
+
+# "https://bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am.ipfs.w3s.link"
+- run: echo ${{ steps.w3up.outputs.url }}
+```
+
+It uploads `path_to_add` to web3.storage.
+
+It outputs the root CID as `cid` and IPFS Gateway URL as `url` for subsequent steps in your workflow to use.
+
+We use the action to publish _this website_ (👁️⁂👁️) to IPFS when a PR is merged to `main`. We use the `cid` output from the action as input to [update a dns record](https://github.com/web3-storage/www/blob/18044a3814846967fca1126ab3baa3973c43e908/.github/workflows/deploy.yml#L79-L89) called a [DNSlink] for the domain.
+
+Setting the [DNSLink] announces the new root CID for the website, so [IPFS-aware browsers](https://brave.com/ipfs-support/) and [IPFS Companion](https://docs.ipfs.tech/install/ipfs-companion/) can load the site over IPFS.
+
+
+[w3cli]: https://github.com/web3-storage/w3cli
+[add-to-web3]: https://github.com/web3-storage/add-to-web3
+[DNSLink]: https:/dnslink.io
