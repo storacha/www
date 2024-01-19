@@ -2,7 +2,7 @@ import { Callout } from 'nextra/components'
 
 # How to upload from CI
 
-> Publish files to IPFS and Filecoin via web3.storage from a Continuous Integration server. 
+> Publish files to IPFS and Filecoin via web3.storage from a Continuous Integration server.
 
 Using `w3cli` locally, the steps are
 
@@ -56,12 +56,12 @@ steps:
 
 The rest of this document explains the process in more detail.
 
-## Create a space 
+## Create a space
 
-On your local machine with [w3cli] installed and logged in (see: https://web3.storage/docs/quickstart/) run 
+On your local machine with [w3cli][] installed and logged in (see: https://web3.storage/docs/quickstart/) run
 
-```
-w3 space create
+```shell
+$ w3 space create
 ```
 
 and follow the instructions. (See: https://web3.storage/docs/how-to/create-space/#using-the-cli if you get stuck.)
@@ -70,7 +70,7 @@ If you want to use an existing space, make sure it is set as your current space 
 
 ## Create a signing key
 
-On your local machine, use [w3cli] to generate a new a new Ed25519 privagte signing key for CI to use.
+On your local machine, use [w3cli][] to generate a new a new Ed25519 privagte signing key for CI to use.
 
 ```shell
 # Use the `did` in the input to the next command. 
@@ -82,13 +82,13 @@ $ w3 key create --json
 }
 ```
 
-Keep the `key` safe. It will be used by CI to sign requests to web3.storage. 
+Keep the `key` safe. It will be used by CI to sign requests to web3.storage.
 
 The `did` from the command above is the public decentalised identifier for that private `key`.
 
 ## Create a proof
 
-On your local machine, use [w3cli] to delegate capabilties to upload to our space to the public DID for the signing key we created.
+On your local machine, use [w3cli][] to delegate capabilties to upload to our space to the public DID for the signing key we created.
 
 Our CI environment doesn't need to list our uploads or change our billing plan so we only delegate the `store/add` and `upload/add` capabilities to it.
 
@@ -116,13 +116,13 @@ $ npm i --global @web3-storage/w3cli
 
 ## Import the signing key
 
-Set `W3_PRINCIPAL=<the signing key>` in the CI environment. The `w3` commmand will use the value as the signing key to use. see: https://github.com/web3-storage/w3cli?tab=readme-ov-file#w3_principal
+Set `W3_PRINCIPAL=<the signing key>` in the CI environment. The `w3` commmand will use the value as the signing key to use. see: https://github.com/web3-storage/w3cli?tab=readme-ov-file#w3\_principal
 
 The value is the `key` we created above with `w3 key create`. The `key` must be the one for the `did` that was used to create the proof.
 
 ## Import the proof
 
-Set `W3_PROOF=<the proof>` in the CI environment. 
+Set `W3_PROOF=<the proof>` in the CI environment.
 
 In your CI job definition, run the `w3 space add` command to import the proof that it can upload to the space we created.
 
@@ -154,7 +154,7 @@ $ CID=$(jq --raw-output '.root."/"' ./w3_up_output.json)
 
 ## Github Action: add-to-web3
 
-The [add-to-web3] action is lightweight wrapper around [w3cli]. You create the key and proof as before, and the action configures and runs `w3` in CI for you.
+The [add-to-web3][] action is lightweight wrapper around [w3cli][]. You create the key and proof as before, and the action configures and runs `w3` in CI for you.
 
 Use it in your Github Workflow like this
 
@@ -178,11 +178,12 @@ It uploads `path_to_add` to web3.storage.
 
 It outputs the root CID as `cid` and IPFS Gateway URL as `url` for subsequent steps in your workflow to use.
 
-We use the action to publish _this website_ (👁️⁂👁️) to IPFS when a PR is merged to `main`. We use the `cid` output from the action as input to [update a dns record](https://github.com/web3-storage/www/blob/18044a3814846967fca1126ab3baa3973c43e908/.github/workflows/deploy.yml#L79-L89) called a [DNSlink] for the domain.
+We use the action to publish _this website_ (👁️⁂👁️) to IPFS when a PR is merged to `main`. We use the `cid` output from the action as input to [update a dns record](https://github.com/web3-storage/www/blob/18044a3814846967fca1126ab3baa3973c43e908/.github/workflows/deploy.yml#L79-L89) called a [DNSlink][] for the domain.
 
-Setting the [DNSLink] announces the new root CID for the website, so [IPFS-aware browsers](https://brave.com/ipfs-support/) and [IPFS Companion](https://docs.ipfs.tech/install/ipfs-companion/) can load the site over IPFS.
-
+Setting the [DNSLink][] announces the new root CID for the website, so [IPFS-aware browsers](https://brave.com/ipfs-support/) and [IPFS Companion](https://docs.ipfs.tech/install/ipfs-companion/) can load the site over IPFS.
 
 [w3cli]: https://github.com/web3-storage/w3cli
+
 [add-to-web3]: https://github.com/web3-storage/add-to-web3
+
 [DNSLink]: https:/dnslink.io
