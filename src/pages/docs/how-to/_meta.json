@@ -14,5 +14,6 @@
     "display": "hidden"
   },
   "filecoin-info": "Get Filecoin info",
-  "w3name": "Publish IPNS names"
+  "w3name": "Publish IPNS names",
+  "ci": "Upload from CI"
 }
