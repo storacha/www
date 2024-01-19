@@ -25,7 +25,7 @@ w3up-client in backend-\>\>web3.storage w3up service: Upload data
 You'll need a registered Space, and your client in the backend to have a delegation to use the Space.
 
 <Callout>
-  **Recommended**: It's easiest to create and register your Space using [w3cli](https://github.com/web3-storage/w3cli), then create an identity for your server and delegate it the ability to upload to your Space. [This example](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#bringing-your-own-agent-and-delegation) shows how to load an identity and a delegation into the client on the server.
+  **Recommended**: It's easiest to create and register your Space using [w3cli](https://github.com/web3-storage/w3cli), then create an identity for your server and delegate it the ability to upload to your Space. The [bring your own delegations](/docs/how-to/upload/#bring-your-own-delegations) section shows how to generate an identity, create a delegation and then use it on the server.
 </Callout>
 
 After this, once your user uploads data to your backend, you can run any of the upload methods.
@@ -53,7 +53,7 @@ Typically `w3up-client` will be running in your end-user's client code, as well 
 You'll need a registered Space, and your client in the backend to have a delegation to use the Space.
 
 <Callout>
-  **Recommended**: It's easiest to create and register your Space using [w3cli](https://github.com/web3-storage/w3cli), then create an identity for your server and delegate it the ability to upload to your Space. [This example](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client#bringing-your-own-agent-and-delegation) shows how to load an identity and a delegation into the client on the server.
+  **Recommended**: It's easiest to create and register your Space using [w3cli](https://github.com/web3-storage/w3cli), then create an identity for your server and delegate it the ability to upload to your Space. The [bring your own delegations](/docs/how-to/upload/#bring-your-own-delegations) section shows how to generate an identity, create a delegation and then use it on the server.
 </Callout>
 
 Your backend code can then re-delegate it's capabilities to your users. Your user does not need a registered Space - just an Agent with a delegation from your Space.
