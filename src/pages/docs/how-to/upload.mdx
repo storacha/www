@@ -140,7 +140,7 @@ Then, when you initialize and configure the client, you can pass in this Agent a
 
 ```javascript
 import * as Client from '@web3-storage/w3up-client'
-import { StoreMemory } from '@web3-storage/w3up-client/stores'
+import { StoreMemory } from '@web3-storage/w3up-client/stores/memory'
 import { importDAG } from '@ucanto/core/delegation'
 import { CarReader } from '@ipld/car'
 import * as Signer from '@ucanto/principal/ed25519'
@@ -231,11 +231,13 @@ import * as DID from '@ipld/dag-ucan/did'
 import * as Delegation from '@ucanto/core/delegation'
 import * as Signer from '@ucanto/principal/ed25519'
 import * as Client from '@web3-storage/w3up-client'
+import { StoreMemory } from '@web3-storage/w3up-client/stores/memory'
 
 async function backend(did) {
   // Load client with specific private key
   const principal = Signer.parse(process.env.KEY)
-  const client = await Client.create({ principal })
+  const store = new StoreMemory()
+  const client = await Client.create({ principal, store })
 
   // Add proof that this agent has been delegated capabilities on the space
   const proof = await parseProof(process.env.PROOF)
