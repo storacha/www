@@ -72,11 +72,7 @@ Now you may provision your space with your account:
 await myAccount.provision(space.did())
 ```
 
-Once provisioned, it's a good idea to setup recovery, so that when you move to a different device you can still access your space:
-
-```js
-await space.createRecovery(myAccount.did())
-```
+ℹ️ Note: creating a space and provisioning it needs to happen only **once**!
 
 Finally, save your space to your agent's state store:
 
@@ -90,7 +86,17 @@ If your agent has no other spaces, saving the space will set it as the "current 
 await client.setCurrentSpace(space.did())
 ```
 
-ℹ️ Note: creating a space and provisioning it needs to happen only **once**!
+One last thing - now that you've saved your space locally, it's a good idea to setup recovery via [web3.storage Account](https://github.com/web3-storage/specs/blob/main/w3-account.md), so that when you move to a different device you can still administer your space as long as you can log in to your web3.storage Account: 
+
+```js
+const recovery = await space.createRecovery(myAccount.did())
+await client.capability.access.delegate({
+  space: space.did(),
+  delegations: [recovery],
+})
+```
+
+ℹ️ Note: If you do not create and delegate space recovery you run the risk of losing access to your space!
 
 ## Upload files
 
