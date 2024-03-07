@@ -12,7 +12,7 @@ used an HTTP-based API before.
 
 ## Limitations
 
-The HTTP Bridge is currently designed to be used to invoke capabilities on 
+The HTTP Bridge is currently designed to be used to invoke capabilities on
 spaces. `store/add`, `upload/add` and `upload/list` are examples of such capabilities. Other
 capabilities like `access/request` are not supported at this time - please let us know
 if you would like to invoke other capabilities using the bridge so that we can
@@ -59,7 +59,7 @@ valid for 24 hours. It uses the `--can` options to specify that the headers can 
 
 The result of `w3 bridge generate-tokens` will contain the values of the `X-Auth-Secret` and `Authorization` headers:
 
-```
+```txt
 X-Auth-Secret header: uOGQyYzRhYWQwNmY3NtEwOTg1ZWU0NDU0NjByNTg2ZGE
 
 Authorization header: uOqJlcm9vdHOB2CpYKQABcRIgYVymlT6sxiDd45CA0f...
@@ -117,7 +117,8 @@ named `hello.txt` you can first use `ipfs-car` to create a CAR:
 ipfs-car pack hello.txt > hello.car
 bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a
 ```
-Hang on to the `bafy...` Content ID output here! You'll need it for the "Registering Uploads" section below. Next, 
+
+Hang on to the `bafy...` Content ID output here! You'll need it for the "Registering Uploads" section below. Next,
 calculate the Content ID of the CAR you just created:
 
 ```sh
@@ -201,10 +202,10 @@ You'll get a response that includes a number of different fields:
 ]
 ```
 
-The three you care about are `p.out.ok.status`, `p.out.ok.url` and `p.out.ok.headers`. If the value of `p.out.ok.status` is `done`, 
-congratulations! You're done. The file has already been uploaded to our system and you don't need to do anything else. 
+The three you care about are `p.out.ok.status`, `p.out.ok.url` and `p.out.ok.headers`. If the value of `p.out.ok.status` is `done`,
+congratulations! You're done. The file has already been uploaded to our system and you don't need to do anything else.
 
-If the value of `p.out.ok.status` is `upload` you'll need to send an HTTP `PUT` to the value of `p.out.ok.url`, passing the bytes of the CAR 
+If the value of `p.out.ok.status` is `upload` you'll need to send an HTTP `PUT` to the value of `p.out.ok.url`, passing the bytes of the CAR
 in the body of the request and including the HTTP headers in `p.out.ok.headers`:
 
 ```sh
@@ -215,7 +216,7 @@ curl -v -X PUT \
 https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq.car\?X-Amz-Algorithm\=AWS4-HMAC-SHA256\&X-Amz-Content-Sha256\=UNSIGNED-PAYLOAD\&X-Amz-Credential\=ASIAXLN6VFMM76NYBTG7%2F20240307%2Fus-west-2%2Fs3%2Faws4_request\&X-Amz-Date\=20240307T170854Z\&X-Amz-Expires\=86400\&X-Amz-Security-Token\=IQoJb3JpZ2luX2VjEMn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQC2snXc59uBD2ugjc7C9DiKP0447T7fZ0A010Ph6iDswgIgfq0fYWE4Y9FByHz%2B6mYRussCgVr9KlBV1eGd1kgA22Yq3AMIwv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw1MDU1OTUzNzQzNjEiDCjNsn%2FQBypcXnybPCqwAyGtjDvgxmoQg8IYvO4vQ5fxZw%2F69mzSB%2BJmJMl9gnMaQ7SqUuTQnamPEZHM%2BaztPTbSBFm26S9o4GcZWn5S9UCOLb4YV6sAeCC3XCMkc58RPvyehMiVf0xdN1lBCLkFDd%2BHDb0cPEOvvJbTor22rhCo9L%2FsAVZPAYBu1efwvifCMnUebFeA3Qc0lvYG9PqLtZwo2ZMeVCwXYZiwec%2FpwdobopEWve88GJtxrVyiWMuV4pO7A68cty5ukFr0aRwNHM9g2e2y%2BSymH8pS6mfWpdope%2F%2BB6JoYvKKPN%2FQMpvROl0BxNdTD%2FgNUNqKjlNfUDtV7NqaDJlTqtlTXp44%2F7AUk7yJgK9UlVmp7B30oNH3fPtNXEFBbowoVczqcDBfp%2BxDBMZRFDa37VNcoIdjEBpBTCZk5hONDpjlp%2FyGd1EPSswbQyr6nA5xwLunfF6HhWA%2B8ZMp5raiepAPm%2FS7QfpbiZGtEZ%2FoVWENmPI4HLjDKYjXRJ7i680K9cMDeFSHjHvaTYsgOh09jmL5OnKSMRbANl4bNihk%2FX7pWgxVmbV0Qj%2BQ5eDpvsYUe9i%2FTUVAyODDU5KevBjqeATdV%2Fp9WiSN1mc1%2FUxn60TYZRFAjcTm6lfdbdtEEWneexsLLj6BpoW6gUA1c73JjEXsOEGbaSfHXi%2BI6nFtlNJpKlP%2BbrFlylA2qmIvlnKJzv2ALrsARUmCH1Kl26CVFfOtnJv7VZmDSVnS9nr4mYLHLkPjIhBaF3IxWVcFR7He0CCfRv%2BYkHzTlVdzoK%2BmJkUVyofY%2B3Bt3dDkpk7No\&X-Amz-Signature\=1d4cbc65a8440c89eb2770b2edfe4e3fe91831856ee03d0d939911d9963337f0\&X-Amz-SignedHeaders\=content-length%3Bhost%3Bx-amz-checksum-sha256\&x-id\=PutObject
 ```
 
-Your bits are now on IPFS, en route to the Filecoin Network, *but they will not show up as uploads in your web3.storage account!* To 
+Your bits are now on IPFS, en route to the Filecoin Network, _but they will not show up as uploads in your web3.storage account!_ To
 finish "uploading" your file to web3.storage you'll need to register your upload as described in the next section.
 
 ## Registering Uploads
@@ -266,7 +267,7 @@ If everything works as expected you will now see your upload when you invoke `up
 
 ## Uploading Large Files
 
-Large files should be split into multiple shards. 
+Large files should be split into multiple shards.
 
-TODO: figure out what to use as the `root` CID for sharded uploads - I tried the CID of the first shard and the CID 
+TODO: figure out what to use as the `root` CID for sharded uploads - I tried the CID of the first shard and the CID
 I get when I `ipfs-car pack` the whole file, but neither seemed quite right.
