@@ -20,16 +20,16 @@ prioritize adding support for them.
 
 ## Authentication and Authorization
 
-Our UCAN Invocation-based API uses public/private keypairs for to identify users and UCAN Delegation
-to authorized keypairs to invoke specific capabilities. The HTTP Bridge uses the same fundamental primitives
+Our UCAN Invocation-based API uses public/private keypairs to identify users and UCAN Delegation
+to allow those keypairs to invoke specific capabilities. The HTTP Bridge uses the same fundamental primitives
 but confines them to two separate HTTP headers, `X-Auth-Secret` and `Authorization`, that can be generated
 by clients without interacting with our service.
 
 Details of how to generate the header values can be found in the
 [W3UP UCAN Bridge Protocol](https://github.com/web3-storage/specs/blob/main/w3-ucan-bridge.md) specification, but
-they can also be generated for you by the [`w3` CLI](https://github.com/web3-storage/w3cli).
+they can also be generated for you by the [`w3` CLI](https://github.com/web3-storage/w3cli):
 
-### Generating Auth Headers With `w3cli`
+### Generating Auth Headers with `w3cli`
 
 If you have not already logged in and created a space with the `w3` CLI, do that first:
 
