@@ -110,8 +110,8 @@ https://up.web3.storage/bridge
 
 ## Storing Files
 
-You can store individual files as big as 5GB in spaces on web3.storage. To store larger files, see the [Sharded Uploads](#sharded-uploads)
-section below.
+You can store individual files as [big as 5GB](https://github.com/web3-storage/w3infra/blob/26106e315e79bf8072d2bd052786e46563d9a1da/upload-api/service.js#L12-L16) in
+spaces on web3.storage. To store larger files, see the [Sharded Uploads](#sharded-uploads) section below.
 
 To upload a file to your space you'll first need convert it to a CAR. Assuming your file is
 named `hello.txt` you can first use `ipfs-car` to create a CAR:
@@ -120,6 +120,14 @@ named `hello.txt` you can first use `ipfs-car` to create a CAR:
 ipfs-car pack hello.txt > hello.car
 bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a
 ```
+
+<Callout type="info">
+If you already have a file available on the public IPFS network by CID, you can turn it into a CAR that can be uploaded to our service with:
+
+```sh
+ipfs dag export bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a > hello.car
+```
+</Callout>
 
 Hang on to the `bafy...` Content ID output here! You'll need it for the "Registering Uploads" section below. Next,
 calculate the Content ID of the CAR you just created:
