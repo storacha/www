@@ -14,11 +14,25 @@ used an HTTP-based API before.
 
 ## Limitations
 
-The HTTP Bridge is currently designed to be used to invoke capabilities on
-spaces. `store/add`, `upload/add` and `upload/list` are examples of such capabilities. Other
-capabilities like `access/request` are not supported at this time - please let us know
-if you would like to invoke other capabilities using the bridge so that we can
-prioritize adding support for them.
+The instructions below are oriented toward capabilities invoked on spaces. These include:
+
+| `access/delegate` |
+| `space/info` |
+| `space/allocate` |
+| `store/add` |
+| `store/get` |
+| `store/remove` |
+| `store/list` |
+| `upload/add` |
+| `upload/list` |
+| `upload/remove` |
+| `usage/report` |
+
+
+Other capabilities are invoked on other entities. They are supported by the bridge, but
+you will need to generate auth tokens that are targetted at different DIDs and may not
+be well supported by our tools - please let us know if you are interested in this functionality
+so we can better support your use cases!
 
 ## Authentication and Authorization
 
