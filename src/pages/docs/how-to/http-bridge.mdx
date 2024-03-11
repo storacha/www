@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # Use the HTTP API Bridge
 
 Our API is built around [UCAN Invocation](https://github.com/ucan-wg/invocation). This
@@ -108,7 +110,7 @@ https://up.web3.storage/bridge
 
 ## Storing Files
 
-You can store individual files as big as 5GB in spaces on web3.storage. To store larger files, see the [Sharded Uploads]
+You can store individual files as big as 5GB in spaces on web3.storage. To store larger files, see the [Sharded Uploads](#sharded-uploads)
 section below.
 
 To upload a file to your space you'll first need convert it to a CAR. Assuming your file is
@@ -216,6 +218,11 @@ curl -v -X PUT \
 --data-binary @hello.car \
 https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq.car\?X-Amz-Algorithm\=AWS4-HMAC-SHA256\&X-Amz-Content-Sha256\=UNSIGNED-PAYLOAD\&X-Amz-Credential\=ASIAXLN6VFMM76NYBTG7%2F20240307%2Fus-west-2%2Fs3%2Faws4_request\&X-Amz-Date\=20240307T170854Z\&X-Amz-Expires\=86400\&X-Amz-Security-Token\=IQoJb3JpZ2luX2VjEMn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQC2snXc59uBD2ugjc7C9DiKP0447T7fZ0A010Ph6iDswgIgfq0fYWE4Y9FByHz%2B6mYRussCgVr9KlBV1eGd1kgA22Yq3AMIwv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw1MDU1OTUzNzQzNjEiDCjNsn%2FQBypcXnybPCqwAyGtjDvgxmoQg8IYvO4vQ5fxZw%2F69mzSB%2BJmJMl9gnMaQ7SqUuTQnamPEZHM%2BaztPTbSBFm26S9o4GcZWn5S9UCOLb4YV6sAeCC3XCMkc58RPvyehMiVf0xdN1lBCLkFDd%2BHDb0cPEOvvJbTor22rhCo9L%2FsAVZPAYBu1efwvifCMnUebFeA3Qc0lvYG9PqLtZwo2ZMeVCwXYZiwec%2FpwdobopEWve88GJtxrVyiWMuV4pO7A68cty5ukFr0aRwNHM9g2e2y%2BSymH8pS6mfWpdope%2F%2BB6JoYvKKPN%2FQMpvROl0BxNdTD%2FgNUNqKjlNfUDtV7NqaDJlTqtlTXp44%2F7AUk7yJgK9UlVmp7B30oNH3fPtNXEFBbowoVczqcDBfp%2BxDBMZRFDa37VNcoIdjEBpBTCZk5hONDpjlp%2FyGd1EPSswbQyr6nA5xwLunfF6HhWA%2B8ZMp5raiepAPm%2FS7QfpbiZGtEZ%2FoVWENmPI4HLjDKYjXRJ7i680K9cMDeFSHjHvaTYsgOh09jmL5OnKSMRbANl4bNihk%2FX7pWgxVmbV0Qj%2BQ5eDpvsYUe9i%2FTUVAyODDU5KevBjqeATdV%2Fp9WiSN1mc1%2FUxn60TYZRFAjcTm6lfdbdtEEWneexsLLj6BpoW6gUA1c73JjEXsOEGbaSfHXi%2BI6nFtlNJpKlP%2BbrFlylA2qmIvlnKJzv2ALrsARUmCH1Kl26CVFfOtnJv7VZmDSVnS9nr4mYLHLkPjIhBaF3IxWVcFR7He0CCfRv%2BYkHzTlVdzoK%2BmJkUVyofY%2B3Bt3dDkpk7No\&X-Amz-Signature\=1d4cbc65a8440c89eb2770b2edfe4e3fe91831856ee03d0d939911d9963337f0\&X-Amz-SignedHeaders\=content-length%3Bhost%3Bx-amz-checksum-sha256\&x-id\=PutObject
 ```
+
+<Callout type="info">
+Please note that your storage space has been allocated at this point - if you fail to `PUT` the file you will still be charged for storage!
+The good news is that you can store the same file as many times as you like without being charged for any additional space.
+</Callout>
 
 Your bits are now on IPFS, en route to the Filecoin Network, _but they will not show up as uploads in your web3.storage account!_ To
 finish "uploading" your file to web3.storage you'll need to register your upload as described in the next section.
@@ -396,12 +403,12 @@ to the given URL with the given headers.
 If you'd like to store a file larger than 5GB you'll need to shard it into smaller CARs before storing. We don't
 proscribe any particular sharding algorithm - you'll need to:
 
-1) read the input CAR
-2) write the first CAR file header
-3) write blocks until the first CAR hits your limit (a number lower than 5GB)
-4) write a new CAR file header for the second CAR
-5) write blocks until the second CAR hits your limit
-6) repeat until end of blocks
+1. read the input CAR
+2. write the first CAR file header
+3. write blocks until the first CAR hits your limit (a number lower than 5GB)
+4. write a new CAR file header for the second CAR
+5. write blocks until the second CAR hits your limit
+6. repeat until end of blocks
 
 If you're implementing this yourself it may be helpful to look
 into [our JavaScript implementation](https://github.com/web3-storage/w3up/blob/d6978d7ab299be76987c6533d18e6857f6998fe6/packages/upload-client/src/index.js#L38).
@@ -417,7 +424,7 @@ bafybeicq2urqdqum3ykblswqzzxf6wpy3mcbr6jg52ai2zlhds4l7ho5wa
 
 We'll save the CID `ipfs-car` outputs so we can use it in our `store/add` invocation later.
 
-Next we'll use `carbites` to split this file. We are using the `50B` splitting into 50 byte
+Next we'll use `carbites` to split this file. We are using the `50B` option to split into 50 byte
 chunks - you'll probably want to use something much larger like `100MB`:
 
 ```sh
