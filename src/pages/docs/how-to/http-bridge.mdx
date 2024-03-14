@@ -428,9 +428,9 @@ We provide an example here using the [`carbites-cli`](https://www.npmjs.com/pack
 First we'll create an absolutely gigantic file:
 
 ```sh
-echo "this is an absolutely gigantic file created by travis" > big.txt
+printf -- 'this is an absolutely gigantic file created by travis%.0s' {1..1000000} > big.txt
 ipfs-car pack big.txt > big.car
-bafybeicq2urqdqum3ykblswqzzxf6wpy3mcbr6jg52ai2zlhds4l7ho5wa
+bafybeiao5ir3xsp4vhg46b2cjvnl4ucmg5wxrdpy4cypolwexitmpz7hwu
 ```
 
 We'll save the CID `ipfs-car` outputs so we can use it in our `store/add` invocation later.
@@ -439,23 +439,23 @@ Next we'll use `carbites` to split this file. We are using the `50B` option to s
 chunks - you'll probably want to use something much larger like `100MB`:
 
 ```sh
-carbites split big.car --size 50B
+carbites split big.car --size 25MB
 ```
 
 You should now see three files, `big-0.car`, `big-1.car` and `big-2.car`. Calculate the CID and size of each one:
 
 ```sh
 wc -c big-*
-     109 big-0.car
-     118 big-1.car
-      26 big-2.car
-     253 total
+     26218318 big-0.car
+     26227074 big-1.car
+      573086 big-2.car
+     53018478 total
 ipfs-car hash big-0.car
-bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq
+bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq
 ipfs-car hash big-1.car
-bagbaierau2ocmnrl5ilikq5xtxckz3owbe5xallbx24fkvislzu7k7ydqzia
+bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua
 ipfs-car hash big-2.car
-bagbaierawa335d45pwohko5s4fbut7nlfjavq2kan7z3gbzvm2k3zutifv5q
+bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa
 ```
 
 Next, create a file (in this example we'll name it `store-and-upload.json`) and put the following JSON
@@ -472,7 +472,7 @@ the space you used when you generated auth tokens!
       "did:key:z6Mkabc123",
       {
         "link": {
-          "/": "bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq"
+          "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
         },
         "size": 109
       }
@@ -482,7 +482,7 @@ the space you used when you generated auth tokens!
       "did:key:z6Mkabc123",
       {
         "link": {
-          "/": "bagbaierau2ocmnrl5ilikq5xtxckz3owbe5xallbx24fkvislzu7k7ydqzia"
+          "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
         },
         "size": 118
       }
@@ -492,7 +492,7 @@ the space you used when you generated auth tokens!
       "did:key:z6Mkabc123",
       {
         "link": {
-          "/": "bagbaierawa335d45pwohko5s4fbut7nlfjavq2kan7z3gbzvm2k3zutifv5q"
+          "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
         },
         "size": 26
       }
@@ -502,17 +502,17 @@ the space you used when you generated auth tokens!
       "did:key:z6Mkabc123",
       {
         "root": {
-          "/": "bafybeicq2urqdqum3ykblswqzzxf6wpy3mcbr6jg52ai2zlhds4l7ho5wa"
+          "/": "bafybeiao5ir3xsp4vhg46b2cjvnl4ucmg5wxrdpy4cypolwexitmpz7hwu"
         },
         "shards": [
           {
-            "/": "bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq"
+            "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
           },
           {
-            "/": "bagbaierau2ocmnrl5ilikq5xtxckz3owbe5xallbx24fkvislzu7k7ydqzia"
+            "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
           },
           {
-            "/": "bagbaierawa335d45pwohko5s4fbut7nlfjavq2kan7z3gbzvm2k3zutifv5q"
+            "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
           }                    
         ]
       }
@@ -535,21 +535,26 @@ Once you receive a response, you'll need to `PUT` each of the cars to their resp
       "out": {
         "ok": {
           "allocated": 0,
-          "link": {
-            "/": "bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq"
+          "headers": {
+            "content-length": "26218318",
+            "x-amz-checksum-sha256": "pyGILvsMgmI+NuWyG4uC65YEgkEQxQVsBJyApBMWL4U="
           },
-          "status": "done",
+          "link": {
+            "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=28ad621b458a783fe69bf50bea52b8cfd9421127873e516bf237863e74c124dd&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
           "with": "did:key:z6Mkabc123"
         }
       },
       "prf": [],
       "ran": {
-        "/": "bafyreia526axkta24us4fxjghfqbwu2d7lk2neucrseoapakkcmgoy6x7u"
+        "/": "bafyreifl635eqromltu6asqekh3gmdxiiasubcuvpc37j5ticopvjwmeqi"
       }
     },
     "s": {
       "/": {
-        "bytes": "7aEDQN9dWcLsWIwCMOLmzXP971VkJTU1hXliFpEpZZAYQhmOzReViM4TE4tp1AS4vwLcXzawiwaWJ+bkzvh2DKdx4go"
+        "bytes": "7aEDQJS7nJycSU2r7941+5dbhqCuGbHsm2GXKbRggayUDxpfukNwJSyNR1GydX6pgqhfhLFCutlx3yKPOUH+/eoxtwg"
       }
     }
   },
@@ -563,21 +568,26 @@ Once you receive a response, you'll need to `PUT` each of the cars to their resp
       "out": {
         "ok": {
           "allocated": 0,
-          "link": {
-            "/": "bagbaierau2ocmnrl5ilikq5xtxckz3owbe5xallbx24fkvislzu7k7ydqzia"
+          "headers": {
+            "content-length": "26227074",
+            "x-amz-checksum-sha256": "8I3270F1+ziIKC6r0M3ZqHJNRN1l9CNYpf+5vMXxJSg="
           },
-          "status": "done",
+          "link": {
+            "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=f47614b5ec4751ec5b46617d172f86daf91bda5a8c15b771e7fb488d15394a4e&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
           "with": "did:key:z6Mkabc123"
         }
       },
       "prf": [],
       "ran": {
-        "/": "bafyreidi655w32on25adjxnoxro3dnqcsncqly62uc6jyz6l25r45bd5lu"
+        "/": "bafyreihskuuxwtluxs2pndfjqr56jqlwfgpfoga7teitmbsbgzk466wbwa"
       }
     },
     "s": {
       "/": {
-        "bytes": "7aEDQALj9TzBJdqsXs8RY5NoIwy63wvALLw/U1gRcOkBp8VBoIqwEuL3xjjvr0RCnXzLoPQGszTP/xp/A51BJ0mlYQs"
+        "bytes": "7aEDQI6K8xBybt+lthsCEfMjxbql7lml8XUeUeSxZsnF2duxuK7YKjEcETTr3gmPOARP0ulgr1yDOvWbUcKmumyIWQo"
       }
     }
   },
@@ -591,21 +601,26 @@ Once you receive a response, you'll need to `PUT` each of the cars to their resp
       "out": {
         "ok": {
           "allocated": 0,
-          "link": {
-            "/": "bagbaierawa335d45pwohko5s4fbut7nlfjavq2kan7z3gbzvm2k3zutifv5q"
+          "headers": {
+            "content-length": "573086",
+            "x-amz-checksum-sha256": "65jEDy7v85ByUoX06Jka6YTSyoKUcabZk9KHvuggolw="
           },
-          "status": "done",
+          "link": {
+            "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=5792f7d2847ab963c54e34c44c7f821ccded0baf951d2be262be1a2e9c59101f&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
           "with": "did:key:z6Mkabc123"
         }
       },
       "prf": [],
       "ran": {
-        "/": "bafyreic5wcfzvafpkt2haz77ya7zq5ka5ort73i4ahq2mvenj7zssyy6eq"
+        "/": "bafyreidf7aj7tmrf54rkh2hrartvbbsg5ojbg2dmhnluvzrliyzq4o2cdi"
       }
     },
     "s": {
       "/": {
-        "bytes": "7aEDQCdO8OKGjxTpEgsQaJV0ZEoFBfXw6mZGWx+gMUPxHMFmiO8AVrzyNXXGP1dy0q16yI+6bnnLpuMC684/n5dZQAU"
+        "bytes": "7aEDQBiyN3Nxpc+upjyfyHABtfscOjECEE9jXTG9H4R2/jOjlJrR39VPv2IkBFIBtbg0hPHs8I/XGftG1dl+iHur4wo"
       }
     }
   },
@@ -619,29 +634,29 @@ Once you receive a response, you'll need to `PUT` each of the cars to their resp
       "out": {
         "ok": {
           "root": {
-            "/": "bafybeicq2urqdqum3ykblswqzzxf6wpy3mcbr6jg52ai2zlhds4l7ho5wa"
+            "/": "bafybeiao5ir3xsp4vhg46b2cjvnl4ucmg5wxrdpy4cypolwexitmpz7hwu"
           },
           "shards": [
             {
-              "/": "bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq"
+              "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
             },
             {
-              "/": "bagbaierau2ocmnrl5ilikq5xtxckz3owbe5xallbx24fkvislzu7k7ydqzia"
+              "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
             },
             {
-              "/": "bagbaierawa335d45pwohko5s4fbut7nlfjavq2kan7z3gbzvm2k3zutifv5q"
+              "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
             }
           ]
         }
       },
       "prf": [],
       "ran": {
-        "/": "bafyreicirpydnj66okf2bqmuv4qbdgxggxqmj5ybr3pyngcp3iqdwckc6e"
+        "/": "bafyreigl6rzvfcba47bj4eapo6csalvrmweq67dhejqmmoqw45rlemitnq"
       }
     },
     "s": {
       "/": {
-        "bytes": "7aEDQHJEvkeOSIkKQ0SaMbEgNXjLOuwNPWg047O08pCgRSSQMKrM3B++k6Qs49m/xSxpswY1FxuA/dQuh1NWrhqTdAY"
+        "bytes": "7aEDQBypjHmf0ROjk7VzXM3FDtEybD8c2ykGXkrBMjzXyNP4koXC9XWRKaeKYSTb8JK+8jpIDHnW/n0gMjEUihIgsA8"
       }
     }
   }
@@ -652,25 +667,25 @@ You'll need to run the following `curl` commands:
 
 ```sh
 curl -X PUT \
--H "content-length: 109" \
--H "x-amz-checksum-sha256: 68Uv1MqW+RKs/Pi8J8cuQWf6lEfxmBZtw4fBS2kOpsU=" \
+-H "content-length: 26218318" \
+-H "x-amz-checksum-sha256: pyGILvsMgmI+NuWyG4uC65YEgkEQxQVsBJyApBMWL4U=" \
 -H "content-type: application/vnd.ipld.car" \
 --data-binary @big-0.car \
-https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq/bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMMXACSF74D%2F20240311%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240311T185406Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjECsaCXVzLXdlc3QtMiJIMEYCIQCKTNRl%2FrZ47BKRxhGtQfkvjcvPMxBJMWUENt7EL4VYTgIhAO14%2Fs%2Bc3sh2TevvAxplSRT75wFFD9D88Fi3UXDKKCx3KtMDCDQQABoMNTA1NTk1Mzc0MzYxIgz9y4RR%2FZSZB4cqKpcqsAOKYIdtPJflZPodH36ke9NbJNTtfbD7E2LujMS7XEyU2sZnwQyTEzsVL%2FJvB3s8Z3eeKhN4xKnkbUAf%2BryO1ig1plAwzjnIpQzauv89AalyJTS7UM%2FymvWnLo2Qx%2Br92owtQCzOZmrREMVqAU0rCZrMv6NWcOH0bkaM%2FmuA6MijF2dfH3mGeW5E0lFqXaJL5OJqclREtJwRomotSljBVoYxoz2PHRvgIKFuezC1reS3XJ3EnWRlbohQzhfGov%2BtOtcUhJIVk8wqXQvyEFOjErapALiIq4oeUBoIpeKXR5iHJDgndnxGvPOG9ihjUMzKwcbEwqQZTSkTK2whRoHcSZgedzWpsQgae3vQjr797H%2Flh7XLSGzHAuy0Bb9zB61ZZRUyKbhODFCw%2BOpk9ihPKedaewtRHe4SYvAYwBcM0%2FZC%2BwcAOOK987eUxnULeHei%2Fs%2BigKBnzGWwojcuqSzdvaRX3yaK9yKG8mT6aMsAYKS%2BjG%2FX%2FlAu3UL4pe7KK2fxHEH1KrQgdaTCsdzaB%2FApfsixRH4XeGOTNk9ZYM2rI70aqMd%2F5fveFO2%2F33EKZSrQg9kw65i9rwY6nQFkK7gFDZd2oCG7e3u3lqDe5%2BQAqBshYAKbOzpMM6VQq0AqLFeO3TWv%2FhlSP8z9Xxadf3IFRciPlQbMV85VXxEDCzyTYAkLQJsqVuyI%2FQF9hW1rk1UcvOTVpcDRXuwBm%2B66Cq48OnTGzdMu32f%2FsKe7aacdi4msVqU2Z4JwvyjewD4biHJ7lNUkAUf16Zz7SKkLvSvxO%2FwqV7HcxrEs&X-Amz-Signature=5ce3660c1fc5364457e8f3732b759b9c17b3336011e0a04c119cb44bc56913ed&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
+https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=28ad621b458a783fe69bf50bea52b8cfd9421127873e516bf237863e74c124dd&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
 
 curl -X PUT \
--H "content-length: 118" \
--H "x-amz-checksum-sha256: ppwmNivqFoVDt53ErO3WCTtwLWG+uFVVEl5p9X8DhlA=" \
+-H "content-length: 26227074" \
+-H "x-amz-checksum-sha256: 8I3270F1+ziIKC6r0M3ZqHJNRN1l9CNYpf+5vMXxJSg=" \
 -H "content-type: application/vnd.ipld.car" \
 --data-binary @big-1.car \
-https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaierau2ocmnrl5ilikq5xtxckz3owbe5xallbx24fkvislzu7k7ydqzia/bagbaierau2ocmnrl5ilikq5xtxckz3owbe5xallbx24fkvislzu7k7ydqzia.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMMXACSF74D%2F20240311%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240311T185406Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjECsaCXVzLXdlc3QtMiJIMEYCIQCKTNRl%2FrZ47BKRxhGtQfkvjcvPMxBJMWUENt7EL4VYTgIhAO14%2Fs%2Bc3sh2TevvAxplSRT75wFFD9D88Fi3UXDKKCx3KtMDCDQQABoMNTA1NTk1Mzc0MzYxIgz9y4RR%2FZSZB4cqKpcqsAOKYIdtPJflZPodH36ke9NbJNTtfbD7E2LujMS7XEyU2sZnwQyTEzsVL%2FJvB3s8Z3eeKhN4xKnkbUAf%2BryO1ig1plAwzjnIpQzauv89AalyJTS7UM%2FymvWnLo2Qx%2Br92owtQCzOZmrREMVqAU0rCZrMv6NWcOH0bkaM%2FmuA6MijF2dfH3mGeW5E0lFqXaJL5OJqclREtJwRomotSljBVoYxoz2PHRvgIKFuezC1reS3XJ3EnWRlbohQzhfGov%2BtOtcUhJIVk8wqXQvyEFOjErapALiIq4oeUBoIpeKXR5iHJDgndnxGvPOG9ihjUMzKwcbEwqQZTSkTK2whRoHcSZgedzWpsQgae3vQjr797H%2Flh7XLSGzHAuy0Bb9zB61ZZRUyKbhODFCw%2BOpk9ihPKedaewtRHe4SYvAYwBcM0%2FZC%2BwcAOOK987eUxnULeHei%2Fs%2BigKBnzGWwojcuqSzdvaRX3yaK9yKG8mT6aMsAYKS%2BjG%2FX%2FlAu3UL4pe7KK2fxHEH1KrQgdaTCsdzaB%2FApfsixRH4XeGOTNk9ZYM2rI70aqMd%2F5fveFO2%2F33EKZSrQg9kw65i9rwY6nQFkK7gFDZd2oCG7e3u3lqDe5%2BQAqBshYAKbOzpMM6VQq0AqLFeO3TWv%2FhlSP8z9Xxadf3IFRciPlQbMV85VXxEDCzyTYAkLQJsqVuyI%2FQF9hW1rk1UcvOTVpcDRXuwBm%2B66Cq48OnTGzdMu32f%2FsKe7aacdi4msVqU2Z4JwvyjewD4biHJ7lNUkAUf16Zz7SKkLvSvxO%2FwqV7HcxrEs&X-Amz-Signature=dc200cb342555a9a40fe50c45fc7433a7f9e6eaadb233a5f2ddd5f5bacf3ef2b&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
+https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=f47614b5ec4751ec5b46617d172f86daf91bda5a8c15b771e7fb488d15394a4e&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
 
 curl -X PUT \
--H "content-length: 26" \
--H "x-amz-checksum-sha256: sDe+j519nHU7suFDSf2rKkFYaUBv87MHNWaVvNJoLXs=" \
+-H "content-length: 573086" \
+-H "x-amz-checksum-sha256: 65jEDy7v85ByUoX06Jka6YTSyoKUcabZk9KHvuggolw=" \
 -H "content-type: application/vnd.ipld.car" \
 --data-binary @big-2.car \
-https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaierawa335d45pwohko5s4fbut7nlfjavq2kan7z3gbzvm2k3zutifv5q/bagbaierawa335d45pwohko5s4fbut7nlfjavq2kan7z3gbzvm2k3zutifv5q.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMMXACSF74D%2F20240311%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240311T185406Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjECsaCXVzLXdlc3QtMiJIMEYCIQCKTNRl%2FrZ47BKRxhGtQfkvjcvPMxBJMWUENt7EL4VYTgIhAO14%2Fs%2Bc3sh2TevvAxplSRT75wFFD9D88Fi3UXDKKCx3KtMDCDQQABoMNTA1NTk1Mzc0MzYxIgz9y4RR%2FZSZB4cqKpcqsAOKYIdtPJflZPodH36ke9NbJNTtfbD7E2LujMS7XEyU2sZnwQyTEzsVL%2FJvB3s8Z3eeKhN4xKnkbUAf%2BryO1ig1plAwzjnIpQzauv89AalyJTS7UM%2FymvWnLo2Qx%2Br92owtQCzOZmrREMVqAU0rCZrMv6NWcOH0bkaM%2FmuA6MijF2dfH3mGeW5E0lFqXaJL5OJqclREtJwRomotSljBVoYxoz2PHRvgIKFuezC1reS3XJ3EnWRlbohQzhfGov%2BtOtcUhJIVk8wqXQvyEFOjErapALiIq4oeUBoIpeKXR5iHJDgndnxGvPOG9ihjUMzKwcbEwqQZTSkTK2whRoHcSZgedzWpsQgae3vQjr797H%2Flh7XLSGzHAuy0Bb9zB61ZZRUyKbhODFCw%2BOpk9ihPKedaewtRHe4SYvAYwBcM0%2FZC%2BwcAOOK987eUxnULeHei%2Fs%2BigKBnzGWwojcuqSzdvaRX3yaK9yKG8mT6aMsAYKS%2BjG%2FX%2FlAu3UL4pe7KK2fxHEH1KrQgdaTCsdzaB%2FApfsixRH4XeGOTNk9ZYM2rI70aqMd%2F5fveFO2%2F33EKZSrQg9kw65i9rwY6nQFkK7gFDZd2oCG7e3u3lqDe5%2BQAqBshYAKbOzpMM6VQq0AqLFeO3TWv%2FhlSP8z9Xxadf3IFRciPlQbMV85VXxEDCzyTYAkLQJsqVuyI%2FQF9hW1rk1UcvOTVpcDRXuwBm%2B66Cq48OnTGzdMu32f%2FsKe7aacdi4msVqU2Z4JwvyjewD4biHJ7lNUkAUf16Zz7SKkLvSvxO%2FwqV7HcxrEs&X-Amz-Signature=232f28f1b4392e185aadc27c50e96ba6101529f7a9cbca8eced582602a9a0e81&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
+https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=5792f7d2847ab963c54e34c44c7f821ccded0baf951d2be262be1a2e9c59101f&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
 ```
 
 Once this is all done you'll be able to see your upload in `w3 ls` and through the gateway, eg at https://bafybeicq2urqdqum3ykblswqzzxf6wpy3mcbr6jg52ai2zlhds4l7ho5wa.ipfs.w3s.link
