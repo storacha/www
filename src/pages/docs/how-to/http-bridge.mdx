@@ -445,11 +445,11 @@ carbites split big.car --size 50B
 You should now see three files, `big-0.car`, `big-1.car` and `big-2.car`. Calculate the CID and size of each one:
 
 ```sh
-wc big-*
-       1      12     109 big-0.car
-       2       7     118 big-1.car
-       0       1      26 big-2.car
-       3      20     253 total
+wc -c big-*
+     109 big-0.car
+     118 big-1.car
+      26 big-2.car
+     253 total
 ipfs-car hash big-0.car
 bagbaiera5pcs7vgks34rflh47c6cprzoift7vfch6gmbm3odq7auw2iou3cq
 ipfs-car hash big-1.car
