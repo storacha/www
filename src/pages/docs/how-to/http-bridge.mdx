@@ -1,0 +1,691 @@
+import { Callout } from 'nextra/components'
+
+# Use the HTTP API Bridge
+
+Our API is built around [UCAN Invocation](https://github.com/ucan-wg/invocation). This
+allows clients to verify that our service executed a submitted UCAN invocation and produced a
+given result. This gives us a flexible, interoperable, verifiable computational abstraction
+to build upon, but is not widely supported by programming languages or operating system utilities, which
+is a significant disadvantage compared to a more traditional auth-token-based HTTP API.
+
+To compensate for this, we've implemented a "bridge" that lets you use the tools you
+know and love to interact with our API in a manner that should feel familiar if you've
+used an HTTP-based API before.
+
+## Limitations
+
+The instructions below are oriented toward capabilities invoked on spaces. These include `access/delegate`,
+`space/info`, `space/allocate`, `store/add`, `store/get`, `store/remove`, `store/list`, `upload/add`,
+`upload/list`, `upload/remove` and `usage/report`.
+
+Other capabilities are invoked on other entities. They are supported by the bridge, but
+you will need to generate auth tokens that are targetted at different DIDs and may not
+be well supported by our tools - please let us know if you are interested in this functionality
+so we can better support your use cases!
+
+## Authentication and Authorization
+
+Our UCAN Invocation-based API uses public/private keypairs to identify users and UCAN Delegation
+to allow those keypairs to invoke specific capabilities. The HTTP Bridge uses the same fundamental primitives
+but confines them to two separate HTTP headers, `X-Auth-Secret` and `Authorization`, that can be generated
+by clients without interacting with our service.
+
+Details of how to generate the header values can be found in the
+[W3UP UCAN Bridge Protocol](https://github.com/web3-storage/specs/blob/main/w3-ucan-bridge.md) specification, but
+they can also be generated for you by the [`w3` CLI](https://github.com/web3-storage/w3cli):
+
+### Generating Auth Headers with `w3cli`
+
+If you have not already logged in and created a space with the `w3` CLI, do that first:
+
+```sh
+w3 login you@example.com
+# follow onscreen instructions
+w3 space create
+# follow onscreen instructions
+```
+
+Next, find the DID of the space you'd like to use with the bridge:
+
+```sh
+w3 space ls
+* did:key:z6Mkabc123
+```
+
+And use the `bridge generate-tokens` command to generate header values:
+
+```sh
+w3 bridge generate-tokens did:key:z6Mkabc123 --can 'store/add' --can 'upload/add' --can 'upload/list' --expiration `date -v +24H +%s`
+```
+
+The example command above uses the `--expiration` option to specify that these headers will be
+valid for 24 hours. It uses the `--can` options to specify that the headers can be used to invoke
+`store/add`, `upload/add` or `upload/list` capabilities.
+
+The result of `w3 bridge generate-tokens` will contain the values of the `X-Auth-Secret` and `Authorization` headers:
+
+```txt
+X-Auth-Secret header: uOGQyYzRhYWQwNmY3NtEwOTg1ZWU0NDU0NjByNTg2ZGE
+
+Authorization header: uOqJlcm9vdHOB2CpYKQABcRIgYVymlT6sxiDd45CA0f...
+```
+
+These can be used with `curl` like:
+
+```sh
+curl -X POST \
+-H "X-Auth-Secret: uOGQyYzRhYWQwNmY3NtEwOTg1ZWU0NDU0NjByNTg2ZGE" \
+-H "Authorization: uOqJlcm9vdHOB2CpYKQABcRIgYVymlT6sxiDd45CA0f..." \
+...
+https://up.web3.storage/bridge
+```
+
+## Listing Uploads
+
+Listing uploads in a space is one of the easiest ways to ensure the bridge is working. We'll
+give an example using the common unix utility `curl`:
+
+First, create a file named `list.json` and put the following JSON in it, replacing `did:key:z6Mkabc123`
+with the space you used to generate auth headers above:
+
+```json
+{
+  "tasks": [
+    [
+      "upload/list",
+      "did:key:z6Mkabc123",
+      {}
+    ]
+  ]
+}
+```
+
+Next, run `curl` as follows, replacing the values of the `X-Auth-Secret` and `Authorization`
+headers with the values you generated above:
+
+```sh
+curl -X POST \
+-H "X-Auth-Secret: uOGQyYzRhYWQwNmY3NtEwOTg1ZWU0NDU0NjByNTg2ZGE" \
+-H "Authorization: uOqJlcm9vdHOB2CpYKQABcRIgYVymlT6sxiDd45CA0f..." \
+-d @list.json \
+https://up.web3.storage/bridge
+```
+
+## Storing Files
+
+You can store individual files as [big as 5GB](https://github.com/web3-storage/w3infra/blob/26106e315e79bf8072d2bd052786e46563d9a1da/upload-api/service.js#L12-L16) in
+spaces on web3.storage. To store larger files, see the [Sharded Uploads](#sharded-uploads) section below.
+
+To upload a file to your space you'll first need convert it to a CAR. Assuming your file is
+named `hello.txt` you can first use [`ipfs-car`](https://github.com/web3-storage/ipfs-car) to create a CAR:
+
+```sh
+ipfs-car pack hello.txt > hello.car
+bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a
+```
+
+<Callout type="info">
+If you already have a file available on the public IPFS network by CID, you can turn it into a CAR that can be uploaded to our service with:
+
+```sh
+ipfs dag export bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a > hello.car
+```
+</Callout>
+
+Hang on to the `bafy...` Content ID output here! You'll need it for the "Registering Uploads" section below. Next,
+calculate the Content ID of the CAR you just created:
+
+```sh
+ipfs-car hash hello.car
+bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq
+```
+
+You'll also need to calculate the size of `hello.car` in bytes. The common utility `wc` works well:
+
+```sh
+wc -c hello.car
+161 hello.car
+```
+
+Next, create a file (in this example we'll name it `store.json`) and put the following JSON
+in it, replacing `did:key:z6Mkabc123` with the space you used to generate auth headers above:
+
+```json
+{
+  "tasks": [
+    [
+      "store/add",
+      "did:key:z6Mkabc123",
+      {
+        "link": { "/": "bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq" },
+        "size": 161
+      }
+    ]
+  ]
+}
+```
+
+Finally, run `curl` replacing the values of the `X-Auth-Secret` and `Authorization`
+headers with the values you generated above:
+
+```sh
+curl -X POST \
+-H "X-Auth-Secret: uOGQyYzRhYWQwNmY3NtEwOTg1ZWU0NDU0NjByNTg2ZGE" \
+-H "Authorization: uOqJlcm9vdHOB2CpYKQABcRIgYVymlT6sxiDd45CA0f..." \
+-d @store.json \
+https://up.web3.storage/bridge
+```
+
+You'll get a response that includes a number of different fields:
+
+```json
+[
+  {
+    "p": {
+      "fx": {
+        "fork": []
+      },
+      "iss": "did:web:web3.storage",
+      "meta": {},
+      "out": {
+        "ok": {
+          "allocated": 161,
+          "headers": {
+            "content-length": "161",
+            "x-amz-checksum-sha256": "5NswWHZdy73RY/nH3BQAGKfTAXKPO1BYLmJCjEx34PM="
+          },
+          "link": {
+            "/": "bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM76NYBTG7%2F20240307%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240307T170854Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQC2snXc59uBD2ugjc7C9DiKP0447T7fZ0A010Ph6iDswgIgfq0fYWE4Y9FByHz%2B6mYRussCgVr9KlBV1eGd1kgA22Yq3AMIwv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw1MDU1OTUzNzQzNjEiDCjNsn%2FQBypcXnybPCqwAyGtjDvgxmoQg8IYvO4vQ5fxZw%2F69mzSB%2BJmJMl9gnMaQ7SqUuTQnamPEZHM%2BaztPTbSBFm26S9o4GcZWn5S9UCOLb4YV6sAeCC3XCMkc58RPvyehMiVf0xdN1lBCLkFDd%2BHDb0cPEOvvJbTor22rhCo9L%2FsAVZPAYBu1efwvifCMnUebFeA3Qc0lvYG9PqLtZwo2ZMeVCwXYZiwec%2FpwdobopEWve88GJtxrVyiWMuV4pO7A68cty5ukFr0aRwNHM9g2e2y%2BSymH8pS6mfWpdope%2F%2BB6JoYvKKPN%2FQMpvROl0BxNdTD%2FgNUNqKjlNfUDtV7NqaDJlTqtlTXp44%2F7AUk7yJgK9UlVmp7B30oNH3fPtNXEFBbowoVczqcDBfp%2BxDBMZRFDa37VNcoIdjEBpBTCZk5hONDpjlp%2FyGd1EPSswbQyr6nA5xwLunfF6HhWA%2B8ZMp5raiepAPm%2FS7QfpbiZGtEZ%2FoVWENmPI4HLjDKYjXRJ7i680K9cMDeFSHjHvaTYsgOh09jmL5OnKSMRbANl4bNihk%2FX7pWgxVmbV0Qj%2BQ5eDpvsYUe9i%2FTUVAyODDU5KevBjqeATdV%2Fp9WiSN1mc1%2FUxn60TYZRFAjcTm6lfdbdtEEWneexsLLj6BpoW6gUA1c73JjEXsOEGbaSfHXi%2BI6nFtlNJpKlP%2BbrFlylA2qmIvlnKJzv2ALrsARUmCH1Kl26CVFfOtnJv7VZmDSVnS9nr4mYLHLkPjIhBaF3IxWVcFR7He0CCfRv%2BYkHzTlVdzoK%2BmJkUVyofY%2B3Bt3dDkpk7No&X-Amz-Signature=1d4cbc65a8440c89eb2770b2edfe4e3fe91831856ee03d0d939911d9963337f0&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
+          "with": "did:key:z6Mkm5qHN9g9NQSGbBfL7iGp9sexdssioT4CzyVap9ATqGqX"
+        }
+      },
+      "prf": [],
+      "ran": {
+        "/": "bafyreib732osv25yuv4zs7fhr6ijywa4itb62g6o7chej2jh6ierf6o6jy"
+      }
+    },
+    "s": {
+      "/": {
+        "bytes": "7aEDQH53KYLjnCneSTc9nslSC1AjFCU1dtGOgwwaCopfxS1Stur+GzYpubUnvjykRbqcyUvaHutl+XVxoZuOwV2mRgY"
+      }
+    }
+  }
+]
+```
+
+The three you care about are `p.out.ok.status`, `p.out.ok.url` and `p.out.ok.headers`. If the value of `p.out.ok.status` is `done`,
+congratulations! You're done. The file has already been uploaded to our system and you don't need to do anything else.
+
+If the value of `p.out.ok.status` is `upload` you'll need to send an HTTP `PUT` to the value of `p.out.ok.url`, passing the bytes of the CAR
+in the body of the request and including the HTTP headers in `p.out.ok.headers`:
+
+```sh
+curl -v -X PUT \
+-H "content-length: 161" \
+-H "x-amz-checksum-sha256: 5NswWHZdy73RY/nH3BQAGKfTAXKPO1BYLmJCjEx34PM=" \
+--data-binary @hello.car \
+https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq.car\?X-Amz-Algorithm\=AWS4-HMAC-SHA256\&X-Amz-Content-Sha256\=UNSIGNED-PAYLOAD\&X-Amz-Credential\=ASIAXLN6VFMM76NYBTG7%2F20240307%2Fus-west-2%2Fs3%2Faws4_request\&X-Amz-Date\=20240307T170854Z\&X-Amz-Expires\=86400\&X-Amz-Security-Token\=IQoJb3JpZ2luX2VjEMn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQC2snXc59uBD2ugjc7C9DiKP0447T7fZ0A010Ph6iDswgIgfq0fYWE4Y9FByHz%2B6mYRussCgVr9KlBV1eGd1kgA22Yq3AMIwv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw1MDU1OTUzNzQzNjEiDCjNsn%2FQBypcXnybPCqwAyGtjDvgxmoQg8IYvO4vQ5fxZw%2F69mzSB%2BJmJMl9gnMaQ7SqUuTQnamPEZHM%2BaztPTbSBFm26S9o4GcZWn5S9UCOLb4YV6sAeCC3XCMkc58RPvyehMiVf0xdN1lBCLkFDd%2BHDb0cPEOvvJbTor22rhCo9L%2FsAVZPAYBu1efwvifCMnUebFeA3Qc0lvYG9PqLtZwo2ZMeVCwXYZiwec%2FpwdobopEWve88GJtxrVyiWMuV4pO7A68cty5ukFr0aRwNHM9g2e2y%2BSymH8pS6mfWpdope%2F%2BB6JoYvKKPN%2FQMpvROl0BxNdTD%2FgNUNqKjlNfUDtV7NqaDJlTqtlTXp44%2F7AUk7yJgK9UlVmp7B30oNH3fPtNXEFBbowoVczqcDBfp%2BxDBMZRFDa37VNcoIdjEBpBTCZk5hONDpjlp%2FyGd1EPSswbQyr6nA5xwLunfF6HhWA%2B8ZMp5raiepAPm%2FS7QfpbiZGtEZ%2FoVWENmPI4HLjDKYjXRJ7i680K9cMDeFSHjHvaTYsgOh09jmL5OnKSMRbANl4bNihk%2FX7pWgxVmbV0Qj%2BQ5eDpvsYUe9i%2FTUVAyODDU5KevBjqeATdV%2Fp9WiSN1mc1%2FUxn60TYZRFAjcTm6lfdbdtEEWneexsLLj6BpoW6gUA1c73JjEXsOEGbaSfHXi%2BI6nFtlNJpKlP%2BbrFlylA2qmIvlnKJzv2ALrsARUmCH1Kl26CVFfOtnJv7VZmDSVnS9nr4mYLHLkPjIhBaF3IxWVcFR7He0CCfRv%2BYkHzTlVdzoK%2BmJkUVyofY%2B3Bt3dDkpk7No\&X-Amz-Signature\=1d4cbc65a8440c89eb2770b2edfe4e3fe91831856ee03d0d939911d9963337f0\&X-Amz-SignedHeaders\=content-length%3Bhost%3Bx-amz-checksum-sha256\&x-id\=PutObject
+```
+
+<Callout type="info">
+Please note that your storage space has been allocated at this point - if you fail to `PUT` the file you will still be charged for storage!
+The good news is that you can store the same file as many times as you like without being charged for any additional space.
+</Callout>
+
+Your bits are now on IPFS, en route to the Filecoin Network, _but they will not show up as uploads in your web3.storage account!_ To
+finish "uploading" your file to web3.storage you'll need to register your upload as described in the next section.
+
+## Registering Uploads
+
+To support arbitrarily large file uploads, our upload service requires large files to be sharded into multiple CARs, each
+of which is uploaded seperately according to the instructions in the "Storing Files" section above.
+
+Once the files have been uploaded, create a file (in this example we'll name it `upload.json`) with the following contents, replacing
+`did:key:z6Mkabc123` with the DID of the space you used to generate auth headers above:
+
+```json
+{
+  "tasks": [
+    [
+      "upload/add",
+      "did:key:z6Mkabc123",
+      {
+        "root": {
+          "/": "bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a"
+        },
+        "shards": [
+          {
+            "/": "bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq"
+          }
+        ]
+      }
+    ]
+  ]
+}
+```
+
+Change the `root` CID to the CID output when you ran `ipfs-car pack` above. Change the `shards` CID to the CID output
+when you ran `ipfs-car hash` above.
+
+Finally, run:
+
+```sh
+curl -X POST \
+-H "X-Auth-Secret: uOGQyYzRhYWQwNmY3NtEwOTg1ZWU0NDU0NjByNTg2ZGE" \
+-H "Authorization: uOqJlcm9vdHOB2CpYKQABcRIgYVymlT6sxiDd45CA0f..." \
+-d @upload.json \
+https://up.web3.storage/bridge
+```
+
+being sure to again replace `X-Auth-Secret` and `Authorization` with the values generated by `w3 bridge generate-tokens`.
+
+If everything works as expected you will now see your upload when you invoke `upload/list` per the instructions in
+"Listing Uploads" above!
+
+## Batching Operations
+
+The operations described in "Storing Files" and "Registering Uploads" above can be combined into a single HTTP
+request to the bridge. To see this in action, create a file (in this example we'll name it `store-and-upload.json`)
+with the following contents, replacing `did:key:z6Mkabc123` with the DID of the space you used to generate
+auth headers above and the values of the `link`, `root` and `shards` keys with the CIDs of your upload:
+
+```json
+{
+  "tasks": [
+    [
+      "store/add",
+      "did:key:z6Mkabc123",
+      {
+        "link": { "/": "bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq" },
+        "size": 161
+      }
+    ],
+    [
+      "upload/add",
+      "did:key:z6Mkabc123",
+      {
+        "root": {
+          "/": "bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a"
+        },
+        "shards": [
+          {
+            "/": "bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq"
+          }
+        ]
+      }
+    ]
+  ]
+}
+```
+
+And run:
+
+```sh
+curl -X POST \
+-H "X-Auth-Secret: uOGQyYzRhYWQwNmY3NtEwOTg1ZWU0NDU0NjByNTg2ZGE" \
+-H "Authorization: uOqJlcm9vdHOB2CpYKQABcRIgYVymlT6sxiDd45CA0f..." \
+-d @store-and-upload.json \
+https://up.web3.storage/bridge
+```
+
+being sure to again replace `X-Auth-Secret` and `Authorization` with the values generated by `w3 bridge generate-tokens`.
+
+You'll get a result that looks like this:
+
+```json
+[
+  {
+    "p": {
+      "fx": {
+        "fork": []
+      },
+      "iss": "did:web:web3.storage",
+      "meta": {},
+      "out": {
+        "ok": {
+         "allocated": 161,
+          "headers": {
+            "content-length": "161",
+            "x-amz-checksum-sha256": "5NswWHZdy73RY/nH3BQAGKfTAXKPO1BYLmJCjEx34PM="
+          },
+          "link": {
+            "/": "bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq/bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM76NYBTG7%2F20240307%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240307T170854Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQC2snXc59uBD2ugjc7C9DiKP0447T7fZ0A010Ph6iDswgIgfq0fYWE4Y9FByHz%2B6mYRussCgVr9KlBV1eGd1kgA22Yq3AMIwv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw1MDU1OTUzNzQzNjEiDCjNsn%2FQBypcXnybPCqwAyGtjDvgxmoQg8IYvO4vQ5fxZw%2F69mzSB%2BJmJMl9gnMaQ7SqUuTQnamPEZHM%2BaztPTbSBFm26S9o4GcZWn5S9UCOLb4YV6sAeCC3XCMkc58RPvyehMiVf0xdN1lBCLkFDd%2BHDb0cPEOvvJbTor22rhCo9L%2FsAVZPAYBu1efwvifCMnUebFeA3Qc0lvYG9PqLtZwo2ZMeVCwXYZiwec%2FpwdobopEWve88GJtxrVyiWMuV4pO7A68cty5ukFr0aRwNHM9g2e2y%2BSymH8pS6mfWpdope%2F%2BB6JoYvKKPN%2FQMpvROl0BxNdTD%2FgNUNqKjlNfUDtV7NqaDJlTqtlTXp44%2F7AUk7yJgK9UlVmp7B30oNH3fPtNXEFBbowoVczqcDBfp%2BxDBMZRFDa37VNcoIdjEBpBTCZk5hONDpjlp%2FyGd1EPSswbQyr6nA5xwLunfF6HhWA%2B8ZMp5raiepAPm%2FS7QfpbiZGtEZ%2FoVWENmPI4HLjDKYjXRJ7i680K9cMDeFSHjHvaTYsgOh09jmL5OnKSMRbANl4bNihk%2FX7pWgxVmbV0Qj%2BQ5eDpvsYUe9i%2FTUVAyODDU5KevBjqeATdV%2Fp9WiSN1mc1%2FUxn60TYZRFAjcTm6lfdbdtEEWneexsLLj6BpoW6gUA1c73JjEXsOEGbaSfHXi%2BI6nFtlNJpKlP%2BbrFlylA2qmIvlnKJzv2ALrsARUmCH1Kl26CVFfOtnJv7VZmDSVnS9nr4mYLHLkPjIhBaF3IxWVcFR7He0CCfRv%2BYkHzTlVdzoK%2BmJkUVyofY%2B3Bt3dDkpk7No&X-Amz-Signature=1d4cbc65a8440c89eb2770b2edfe4e3fe91831856ee03d0d939911d9963337f0&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
+          "with": "did:key:z6Mkabc123"
+        }
+      },
+      "prf": [],
+      "ran": {
+        "/": "bafyreiclycv7vdfutbtakytkbvcpx2ontlp3fusfb7niugvy5a6kawnhk4"
+      }
+    },
+    "s": {
+      "/": {
+        "bytes": "7aEDQDosaCizSSLXXm55dAeuDACNw2H9/JoUa6oLkLY7mv6TXeW+Z0xJouYj1MGf6LpHn756IW2NprqXq4c20EjlOwM"
+      }
+    }
+  },
+  {
+    "p": {
+      "fx": {
+        "fork": []
+      },
+      "iss": "did:web:web3.storage",
+      "meta": {},
+      "out": {
+        "ok": {
+          "root": {
+            "/": "bafybeidhkumeonuwkebh2i4fc7o7lguehauradvlk57gzake6ggjsy372a"
+          },
+          "shards": [
+            {
+              "/": "bagbaiera4tntawdwlxf33uld7hd5yfaadct5galsr45vawbomjbiytdx4dzq"
+            },
+            {
+              "/": "bagbaieraw4kz73gtuttgxlckdby7fezy4o5hdfspcrl7nqxsh3ultzse2q2a"
+            }
+          ]
+        }
+      },
+      "prf": [],
+      "ran": {
+        "/": "bafyreihobt6uxochgcmfs5bhetynrccrqsuipwp5cy5xxclvqgzw7qsmui"
+      }
+    },
+    "s": {
+      "/": {
+        "bytes": "7aEDQIa1JFOzEWHHfUZQJqRhZzElISfhq4b9Xqca0TgjX+3N7SLrYTB6SN/2GdLSgkRuIKZivB+tSdG4s/+Fvh1CxAQ"
+      }
+    }
+  }
+]
+```
+
+Remember that if the `status` field of the `store/add` result is `upload` you will then need to `PUT` your file to the
+to the given URL with the given headers.
+
+## Sharded Uploads
+
+If you'd like to store a file larger than 5GB you'll need to shard it into smaller CARs before storing. We don't
+prescribe any particular sharding algorithm - you'll need to:
+
+1. read the input CAR
+2. write the first CAR file header
+3. write blocks until the first CAR hits your limit (a number lower than 5GB)
+4. write a new CAR file header for the second CAR
+5. write blocks until the second CAR hits your limit
+6. repeat until end of blocks
+
+If you're implementing this yourself it may be helpful to look
+into [our JavaScript implementation](https://github.com/web3-storage/w3up/blob/d6978d7ab299be76987c6533d18e6857f6998fe6/packages/upload-client/src/index.js#L38).
+We provide an example here using the [`carbites-cli`](https://www.npmjs.com/package/carbites-cli) utility:
+
+First we'll create an absolutely gigantic file:
+
+```sh
+printf -- 'this is an absolutely gigantic file created by travis%.0s' {1..1000000} > big.txt
+ipfs-car pack big.txt > big.car
+bafybeiao5ir3xsp4vhg46b2cjvnl4ucmg5wxrdpy4cypolwexitmpz7hwu
+```
+
+We'll save the CID `ipfs-car` outputs so we can use it in our `store/add` invocation later.
+
+Next we'll use `carbites` to split this file. We are using the `50B` option to split into 50 byte
+chunks - you'll probably want to use something much larger like `100MB`:
+
+```sh
+carbites split big.car --size 25MB
+```
+
+You should now see three files, `big-0.car`, `big-1.car` and `big-2.car`. Calculate the CID and size of each one:
+
+```sh
+wc -c big-*
+     26218318 big-0.car
+     26227074 big-1.car
+      573086 big-2.car
+     53018478 total
+ipfs-car hash big-0.car
+bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq
+ipfs-car hash big-1.car
+bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua
+ipfs-car hash big-2.car
+bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa
+```
+
+Next, create a file (in this example we'll name it `store-and-upload.json`) and put the following JSON
+in it. The `link` and `size` in each `store/add` should match the CID and size calculated above, and
+each `link` should also appear in the `shards` array of the `upload/add` call. The `root` CID in the `upload/add`
+should be the CID output by `ipfs-car pack` above. Be sure to update the space DID `did:key:z6Mkabc123` to match
+the space you used when you generated auth tokens!
+
+```json
+{
+  "tasks": [
+    [
+      "store/add",
+      "did:key:z6Mkabc123",
+      {
+        "link": {
+          "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
+        },
+        "size": 109
+      }
+    ],
+    [
+      "store/add",
+      "did:key:z6Mkabc123",
+      {
+        "link": {
+          "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
+        },
+        "size": 118
+      }
+    ],
+    [
+      "store/add",
+      "did:key:z6Mkabc123",
+      {
+        "link": {
+          "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
+        },
+        "size": 26
+      }
+    ],
+    [
+      "upload/add",
+      "did:key:z6Mkabc123",
+      {
+        "root": {
+          "/": "bafybeiao5ir3xsp4vhg46b2cjvnl4ucmg5wxrdpy4cypolwexitmpz7hwu"
+        },
+        "shards": [
+          {
+            "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
+          },
+          {
+            "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
+          },
+          {
+            "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
+          }                    
+        ]
+      }
+    ]
+  ]
+}
+```
+
+Once you receive a response, you'll need to `PUT` each of the cars to their respective upload URLs. Given this result:
+
+```json
+[
+  {
+    "p": {
+      "fx": {
+        "fork": []
+      },
+      "iss": "did:web:web3.storage",
+      "meta": {},
+      "out": {
+        "ok": {
+          "allocated": 0,
+          "headers": {
+            "content-length": "26218318",
+            "x-amz-checksum-sha256": "pyGILvsMgmI+NuWyG4uC65YEgkEQxQVsBJyApBMWL4U="
+          },
+          "link": {
+            "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=28ad621b458a783fe69bf50bea52b8cfd9421127873e516bf237863e74c124dd&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
+          "with": "did:key:z6Mkabc123"
+        }
+      },
+      "prf": [],
+      "ran": {
+        "/": "bafyreifl635eqromltu6asqekh3gmdxiiasubcuvpc37j5ticopvjwmeqi"
+      }
+    },
+    "s": {
+      "/": {
+        "bytes": "7aEDQJS7nJycSU2r7941+5dbhqCuGbHsm2GXKbRggayUDxpfukNwJSyNR1GydX6pgqhfhLFCutlx3yKPOUH+/eoxtwg"
+      }
+    }
+  },
+  {
+    "p": {
+      "fx": {
+        "fork": []
+      },
+      "iss": "did:web:web3.storage",
+      "meta": {},
+      "out": {
+        "ok": {
+          "allocated": 0,
+          "headers": {
+            "content-length": "26227074",
+            "x-amz-checksum-sha256": "8I3270F1+ziIKC6r0M3ZqHJNRN1l9CNYpf+5vMXxJSg="
+          },
+          "link": {
+            "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=f47614b5ec4751ec5b46617d172f86daf91bda5a8c15b771e7fb488d15394a4e&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
+          "with": "did:key:z6Mkabc123"
+        }
+      },
+      "prf": [],
+      "ran": {
+        "/": "bafyreihskuuxwtluxs2pndfjqr56jqlwfgpfoga7teitmbsbgzk466wbwa"
+      }
+    },
+    "s": {
+      "/": {
+        "bytes": "7aEDQI6K8xBybt+lthsCEfMjxbql7lml8XUeUeSxZsnF2duxuK7YKjEcETTr3gmPOARP0ulgr1yDOvWbUcKmumyIWQo"
+      }
+    }
+  },
+  {
+    "p": {
+      "fx": {
+        "fork": []
+      },
+      "iss": "did:web:web3.storage",
+      "meta": {},
+      "out": {
+        "ok": {
+          "allocated": 0,
+          "headers": {
+            "content-length": "573086",
+            "x-amz-checksum-sha256": "65jEDy7v85ByUoX06Jka6YTSyoKUcabZk9KHvuggolw="
+          },
+          "link": {
+            "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
+          },
+          "status": "upload",
+          "url": "https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=5792f7d2847ab963c54e34c44c7f821ccded0baf951d2be262be1a2e9c59101f&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject",
+          "with": "did:key:z6Mkabc123"
+        }
+      },
+      "prf": [],
+      "ran": {
+        "/": "bafyreidf7aj7tmrf54rkh2hrartvbbsg5ojbg2dmhnluvzrliyzq4o2cdi"
+      }
+    },
+    "s": {
+      "/": {
+        "bytes": "7aEDQBiyN3Nxpc+upjyfyHABtfscOjECEE9jXTG9H4R2/jOjlJrR39VPv2IkBFIBtbg0hPHs8I/XGftG1dl+iHur4wo"
+      }
+    }
+  },
+  {
+    "p": {
+      "fx": {
+        "fork": []
+      },
+      "iss": "did:web:web3.storage",
+      "meta": {},
+      "out": {
+        "ok": {
+          "root": {
+            "/": "bafybeiao5ir3xsp4vhg46b2cjvnl4ucmg5wxrdpy4cypolwexitmpz7hwu"
+          },
+          "shards": [
+            {
+              "/": "bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa"
+            },
+            {
+              "/": "bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua"
+            },
+            {
+              "/": "bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq"
+            }
+          ]
+        }
+      },
+      "prf": [],
+      "ran": {
+        "/": "bafyreigl6rzvfcba47bj4eapo6csalvrmweq67dhejqmmoqw45rlemitnq"
+      }
+    },
+    "s": {
+      "/": {
+        "bytes": "7aEDQBypjHmf0ROjk7VzXM3FDtEybD8c2ykGXkrBMjzXyNP4koXC9XWRKaeKYSTb8JK+8jpIDHnW/n0gMjEUihIgsA8"
+      }
+    }
+  }
+]
+```
+
+You'll need to run the following `curl` commands:
+
+```sh
+curl -X PUT \
+-H "content-length: 26218318" \
+-H "x-amz-checksum-sha256: pyGILvsMgmI+NuWyG4uC65YEgkEQxQVsBJyApBMWL4U=" \
+-H "content-type: application/vnd.ipld.car" \
+--data-binary @big-0.car \
+https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq/bagbaierau4qyqlx3bsbgeprw4wzbxc4c5olajasbcdcqk3aetsakieywf6cq.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=28ad621b458a783fe69bf50bea52b8cfd9421127873e516bf237863e74c124dd&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
+
+curl -X PUT \
+-H "content-length: 26227074" \
+-H "x-amz-checksum-sha256: 8I3270F1+ziIKC6r0M3ZqHJNRN1l9CNYpf+5vMXxJSg=" \
+-H "content-type: application/vnd.ipld.car" \
+--data-binary @big-1.car \
+https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua/bagbaiera6cg7n32box5trcbif2v5btozvbze2rg5mx2cgwff7643zrpreuua.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=f47614b5ec4751ec5b46617d172f86daf91bda5a8c15b771e7fb488d15394a4e&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
+
+curl -X PUT \
+-H "content-length: 573086" \
+-H "x-amz-checksum-sha256: 65jEDy7v85ByUoX06Jka6YTSyoKUcabZk9KHvuggolw=" \
+-H "content-type: application/vnd.ipld.car" \
+--data-binary @big-2.car \
+https://carpark-prod-0.s3.us-west-2.amazonaws.com/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa/bagbaiera5ommidzo57zza4ssqx2orgi25gcnfsucsry2nwmt2kd352baujoa.car?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXLN6VFMM665ZYAHR%2F20240314%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240314T175533Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJHMEUCIQCUXvGoqROkM7v%2FLVCivP8q5dqoiRe4dbXtqTCV3MP9TAIgKGTZvwjmQ365IcVthNaMXHytEQmm74ABJmUKxFSon14q0wMIehABGgw1MDU1OTUzNzQzNjEiDD3M45t0320FZ6VOriqwA422dYlN9z%2F89MSJjGZQitkOPlF8wdp4t4kU3I4wvjyThjkfSGeyBV20XS%2FfsF8Dcm1L3iuZwUwhMZImvX406MZDzEYLKlyejvoDPQLpGOsopDfLOygdFUUQUvsbZPXvgJwyZp5r5YSUUUEOhmafdGHztdQVzqkiKaQ%2BUrXA1KAHb7qEXlM3NvPAyDNO0GJD8cVDUlygg%2Bw6mZodsjeIt%2B250MRvDU0DL%2BRPIG1OhCM81GMgnkmGpyTh4pSuZPPUqINRm7qKCssk0Fg84isHOCMa7OEonwoAccIHBS%2BQB8XtuvQ%2FQWDZeQUYxFFhvXKQu5tze9ZOHxFC%2FOAvmpoAQklXXzWeySKplID5AihmbCiNqisqqjQ9MuTuJmNfHHEIqFfKx00Rdxkl42IWNp8gtzyjTSjytWbEd%2Bm6yStClUvFo3i4pwn3zvCgZ3aV5NjWuOufQpAnU7Tb7lK02Q0JikIOz5hHHtOFLh5%2F8ldnKGaBp0qs9Nj1E2dEFU%2B%2BuyZ3bx6l1MrVknVhPsWUqCoEmT9me%2BJXKGFUV0hPjDKJNrPEtMLDbFoaW3yIh3hwVR9MWzCX3syvBjqeAZDeWPQKO8Xv%2B%2Fti9cMOU6R7EtRbJ1hHmz95u9SJLKD6E%2F19RQnPFj5f4TcDyoqt4UT6p8fRcK9xkAVg2e1qamlLmtEMEhgavD6YgqSLbEPpRe9CitthIZ9jyPvZYtxccY%2BhUoQSeSAQ11JHTRtYzsjzOs%2BcgXTSDRAaj6ZnCcLpEYgRt7hRO%2BqIhDdUNxbUenM1edJhEW%2FyKBn%2BEfvm&X-Amz-Signature=5792f7d2847ab963c54e34c44c7f821ccded0baf951d2be262be1a2e9c59101f&X-Amz-SignedHeaders=content-length%3Bhost%3Bx-amz-checksum-sha256&x-id=PutObject
+```
+
+Once this is all done you'll be able to see your upload in `w3 ls` and through the gateway, eg at https://bafybeicq2urqdqum3ykblswqzzxf6wpy3mcbr6jg52ai2zlhds4l7ho5wa.ipfs.w3s.link
