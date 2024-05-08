@@ -164,6 +164,10 @@ in it, replacing `did:key:z6Mkabc123` with the space you used to generate auth h
   ]
 }
 ```
+<Callout type="info">
+**Important:** Make sure you use the CID from the output of `ipfs-car hash <file>` as the `link` in the file above!
+It should start with `bag...`. It is _not_ the same as the DAG root CID (which usually starts `bafy...`).
+</Callout>
 
 Finally, run `curl` replacing the values of the `X-Auth-Secret` and `Authorization`
 headers with the values you generated above:
