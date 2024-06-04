@@ -104,7 +104,7 @@ async function delegationRequestHandler (request) {
   // we're issuing the delegation to, as well as a list of
   // "ability" strings.
   // Here, we're passing in the abilities needed to upload to the space:
-  // 'space/info', 'store/add', and 'upload/add'.
+  // 'space/blob/add', 'space/index/add', 'filecoin/offer', and 'upload/add'.
   //
   // With these capabilities, the user will be able to upload to the space,
   // but they won't be able to list existing uploads or perform any "management"
@@ -113,7 +113,10 @@ async function delegationRequestHandler (request) {
   //
   // See the capabilities spec for more about capabilities:
   // https://github.com/web3-storage/w3protocol/blob/main/spec/capabilities.md
-  const delegation = await client.createDelegation(userDID, ['store/add', 'upload/add'])
+  const delegation = await client.createDelegation(
+    userDID,
+    ['space/blob/add', 'space/index/add', 'filecoin/offer', 'upload/add']
+  )
 
   // The delegation object is a binary "blob" that encodes the UCAN
   // delegation into the CAR format.

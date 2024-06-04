@@ -129,8 +129,8 @@ w3 key create
 # access to.
 #
 # If you want to limit permissions being passed to the Agent, you can specify
-# permissions to give, e.g., `--can 'store/add' --can 'upload/add'` limits to
-# just being able to upload.
+# permissions to give, e.g., `--can space/blob/add --can space/index/add --can
+# filecoin/offer --can upload/add` limits to just being able to upload.
 w3 delegation create <did_from_ucan-key_command_above> | base64
 
 # ❗️ Store the output in environment variable PROOF
@@ -246,7 +246,7 @@ async function backend(did) {
 
   // Create a delegation for a specific DID
   const audience = DID.parse(did)
-  const abilities = ['store/add', 'upload/add']
+  const abilities = ['space/blob/add', 'space/index/add', 'filecoin/offer', 'upload/add']
   const expiration = Math.floor(Date.now() / 1000) + (60 * 60 * 24) // 24 hours from now
   const delegation = await client.createDelegation(audience, abilities, { expiration })
 

@@ -33,7 +33,7 @@ $ w3 key create --json > ci-key.json
 $ AUDIENCE=$(jq -r .did ci-key.json)
 
 # Create a signed proof that you delegate capabilties to that key. 
-$ w3 delegation create $AUDIENCE -c store/add -c upload/add --base64
+$ w3 delegation create $AUDIENCE -c space/blob/add -c space/index/add -c filecoin/offer -c upload/add --base64
 mAYIEAP8OEaJlcm9vdHOAZ3ZlcnNpb24BwwUBcRIg+oHTbzShh1WzBo9ISkonCW+KAcy/+zW8Zb...
 
 # Pass the output to `w3 space add` in ci
@@ -90,7 +90,7 @@ The `did` from the command above is the public decentalised identifier for that 
 
 On your local machine, use [w3cli][] to delegate capabilties to upload to our space to the public DID for the signing key we created.
 
-Our CI environment doesn't need to list our uploads or change our billing plan so we only delegate the `store/add` and `upload/add` capabilities to it.
+Our CI environment doesn't need to list our uploads or change our billing plan so we only delegate the `space/blob/add`, `space/index/add`, `filecoin/offer` and `upload/add` capabilities to it.
 
 Pass the `did` for the signing key as the audience parameter. We are delegating capabilities to that key.
 
@@ -98,7 +98,7 @@ Pass the `did` for the signing key as the audience parameter. We are delegating 
 $ AUDIENCE=did:key:z6Mk...
 
 # Delegate capabilities to the `did` we created above.
-$ w3 delegation create $AUDIENCE -c 'store/add' -c 'upload/add' --base64
+$ w3 delegation create $AUDIENCE -c space/blob/add -c space/index/add -c filecoin/offer -c upload/add --base64
 mAYIEAP8OEaJlcm9vdHOAZ3ZlcnNpb24BwwUBcRIg+oHTbzShh1WzBo9ISkonCW+KAcy/+zW8Zb...
 ```
 

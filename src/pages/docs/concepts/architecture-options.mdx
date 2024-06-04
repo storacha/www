@@ -60,7 +60,7 @@ Your backend code can then re-delegate it's capabilities to your users. Your use
 
 When your user is ready to upload, they should request a delegation from your backend to upload to your Space. They must send their Agent DID so that the delegation is restricted to be used by only them.
 
-In your backend, you can call [`client.createDelegation(...)`](https://github.com/web3-storage/w3up/blob/main/packages/w3up-client/README.md#createdelegation) passing in the Agent object from `client.agent()` in your end user's instance, and passing params to limit the scope of the delegation (e.g., `store/add`, `upload/add`, expiration time)
+In your backend, you can call [`client.createDelegation(...)`](https://github.com/web3-storage/w3up/blob/main/packages/w3up-client/README.md#createdelegation) passing in the Agent object from `client.agent()` in your end user's instance, and passing params to limit the scope of the delegation (e.g., `space/blob/add`, `upload/add`, expiration time)
 
 You can serialize the delegation using `delegation.archive()` and send it to your user.
 
@@ -98,7 +98,7 @@ async function backend(did) {
 
   // Create a delegation for a specific DID
   const audience = DID.parse(did)
-  const abilities = ['store/add', 'upload/add']
+  const abilities = ['space/blob/add', 'space/index/add', 'filecoin/offer', 'upload/add']
   const expiration = Math.floor(Date.now() / 1000) + (60 * 60 * 24) // 24 hours from now
   const delegation = await client.createDelegation(audience, abilities, { expiration })
 
