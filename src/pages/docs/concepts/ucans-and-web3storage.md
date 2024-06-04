@@ -14,13 +14,13 @@ UCAN-based APIs are centered around _capabilities_, which are comprised of an _a
 
 When you upload data to w3up, your uploads are linked to a unique _Space_ that acts as a "namespace" for the data you upload. Each Space corresponds to a _DID_, or [Decentralized Identity Document](https://www.w3.org/TR/did-core/). In web3.storage's implementation of w3up, these Space DIDs generally use the key DID method, of the form did:key:publicKey with a corresponding private signing key.
 
-When creating a Space, it generates this private key and did:key for you locally. To use web3.storage, you then register a Space by associating it with your email address. From there, when invoking storage capabilities with web3.storage, the Space did:key is the "resource" portion of the capability, while the ability is an action like store/add or store/remove. (A Space registered with web3.storage is imperfectly analogous to an "account" with web3.storage.)
+When creating a Space, it generates this private key and did:key for you locally. To use web3.storage, you then register a Space by associating it with your email address. From there, when invoking storage capabilities with web3.storage, the Space did:key is the "resource" portion of the capability, while the ability is an action like space/blob/add or space/blob/remove. (A Space registered with web3.storage is imperfectly analogous to an "account" with web3.storage.)
 
 Under the hood in the email registration process, your Space delegates the capabilities needed to use w3up to your email address, and this delegation is stored by web3.storage. If you need access to your Space in the future from any device, web3.storage allows you to reclaim those capabilities the same way you would reset a password in other services - using an email verification process. This means you don't need to store or manage Space private keys to use w3up - just create a new space, register it with w3up and use it from as many devices as you like. More on this "sign in" process is detailed in the next section on Agents.
 
 ### Agent
 
-To invoke a capability like store/add on a Space using the client or CLI, the client must have an _Agent_. Like a Space, an Agent corresponds to a did:key whose private key is generated locally. An Agent is useful once the client or CLI has a UCAN delegation where a registered Space(s) delegates the Agent its capabilities. (An imperfect analogy is Agent to login session.)
+To invoke a capability like space/blob/add on a Space using the client or CLI, the client must have an _Agent_. Like a Space, an Agent corresponds to a did:key whose private key is generated locally. An Agent is useful once the client or CLI has a UCAN delegation where a registered Space(s) delegates the Agent its capabilities. (An imperfect analogy is Agent to login session.)
 
 The delegation from a Space to your Agent that w3up-client needs can be passed either by verifying the email address the Space is registered to and claiming the UCAN delegation (authorize(email) then capability.access.claim) or directly if you have the UCAN delegation available locally (addSpace(delegation)).
 
@@ -51,7 +51,7 @@ async function backend(did) {
 
   // Create a delegation for a specific DID
   const audience = DID.parse(did)
-  const abilities = ['store/add', 'upload/add']
+  const abilities = ['space/blob/add', 'space/index/add', 'filecoin/offer', 'upload/add']
   const expiration = Math.floor(Date.now() / 1000) + (60 * 60 * 24) // 24 hours from now
   const delegation = await client.createDelegation(audience, abilities, { expiration })
 
@@ -74,7 +74,7 @@ async function parseProof(data) {
 When the `backend` function is called in the developer's backend:
 - It's passed the DID of the user's Agent
 - Backend client initializes with an Agent that has permission to the developer's Space
-- It then generates a UCAN delegated to the user Agent DID passed in with only the `store/add` and `upload/add` abilities (to give the user ability to upload) and set to expire in 24 hours
+- It then generates a UCAN delegated to the user Agent DID passed in with only the `space/blob/add`, `space/index/add`, `filecoin/offer` and `upload/add` abilities (to give the user ability to upload) and set to expire in 24 hours
 
 **Frontend**
 
