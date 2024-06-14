@@ -131,19 +131,18 @@ w3 key create
 # If you want to limit permissions being passed to the Agent, you can specify
 # permissions to give, e.g., `--can space/blob/add --can space/index/add --can
 # filecoin/offer --can upload/add` limits to just being able to upload.
-w3 delegation create <did_from_ucan-key_command_above> | base64
+w3 delegation create <did_from_ucan-key_command_above> --base64
 
 # ❗️ Store the output in environment variable PROOF
 ```
 
-Then, when you initialize and configure the client, you can pass in this Agent and UCAN.
+Then, when you initialize and configure the client, you can pass in this private key and UCAN delegation.
 
 ```javascript
 import * as Client from '@web3-storage/w3up-client'
 import { StoreMemory } from '@web3-storage/w3up-client/stores/memory'
-import { importDAG } from '@ucanto/core/delegation'
-import { CarReader } from '@ipld/car'
-import * as Signer from '@ucanto/principal/ed25519'
+import * as Proof from '@web3-storage/w3up-client/proof'
+import { Signer } from '@web3-storage/w3up-client/principal/ed25519'
 
 async function main () {
   // Load client with specific private key
@@ -151,28 +150,11 @@ async function main () {
   const store = new StoreMemory()
   const client = await Client.create({ principal, store })
   // Add proof that this agent has been delegated capabilities on the space
-  const proof = await parseProof(process.env.PROOF)
+  const proof = await Proof.parse(process.env.PROOF)
   const space = await client.addSpace(proof)
   await client.setCurrentSpace(space.did())
   // READY to go!
 }
-
-/** @param {string} data Base64 encoded CAR file */
-async function parseProof (data) {
-  const blocks = []
-  const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'))
-  for await (const block of reader.blocks()) {
-    blocks.push(block)
-  }
-  return importDAG(blocks)
-}
-```
-
-If you're doing this in a non-persistent or serverless backend, you might consider using an in-memory [Store](https://github.com/web3-storage/w3up/tree/main/packages/access-client) for your Agent information rather than the default on-disk:
-
-```javascript
-import { StoreMemory } from '@web3-storage/access/stores/store-memory'
-const client = await Client.create({ principal, store: new StoreMemory() })
 ```
 
 ### Uploading to web3.storage
@@ -226,12 +208,11 @@ Your backend instance can also be used to delegate upload permissions directly t
 **Backend**
 
 ```js
-import { CarReader } from '@ipld/car'
-import * as DID from '@ipld/dag-ucan/did'
-import * as Delegation from '@ucanto/core/delegation'
-import * as Signer from '@ucanto/principal/ed25519'
 import * as Client from '@web3-storage/w3up-client'
 import { StoreMemory } from '@web3-storage/w3up-client/stores/memory'
+import * as Proof from '@web3-storage/w3up-client/proof'
+import { Signer } from '@web3-storage/w3up-client/principal/ed25519'
+import * as DID from '@ipld/dag-ucan/did'
 
 async function backend(did) {
   // Load client with specific private key
@@ -240,7 +221,7 @@ async function backend(did) {
   const client = await Client.create({ principal, store })
 
   // Add proof that this agent has been delegated capabilities on the space
-  const proof = await parseProof(process.env.PROOF)
+  const proof = await Proof.parse(process.env.PROOF)
   const space = await client.addSpace(proof)
   await client.setCurrentSpace(space.did())
 
@@ -254,22 +235,12 @@ async function backend(did) {
   const archive = await delegation.archive()
   return archive.ok
 }
-
-/** @param {string} data Base64 encoded CAR file */
-async function parseProof(data) {
-  const blocks = []
-  const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'))
-  for await (const block of reader.blocks()) {
-    blocks.push(block)
-  }
-  return Delegation.importDAG(blocks)
-}
 ```
 
 **Frontend**
 
 ```js
-import * as Delegation from '@ucanto/core/delegation'
+import * as Delegation from '@web3-storage/w3up-client/delegation'
 import * as Client from '@web3-storage/w3up-client'
 
 async function frontend() {

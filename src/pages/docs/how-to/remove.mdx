@@ -54,5 +54,5 @@ To remove shard CIDs and upload CIDs separately, you'll generally do this by:
    - Client: `client.capability.upload.remove(contentCID)`
    - CLI: `w3 can upload rm <contentCID>`
 1. Remove each of the shards (ensure first that no other content is using that shard!):
-   - Client: `client.capability.store.remove(shardCID)`
-   - CLI: `w3 can store rm <shardCID>`
+   - Client: `client.capability.blob.remove(shardMultihash)`
+   - CLI: `w3 can blob rm <shardMultihash>`
