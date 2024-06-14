@@ -98,14 +98,13 @@ The [`@ipld/car`](https://github.com/ipld/js-car) package contains the main Java
 Here's a simple example of loading a CAR file from a Node.js stream and storing it with web3.storage:
 
 ```js
-import { createReadStream } from 'fs'
-import { CarReader } from '@ipld/car'
+import fs from 'node:fs'
+import { Readable } from 'node:stream'
 
 async function storeCarFile(filename) {
-  const inStream = createReadStream(filename)
-  const car = await CarReader.fromIterable(inStream)
+  const stream = () => Readable.toWeb(fs.createReadStream(filename))
   const client = makeStorageClient()
-  const cid = await client.uploadCAR(car)
+  const cid = await client.uploadCAR({ stream })
   console.log('Stored CAR file! CID:', cid)
 }
 ```
@@ -114,7 +113,7 @@ CarReader.fromIterable accepts any iterable of Uint8Array data, including Node.j
 
 The CarReader type shown above will read the entire contents of the CAR into memory, which may cause issues with large files. On Node.js, you can use [CarIndexedReader](https://github.com/ipld/js-car#carindexedreader), which reads CAR data from disk directly and uses less memory than CarReader.
 
-## [Advanced IPLD formats](https://web3.storage/docs/how-tos/work-with-car-files/#advanced-ipld-formats)
+## Advanced IPLD formats
 
 IPLD can also be used as a general purpose data format like JSON. In fact, you can use JSON directly as IPLD just by using a special convention for linking to other IPLD objects. This convention is defined in the [dag-json](https://ipld.io/docs/codecs/known/dag-json/)["codec"](https://ipld.io/docs/codecs/known/dag-json/).
 
@@ -124,7 +123,7 @@ Here's an example of a `dag-json` object:
 {
   "name": "Have you seen this dog?",
   "description": "I have now...",
-  "image":{"/":"bafybeihkqv2ukwgpgzkwsuz7whmvneztvxglkljbs3zosewgku2cfluvba"}
+  "image": { "/": "bafybeihkqv2ukwgpgzkwsuz7whmvneztvxglkljbs3zosewgku2cfluvba" }
 }
 ```
 
