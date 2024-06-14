@@ -109,10 +109,6 @@ async function storeCarFile(filename) {
 }
 ```
 
-CarReader.fromIterable accepts any iterable of Uint8Array data, including Node.js streams. If you have all your CAR data in a single Uint8Array already, you can use [CarReader.fromBytes](https://github.com/ipld/js-car#CarReader__fromBytes) instead.
-
-The CarReader type shown above will read the entire contents of the CAR into memory, which may cause issues with large files. On Node.js, you can use [CarIndexedReader](https://github.com/ipld/js-car#carindexedreader), which reads CAR data from disk directly and uses less memory than CarReader.
-
 ## Advanced IPLD formats
 
 IPLD can also be used as a general purpose data format like JSON. In fact, you can use JSON directly as IPLD just by using a special convention for linking to other IPLD objects. This convention is defined in the [dag-json](https://ipld.io/docs/codecs/known/dag-json/)["codec"](https://ipld.io/docs/codecs/known/dag-json/).
