@@ -99,13 +99,12 @@ Here's a simple example of loading a CAR file from a Node.js stream and storing 
 
 ```js
 import fs from 'node:fs'
-import { CarReader } from '@ipld/car'
+import { Readable } from 'node:stream'
 
 async function storeCarFile(filename) {
-  const inStream = fs.createReadStream(filename)
-  const car = await CarReader.fromIterable(inStream)
+  const stream = () => Readable.toWeb(fs.createReadStream(filename))
   const client = makeStorageClient()
-  const cid = await client.uploadCAR(car)
+  const cid = await client.uploadCAR({ stream })
   console.log('Stored CAR file! CID:', cid)
 }
 ```
