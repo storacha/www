@@ -2,17 +2,17 @@ import { Callout, Steps } from 'nextra/components'
 
 # Proof of Data Segment Inclusion (PoDSI)
 
-Data uploaded to web3.storage is aggregated together with data from other users of the service. When an aggregate is big enough, it is stored with multiple Filecoin Storage Providers.
+Data uploaded to Storacha is aggregated together with data from other users of the service. When an aggregate is big enough, it is stored with multiple Filecoin Storage Providers.
 
 <Callout type="info">
   Storage Providers have minimum size requirements for data storage. Therefore it is necessary to aggregate data to satisfy the requirements. The minimum is typically between 16 and 32GB.
 </Callout>
 
-The web3.storage service uses **Proof of Data Segment Inclusion** (PoDSI), which allows clients to verify the correct aggregation of their data and prove this fact to third parties.
+The Storacha service uses **Proof of Data Segment Inclusion** (PoDSI), which allows clients to verify the correct aggregation of their data and prove this fact to third parties.
 
 ## Shard CIDs
 
-Data uploaded to web3.storage is packed up and sent as CAR files. We call these _shards_, and each one is referenced by it's shard CID.
+Data uploaded to Storacha is packed up and sent as CAR files. We call these _shards_, and each one is referenced by it's shard CID.
 
 ```sh
 # example CAR shard CID
@@ -29,7 +29,7 @@ The IPLD codec for a CAR shard CID is `0x0202`. You can [inspect this CID on cid
 
 Piece CIDs are the primary means of referencing data stored in a sector of a Filecoin Storage Provider. Each piece CID is loosely equivalent to a corresponding [shard CID](#shard-cids).
 
-The piece CIDs used in web3.storage are v2 piece CIDs since these also encode tree _height_ information. On chain and in various chain explorers online you may see v1 piece CIDs displayed. You can convert from v2 to v1 but not v1 to v2, unless you also know the tree height.
+The piece CIDs used in Storacha are v2 piece CIDs since these also encode tree _height_ information. On chain and in various chain explorers online you may see v1 piece CIDs displayed. You can convert from v2 to v1 but not v1 to v2, unless you also know the tree height.
 
 [FRC-0069 documentation for Piece CID v2](https://github.com/filecoin-project/FIPs/blob/master/FRCs/frc-0069.md).
 
@@ -42,7 +42,7 @@ The IPLD codec for the above multihash is `0x1011` (fr32-sha2-256-trunc254-padde
 
 ## Proof of Data Segment Inclusion (PoDSI)
 
-PoDSI enables clients using data aggregation services like web3.storage to verify the correct aggregation of their data and allow proving of this fact to third parties.
+PoDSI enables clients using data aggregation services like Storacha to verify the correct aggregation of their data and allow proving of this fact to third parties.
 
 Put simply, it is a proof that a smaller piece (a segment) has been included in a larger piece (an aggregate).
 
@@ -79,7 +79,7 @@ A data aggregation proof is a [PoDSI](#proof-of-data-segment-inclusion-podsi), _
 
 ## Verifiable Aggregation Pipeline
 
-The web3.storage aggregation pipeline is fully verifiable thanks to [UCAN](/docs/concepts/ucans-and-web3storage)s. Your piece can be tracked through the pipeline via signed UCAN receipts.
+The Storacha aggregation pipeline is fully verifiable thanks to [UCAN](/docs/concepts/ucans-and-web3storage)s. Your piece can be tracked through the pipeline via signed UCAN receipts.
 
 There are 4 roles in the aggregation pipeline:
 
@@ -93,7 +93,7 @@ Roughly speaking, a piece progresses through the pipeline via the following stag
 <Steps>
 ### `filecoin/offer`
 
-The client submits a piece to the _storefront_ (web3.storage) for aggregation and storage in Filecoin storage providers. The receipt for this invocation contains two links for async tasks:
+The client submits a piece to the _storefront_ (storacha) for aggregation and storage in Filecoin storage providers. The receipt for this invocation contains two links for async tasks:
 
 1. `filecoin/submit` - allows the client to continue following the receipt chain through the aggregation pipeline. It is executed after the _storefront_ has verified the piece CID corresponds to the shard CID.
 1. `filecoin/accept` - a "short cut" to the end of the pipeline, where the data aggregation proof will eventually become available. It is executed when the _dealer_ has successfully stored an aggregate containing the submitted piece in one or more Filecoin Storage Providers.

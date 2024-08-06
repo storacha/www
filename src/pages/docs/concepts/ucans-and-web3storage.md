@@ -1,4 +1,4 @@
-# UCANs and web3.storage
+# UCANs and storacha
 
 For authorization, w3up services use [ucanto](https://github.com/web3-storage/ucanto), a Remote Procedure Call (RPC) framework built around [UCAN](https://ucan.xyz/), or User Controlled Authorization Networks. UCANs are a powerful capability-based authorization system that allows fine-grained sharing of permissions through a process called _delegation_ on top of [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
 
@@ -6,17 +6,17 @@ You can think about UCAN replacing bearer tokens in traditional APIs for authori
 
 ## How w3up and w3up-client use UCANs
 
-Our client and CLI use ucanto to take care of the details of UCANs for you, but a few of the underlying terms and concepts may "bubble up" to the surface of the API, so we'll cover the basics. We'll also go over some terms that are specific to web3.storage that you might not have encountered elsewhere.
+Our client and CLI use ucanto to take care of the details of UCANs for you, but a few of the underlying terms and concepts may "bubble up" to the surface of the API, so we'll cover the basics. We'll also go over some terms that are specific to Storacha that you might not have encountered elsewhere.
 
 UCAN-based APIs are centered around _capabilities_, which are comprised of an _ability_ and a _resource_. Together, the ability and resource determine what action a client can perform and what objects in the system can be acted upon. When invoking a service method, a client will present a UCAN token that includes an ability and resource, along with _proofs_ that verify that they should be allowed to exercise the capability. The proof might be signed directly by the capability owner, or have a chain of signatures (_delegations_) where the actor invoking the capability has been verifiably delegated permission to do so.
 
 ### Space
 
-When you upload data to w3up, your uploads are linked to a unique _Space_ that acts as a "namespace" for the data you upload. Each Space corresponds to a _DID_, or [Decentralized Identity Document](https://www.w3.org/TR/did-core/). In web3.storage's implementation of w3up, these Space DIDs generally use the key DID method, of the form did:key:publicKey with a corresponding private signing key.
+When you upload data to w3up, your uploads are linked to a unique _Space_ that acts as a "namespace" for the data you upload. Each Space corresponds to a _DID_, or [Decentralized Identity Document](https://www.w3.org/TR/did-core/). In Storacha's implementation of w3up, these Space DIDs generally use the key DID method, of the form did:key:publicKey with a corresponding private signing key.
 
-When creating a Space, it generates this private key and did:key for you locally. To use web3.storage, you then register a Space by associating it with your email address. From there, when invoking storage capabilities with web3.storage, the Space did:key is the "resource" portion of the capability, while the ability is an action like space/blob/add or space/blob/remove. (A Space registered with web3.storage is imperfectly analogous to an "account" with web3.storage.)
+When creating a Space, it generates this private key and did:key for you locally. To use Storacha, you then register a Space by associating it with your email address. From there, when invoking storage capabilities with Storacha, the Space did:key is the "resource" portion of the capability, while the ability is an action like space/blob/add or space/blob/remove. (A Space registered with Storacha is imperfectly analogous to an "account" with Storacha.)
 
-Under the hood in the email registration process, your Space delegates the capabilities needed to use w3up to your email address, and this delegation is stored by web3.storage. If you need access to your Space in the future from any device, web3.storage allows you to reclaim those capabilities the same way you would reset a password in other services - using an email verification process. This means you don't need to store or manage Space private keys to use w3up - just create a new space, register it with w3up and use it from as many devices as you like. More on this "sign in" process is detailed in the next section on Agents.
+Under the hood in the email registration process, your Space delegates the capabilities needed to use w3up to your email address, and this delegation is stored by Storacha. If you need access to your Space in the future from any device, Storacha allows you to reclaim those capabilities the same way you would reset a password in other services - using an email verification process. This means you don't need to store or manage Space private keys to use w3up - just create a new space, register it with w3up and use it from as many devices as you like. More on this "sign in" process is detailed in the next section on Agents.
 
 ### Agent
 

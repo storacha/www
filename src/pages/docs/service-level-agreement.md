@@ -1,8 +1,8 @@
 # Business Service Level Agreement
 
-## 1. web3.storage Service Level Agreement ("SLA").
+## 1. Storacha Service Level Agreement ("SLA").
 
-Nitro Data LLC ("Company") commits to provide a level of service for web3.storage Customers demonstrating:
+Nitro Data LLC ("Company") commits to provide a level of service for Storacha Customers demonstrating:
 
 1.1 99.9% Uptime. The Upload Service will upload Customer Content at least 99.9% of the time and the Read Service will serve Customer Content at least 99.9% of the time, subject to Section 4.
 
@@ -10,7 +10,7 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 1.3 Upload Size Limit. Individual uploads to the Upload Service may encounter issues if they are over 750GB.
 
-1.4 Tier-Based Size Limit. Individual uploads are subject to size limits based on Customer’s chosen pricing tier as described in the Pricing page available at <https://web3.storage/pricing/>.
+1.4 Tier-Based Size Limit. Individual uploads are subject to size limits based on Customer’s chosen pricing tier as described in the Pricing page available at <https://storacha.network/pricing/>.
 
 ## 2. Definitions.
 
@@ -32,9 +32,9 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 2.9 "Services" means, collectively, the Upload Service and the Read Service.
 
-2.10 “Upload Service” refers to uploads through the website, client, and CLI for supported file types and sizes as defined by the docs available at https://web3.storage/docs/.
+2.10 “Upload Service” refers to uploads through the website, client, and CLI for supported file types and sizes as defined by the docs available at https://storacha/docs/.
 
-2.11 “Read Service” refers to reading successfully uploaded data, using its CID, over [w3link](https://web3.storage/products/w3link/) or via Bitswap using IPFS nodes peered with web3.storage nodes.
+2.11 “Read Service” refers to reading successfully uploaded data, using its CID, over [w3link](https://storacha/products/w3link/) or via Bitswap using IPFS nodes peered with Storacha nodes.
 
 2.12 "Service Discount" is the percentage of the monthly service fees for the Services deducted from Customer’s next monthly bill for a validated Claim.
 
@@ -48,7 +48,7 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 3.2 In order to be eligible to submit a Claim with respect to any Incident, the Customer must first have notified Customer Support of the Incident, using the procedures set forth by Company in Section 3.3, within five business days following the Incident.
 
-3.3 To submit a Claim, Customer must contact Customer Support at support@web3.storage and provide notice of its intention to submit a Claim. Customer must provide to Customer Support all reasonable details regarding the Claim, including but not limited to, detailed descriptions of the Incident(s), the duration of the Incident, network traceroutes, the Content ID(s) or file(s) affected and any attempts made by Customer to resolve the Incident.
+3.3 To submit a Claim, Customer must contact Customer Support at support@storacha.network and provide notice of its intention to submit a Claim. Customer must provide to Customer Support all reasonable details regarding the Claim, including but not limited to, detailed descriptions of the Incident(s), the duration of the Incident, network traceroutes, the Content ID(s) or file(s) affected and any attempts made by Customer to resolve the Incident.
 
 3.4 In order for Company to consider a Claim, Customer must submit the Claim, including sufficient evidence to support the Claim, by the end of the billing month following the billing month in which the Incident which is the subject of the Claim occurs.
 
@@ -72,11 +72,11 @@ Nitro Data LLC ("Company") commits to provide a level of service for web3.storag
 
 (g) Caused by timeouts caused by tooling used by the Customer;
 
-(i) Caused by Customer attempting to upload files via the web3.storage website;
+(i) Caused by Customer attempting to upload files via the Storacha website;
 
-(j) Due to failures of infrastructure used to read data from web3.storage, including inaccessibility of public gateways;
+(j) Due to failures of infrastructure used to read data from Storacha, including inaccessibility of public gateways;
 
-(k) That resulted from Customer’s use of gateways not peered with web3.storage (i.e., not listed on <https://github.com/web3-storage/web3.storage/blob/main/PEERS>);
+(k) That resulted from Customer’s use of gateways not peered with Storacha (i.e., not listed on <https://github.com/web3-storage/web3.storage/blob/main/PEERS>);
 
 (l) That resulted from a brief delay in data availability on IPFS following initial data upload and indexing.
 
