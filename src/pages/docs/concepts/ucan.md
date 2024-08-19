@@ -1,6 +1,6 @@
 # UCAN: User controlled authorization networks
 
-The w3up platform by web3.storage is built on a technology called UCAN, a system which takes a different approach to user identity and authorization than you may be used to from building or interacting with "web 2.0" services. Read on to learn about what makes UCAN special.
+The w3up platform by Storacha is built on a technology called UCAN, a system which takes a different approach to user identity and authorization than you may be used to from building or interacting with "web 2.0" services. Read on to learn about what makes UCAN special.
 
 UCAN stands for User Controlled Authorization Networks, and it's fundamentally about changing the relationship between users and service providers in a way that empowers the end-user.
 
@@ -58,25 +58,25 @@ In our [Intro to UCAN article](./index.md), we gave a high-level overview of the
 
 When applications use the w3ui components, or developers run the `w3` CLI, they need access to a "space," which is a unique ID that groups uploads together. Once a space has been registered with the w3up service, it can be used to upload files and other data.
 
-If you're uploading files from your laptop using [the `w3` command line tool](../../getting-started/w3cli.md), you can just create a space on the laptop and register it with the w3up service using the `w3 space register` command. The service will issue you a UCAN token that grants your client's "agent" some capabilities; in this case, you get the ability to upload data to web3.storage, list your uploads, unlink uploads from your account, etc.
+If you're uploading files from your laptop using [the `w3` command line tool](../../getting-started/w3cli.md), you can just create a space on the laptop and register it with the w3up service using the `w3 space register` command. The service will issue you a UCAN token that grants your client's "agent" some capabilities; in this case, you get the ability to upload data to Storacha, list your uploads, unlink uploads from your account, etc.
 
 Each client that you use to access w3up will have an "agent" associated with it. Agents are what we call the component that manages your local private keys and signs UCAN requests to the w3up service. When you create a space and register it, the agent you use to register the space is automatically issued a UCAN delegation that grants the agent the ability to upload to the space, as well as other "space related" capabilities like listing uploads.
 
 Because your laptop has access to the private key for your agent, and your agent has access to the space, there's no need to delegate anything. The `w3` tool will just sign a UCAN request token with your agent's private key and will include all the required proofs that you have the right permissions.
 
-Another example is a fully decentralized app with a web frontend that interacts with a smart contract "backend." Let's say you're building a decentralized image sharing application, where users can get rewarded for sharing funny memes. You'd like your app's users to be able to upload images to web3.storage, but you don't want to coordinate their access or handle billing on their behalf.
+Another example is a fully decentralized app with a web frontend that interacts with a smart contract "backend." Let's say you're building a decentralized image sharing application, where users can get rewarded for sharing funny memes. You'd like your app's users to be able to upload images to Storacha, but you don't want to coordinate their access or handle billing on their behalf.
 
-In that case, you can use the [w3ui keyring component](https://beta.ui.web3.storage/keyring) to help your users create their own spaces and register them with w3up. There's no need for delegation in this case, because each user has their own registered account with web.storage.
+In that case, you can use the [w3ui keyring component](https://beta.ui.storacha/keyring) to help your users create their own spaces and register them with w3up. There's no need for delegation in this case, because each user has their own registered account with web.storage.
 
 ## App owned accounts - transparent to the user
 
-Now let's see where web3.storage delegation can improve the experience for end users of traditional apps. By delegating to a user's session the capability to upload to your app's w3up spaces, you can add uploads to an app without impacting your infrastructure, completely invisibly to users.
+Now let's see where Storacha delegation can improve the experience for end users of traditional apps. By delegating to a user's session the capability to upload to your app's w3up spaces, you can add uploads to an app without impacting your infrastructure, completely invisibly to users.
 
-Let's say that you run a recipe sharing app written on traditional web2 technologies. You have a sizeable user-base, and you want to add recipe photo uploads without impacting your existing infrastructure. With UCAN delegation, users can upload directly to your web3.storage space, with no visible impact on the user experience.
+Let's say that you run a recipe sharing app written on traditional web2 technologies. You have a sizeable user-base, and you want to add recipe photo uploads without impacting your existing infrastructure. With UCAN delegation, users can upload directly to your Storacha space, with no visible impact on the user experience.
 
-To do this, you can delegate access to your own web3.storage space, instead of having each user create their own space.
+To do this, you can delegate access to your own Storacha space, instead of having each user create their own space.
 
-On the client side, each user will still create an agent with a public/private keypair, but instead of using the agent to register with web3.storage, they can send the agent's public ID to your app's web API or cloud function. That service will issue a UCAN that grants some permissions to the user's agent, without needing to coordinate anything between your app's backend and the web3.storage service. In that way, storage access is attached to your application's session.
+On the client side, each user will still create an agent with a public/private keypair, but instead of using the agent to register with Storacha, they can send the agent's public ID to your app's web API or cloud function. That service will issue a UCAN that grants some permissions to the user's agent, without needing to coordinate anything between your app's backend and the Storacha service. In that way, storage access is attached to your application's session.
 
 When a new user signs into your web app, the frontend can use [`w3up-client`](../../getting-started/w3up-client.md), which will automatically create an agent keypair on first run. Instead of using the client to create and register spaces belonging to the user, the frontend can send the agent's public ID to your backend service instead.
 
@@ -147,7 +147,7 @@ async function getDIDFromRequest (request) {
 }
 ```
 
-When the frontend recieves the delegation from your service, they can call [`addProof`][reference-client#addproof] on their `w3up-client` instance and pass in the bytes of the delegation object. They will also need to call `client.setCurrentSpace(spaceDID)`, passing in the DID for the space that you delegated access to. Once that's done, they should be able to use the `uploadFile` and `uploadDirectory` client methods to send data to your web3.storage space.
+When the frontend recieves the delegation from your service, they can call [`addProof`][reference-client#addproof] on their `w3up-client` instance and pass in the bytes of the delegation object. They will also need to call `client.setCurrentSpace(spaceDID)`, passing in the DID for the space that you delegated access to. Once that's done, they should be able to use the `uploadFile` and `uploadDirectory` client methods to send data to your Storacha space.
 
 Note that in our example above, we granted a limited set of capabilities, so that our user can upload but not access any other functionality related to the space. If you want to delegate all permissions, use the `'*'` ability in your delegation, and use the client's [`addSpace` method][reference-client#addspace] instead of `addProof`.
 
@@ -155,7 +155,7 @@ Note that in our example above, we granted a limited set of capabilities, so tha
 
 You can also use delegation to share access with other services, without requiring an explicit agreement between each service provider.
 
-For example, you or your users could delegate access to an image resizing app that will create thumbnails of each uploaded image and write them back to web3.storage. While you could do this without delegation by having the image app use its own web3.storage account, the uploads would be attached to the space registered to the app. By using delegation, you'll be able to see the CIDs for the thumbnails in the upload listing for the user's account instead, and the resizing app doesn't need to have any kind of business relationship with web3.storage to use the service.
+For example, you or your users could delegate access to an image resizing app that will create thumbnails of each uploaded image and write them back to Storacha. While you could do this without delegation by having the image app use its own Storacha account, the uploads would be attached to the space registered to the app. By using delegation, you'll be able to see the CIDs for the thumbnails in the upload listing for the user's account instead, and the resizing app doesn't need to have any kind of business relationship with Storacha to use the service.
 
 ### Link devices through delegation
 
@@ -289,7 +289,7 @@ Note that the `w3 delegation create` command we used in step 5 delegates the `'*
 
 UCAN delegation is a powerful tool for managing access to your w3up resources. Hopefully this post has given you some ideas about how delegation can help you build out new experiences using w3up.
 
-Thanks for following along, and feel free to [get in touch](https://web3.storage/docs/community/help-and-support/) if you have any questions!
+Thanks for following along, and feel free to [get in touch](https://storacha.network/docs/community/help-and-support/) if you have any questions!
 
 [reference-client#createdelegation]: ../../api/w3up-client/classes/client.Client.md#createdelegation
 

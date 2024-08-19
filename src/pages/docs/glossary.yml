@@ -20,12 +20,12 @@
 - id: bitswap
   definition: A peer-to-peer protocol used by IPFS and Filecoin to distribute blocks of data throughout the network.
   details: |
-    While the w3up APIs do not use Bitswap directly, once data is stored with web3.storage it is made available via Bitswap to the larger IPFS network.
+    While the w3up APIs do not use Bitswap directly, once data is stored with Storacha it is made available via Bitswap to the larger IPFS network.
 
 - id: block
   definition: A chunk of binary data that can be identified by CID.
   details: |
-    Data stored with web3.storage is encoded into blocks, with large files consisting of several blocks linked together.
+    Data stored with Storacha is encoded into blocks, with large files consisting of several blocks linked together.
 
     Blocks can be uniquely identified by <Term id="cid">CID (Content Identifier)</Term>, and are often bundled into Content Archives (CARs) for transport and storage.
 
@@ -75,7 +75,7 @@
     The DHT does not contain the full content - instead a small "provider record" contains addresses of peers 
     who will serve the content on request (e.g. via <Term id="bitswap">Bitswap</Term>).
     
-    Content stored with web3.storage is discoverable via the public IPFS DHT.
+    Content stored with Storacha is discoverable via the public IPFS DHT.
 
 - id: elastic-ipfs
   name: Elastic IPFS
@@ -96,7 +96,7 @@
 
     You can fetch IPFS content from a gateway by creating a gateway URL from the <Term id="cid">CID</Term> of your content,
 
-    To use the web3.storage gateway at `w3s.link`, make a URL like this, replacing `${cid}` with the CID you want to link to:
+    To use the Storacha gateway at `w3s.link`, make a URL like this, replacing `${cid}` with the CID you want to link to:
 
     ```
     https://${cid}.ipfs.w3s.link
@@ -109,7 +109,7 @@
     IPFS is a system for organizing, locating, and transmitting data using cryptographic hashes to identify each piece of content.
     There are many IPFS implementations, which work together to form a public network
     (as well as specialized private networks).
-    web3.storage makes all uploaded content available to the IPFS network
+    Storacha makes all uploaded content available to the IPFS network
     via <Term id="bitswap">Bitswap</Term>, as well as via HTTP through <Term id="gateway">gateways</Term>.
 
 - id: ipld
@@ -139,7 +139,7 @@
   name: PoDSI
   definition: Proof of Data Segment Inclusion.
   details: |
-    PoDSI enables clients using data aggregation services like web3.storage to
+    PoDSI enables clients using data aggregation services like Storacha to
     verify the correct aggregation of their data and allow proving of this fact
     to third parties.
 
@@ -185,9 +185,9 @@
 
 - id: w3up
   name: w3up
-  definition: The name of web3.storage's UCAN-based storage platform.
+  definition: The name of Storacha's UCAN-based storage platform.
   details: |
-    When web3.storage first launched, it offered a traditional "RESTful" / "JSON over HTTP" API,
+    When Storacha first launched, it offered a traditional "RESTful" / "JSON over HTTP" API,
     aimed at getting traditional web developers tapped into the potential of decentralized,
     content addressed storage.
 

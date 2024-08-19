@@ -7,7 +7,7 @@ import { Steps } from 'nextra/components'
   The Go client is under heavily development and is not as fully featured as the [JS client](/docs/w3up-client).
 </Callout>
 
-You can easily integrate web3.storage into your Go apps using `go-w3up`, our Go client for the w3up platform.
+You can easily integrate Storacha into your Go apps using `go-w3up`, our Go client for the w3up platform.
 
 In this guide, we'll walk through the following steps:
 
@@ -59,7 +59,7 @@ MgCb+bRGl02JqlWMPUxCyntxlYj0T/zLtR2tn8LFvw6+Yke0BKAP/OUu2tXpd+tniEoOzB3pxqxHZpRh
 
 ## Obtain proofs
 
-Proofs are delegations to your DID enabling it to perform tasks. Currently the best way to obtain proofs that will allow you to interact with the web3.storage API is to use the w3up JS CLI:
+Proofs are delegations to your DID enabling it to perform tasks. Currently the best way to obtain proofs that will allow you to interact with the Storacha API is to use the w3up JS CLI:
 
 <Steps>
 ### Install w3 CLI
@@ -91,7 +91,7 @@ w3 delegation create -c 'store/*' -c 'upload/*' [DID] -o proof.ucan
 
 ## Load private key and proofs
 
-To interact with the web3.storage API you need your private key to sign UCAN invocations and a proof that your key has been delegated capabilities to perform tasks:
+To interact with the Storacha API you need your private key to sign UCAN invocations and a proof that your key has been delegated capabilities to perform tasks:
 
 ```go
 package main
@@ -118,7 +118,7 @@ proof, _ := delegation.ExtractProof(b)
 
 ## Upload a CAR
 
-Once you have loaded your space DID, your private key and your delegation proofs, you can upload a CAR to web3.storage.
+Once you have loaded your space DID, your private key and your delegation proofs, you can upload a CAR to Storacha.
 
 ```go
 package main

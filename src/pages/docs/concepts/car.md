@@ -1,28 +1,28 @@
 # Working with Content Archive (CAR) files
 
-When you upload files to web3.storage using the client library, your data is converted into a graph of data structures, which are then packed into a format called a Content Archive (CAR) before being sent to the web3.storage service.
+When you upload files to Storacha using the client library, your data is converted into a graph of data structures, which are then packed into a format called a Content Archive (CAR) before being sent to the Storacha service.
 
-For most use cases, you never need to know about this process, as the conversion happens behind the scenes when using the client library. However, you might want to know more about how to manipulate CAR files directly, especially if you're using `upload` and `store` separately in web3.storage.
+For most use cases, you never need to know about this process, as the conversion happens behind the scenes when using the client library. However, you might want to know more about how to manipulate CAR files directly, especially if you're using `upload` and `store` separately in Storacha.
 
 ## What is a Content Archive?
 
-The [Content Archive format](https://ipld.io/specs/transport/car/) is a way of packaging up [content addressed data](https://web3.storage/docs/concepts/content-addressing/) into archive files that can be easily stored and transferred. You can think of them like [TAR files](https://en.wikipedia.org/wiki/Tar_\(computing\)) that are designed for storing collections of content addressed data.
+The [Content Archive format](https://ipld.io/specs/transport/car/) is a way of packaging up [content addressed data](https://storacha.network/docs/concepts/content-addressing/) into archive files that can be easily stored and transferred. You can think of them like [TAR files](https://en.wikipedia.org/wiki/Tar_\(computing\)) that are designed for storing collections of content addressed data.
 
 The type of data stored in CARs is defined by [IPLD](https://ipld.io/), or InterPlanetary Linked Data. IPLD is a specification and set of implementations for structured data types that can link to each other using a hash-based Content Identifier (CID). Data linked in this way forms a Directed Acyclic Graph, or DAG, and you'll likely see a few references to DAGs in the documentation for IPLD and IPFS.
 
 IPFS files are one example of IPLD data, but IPLD can also be used to access data from Ethereum, Git, and other hash-addressed systems. You can also use IPLD as a general purpose format for your structured data, sort of like a Web3-flavored JSON. See Advanced IPLD formats below for more information.
 
-## CARs and web3.storage
+## CARs and Storacha
 
-When the web3.storage client and CLI pack up regular files into a CAR to store on IPFS, the CAR contains data encoded in the same format used by IPFS when importing files using the command line or other IPFS APIs.
+When the Storacha client and CLI pack up regular files into a CAR to store on IPFS, the CAR contains data encoded in the same format used by IPFS when importing files using the command line or other IPFS APIs.
 
 This format uses an IPLD "codec" called [dag-pb](https://ipld.io/docs/codecs/known/dag-pb/), which uses [Protocol Buffers](https://developers.google.com/protocol-buffers) to encode an object graph. Inside the graph are [UnixFS objects](https://docs.ipfs.io/concepts/file-systems/#unix-file-system-unixfs) that describe the files and their contents. We do this client-side for a few reasons.
 
-First, formatting everything on the client allows us to calculate the root Content Identifier for the data you're uploading before we send any data to the remote service. This means that you can compare the CID returned by the web3.storage service to the one you calculated locally, and you don't have to trust the service to do the right thing.
+First, formatting everything on the client allows us to calculate the root Content Identifier for the data you're uploading before we send any data to the remote service. This means that you can compare the CID returned by the Storacha service to the one you calculated locally, and you don't have to trust the service to do the right thing.
 
-Another reason to use CARs is to support large files, which would otherwise hit size limits on the web3.storage backend platform. The data in a CAR is already chunked into small blocks, which makes CARs easy to shard into small pieces that can be uploaded in batches. This also enables the web3.storage platform to get larger content into Filecoin deals.
+Another reason to use CARs is to support large files, which would otherwise hit size limits on the Storacha backend platform. The data in a CAR is already chunked into small blocks, which makes CARs easy to shard into small pieces that can be uploaded in batches. This also enables the Storacha platform to get larger content into Filecoin deals.
 
-CAR files are a format that pretty much any IPFS tool or implementation can interact with. You can export data from your personal IPFS node into a CAR file and upload it to web3.storage using `w3 up --car` or `client.uploadCAR`. As a result, we dive into the various ways you might interact with CAR files.
+CAR files are a format that pretty much any IPFS tool or implementation can interact with. You can export data from your personal IPFS node into a CAR file and upload it to Storacha using `w3 up --car` or `client.uploadCAR`. As a result, we dive into the various ways you might interact with CAR files.
 
 ## Command line tools
 
@@ -85,17 +85,17 @@ ipfs dag import path/to/input.car
 
 ### `ipfs-car`
 
-The [`ipfs-car`](https://github.com/web3-storage/ipfs-car) package includes library functions for packing and unpacking files into CARs, using the IPFS UnixFs data model. The library includes the same functionality as the ipfs-car command line utility [described above](https://web3.storage/docs/how-tos/work-with-car-files/#ipfs-car).
+The [`ipfs-car`](https://github.com/web3-storage/ipfs-car) package includes library functions for packing and unpacking files into CARs, using the IPFS UnixFs data model. The library includes the same functionality as the ipfs-car command line utility [described above](https://storacha.network/docs/how-tos/work-with-car-files/#ipfs-car).
 
 See the `ipfs-car` [README](https://github.com/web3-storage/ipfs-car#api) for API documentation and usage examples.
 
 ### `@ipld/car`
 
-The [`@ipld/car`](https://github.com/ipld/js-car) package contains the main JavaScript implementation of the CAR specification and is used by ipfs-car under the hood. If you want to store non-file data using [advanced IPLD formats](https://web3.storage/docs/how-tos/work-with-car-files/#advanced-ipld-formats), you should use @ipld/car directly.
+The [`@ipld/car`](https://github.com/ipld/js-car) package contains the main JavaScript implementation of the CAR specification and is used by ipfs-car under the hood. If you want to store non-file data using [advanced IPLD formats](https://storacha.network/docs/how-tos/work-with-car-files/#advanced-ipld-formats), you should use @ipld/car directly.
 
-@ipld/car also provides the CarReader interface used by the web3.storage client's [putCar](https://web3.storage/docs/reference/js-client-library/#store-car-files)[method](https://web3.storage/docs/reference/js-client-library/#store-car-files).
+@ipld/car also provides the CarReader interface used by the Storacha client's [putCar](https://storacha.network/docs/reference/js-client-library/#store-car-files)[method](https://storacha.network/docs/reference/js-client-library/#store-car-files).
 
-Here's a simple example of loading a CAR file from a Node.js stream and storing it with web3.storage:
+Here's a simple example of loading a CAR file from a Node.js stream and storing it with Storacha:
 
 ```js
 import fs from 'node:fs'

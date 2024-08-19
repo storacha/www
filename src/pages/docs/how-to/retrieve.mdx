@@ -1,10 +1,10 @@
 import { Callout } from 'nextra/components'
 
-# How to retrieve data from web3.storage
+# How to retrieve data from Storacha
 
-In this how-to guide, you'll learn several methods for retrieving data from web3.storage.
+In this how-to guide, you'll learn several methods for retrieving data from Storacha.
 
-All data stored using web3.storage is made available for retrieval via [IPFS](https://ipfs.io/), the InterPlanetary File System. IPFS is a distributed, peer-to-peer network for storing and sharing content-addressed data. This guide shows you several ways to retrieve your data from IPFS:
+All data stored using Storacha is made available for retrieval via [IPFS](https://ipfs.io/), the InterPlanetary File System. IPFS is a distributed, peer-to-peer network for storing and sharing content-addressed data. This guide shows you several ways to retrieve your data from IPFS:
 
 - In your browser using an [HTTP gateway](/docs/how-to/retrieve/#using-an-ipfs-http-gateway).
 - Using the [Saturn dCDN](https://saturn.tech/).
@@ -15,7 +15,7 @@ When retrieving any data, you'll be using the content CID of the upload (prefixe
 
 ## Using an IPFS HTTP gateway
 
-You can easily fetch any data stored using web3.storage using an IPFS HTTP gateway. Because IPFS is a peer-to-peer, decentralized network, you can use any public HTTP gateway to fetch your data. In this guide, we'll use the gateway at w3s.link (which is optimized for data stored with web3.storage), but you can see more worldwide gateways on the [IPFS Public Gateway Checker](https://ipfs.github.io/public-gateway-checker/).
+You can easily fetch any data stored using Storacha using an IPFS HTTP gateway. Because IPFS is a peer-to-peer, decentralized network, you can use any public HTTP gateway to fetch your data. In this guide, we'll use the gateway at w3s.link (which is optimized for data stored with Storacha), but you can see more worldwide gateways on the [IPFS Public Gateway Checker](https://ipfs.github.io/public-gateway-checker/).
 
 You can use an IPFS gateway to view a list of all the files in that directory from your browser. To do so, simply create a gateway URL. For example, if your CID is `bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu`, you can make a URL for the w3s.link gateway as follows:
 
@@ -29,7 +29,7 @@ https://bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu.ipfs.w3s.lin
 If you want to link directly to a file within that directory, just add the file path after the CID portion of the link. For example: [bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu.ipfs.w3s.link/not-distributed.jpg](https://bafybeidd2gyhagleh47qeg77xqndy2qy3yzn4vkxmk775bg2t5lpuy7pcu.ipfs.w3s.link/not-distributed.jpg) could be used as a shareable link for your new favorite wallpaper.
 
 <Callout>
-  Your web3.storage console page includes IPFS gateway links to all the content you've uploaded.
+  Your Storacha console page includes IPFS gateway links to all the content you've uploaded.
 </Callout>
 
 ### Setting the filename
@@ -40,7 +40,7 @@ https://bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq.ipfs.w3s.lin
 
 In the link above, the CID `bafybeicfnbaeigdtklwkrj35r4wtfppix732zromsadvgiu33mowah74yq` points to an IPFS directory listing, which maps from the filename treehouse.jpeg to the CID for the image itself.
 
-Since the web3.storage client wraps your uploaded files in a directory by default, this is the most common kind of gateway link you're likely to need, and your users should get nice filenames when they download their content.
+Since the Storacha client wraps your uploaded files in a directory by default, this is the most common kind of gateway link you're likely to need, and your users should get nice filenames when they download their content.
 
 However, the behavior is a bit different if you make a gateway link directly to the image CID:
 
@@ -90,7 +90,7 @@ Replace `<YOUR_CID>`, `<FILE_NAME>`, and `<OUTPUT_FILE>` with their respective v
 | Variable | Replace with | Example |
 | --- | --- | --- |
 | `<YOUR_CID>` | The CID of the file you want to download. | `bafybeie2bjap32zi2yqh5jmpve5n jwulnkualcbiszvwfu36jzjyqskceq` |
-| `<FILE_NAME>` | The _name_ of the file that you originally uploaded to web3.storage. | `example.txt` |
+| `<FILE_NAME>` | The _name_ of the file that you originally uploaded to Storacha. | `example.txt` |
 | `<OUTPUT_FILE>` | The path and filename that you want curl to save the file to. This can be different to `<FILE_NAME>`. | `./output-file.txt` |
 
 ## Next steps
