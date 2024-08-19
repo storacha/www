@@ -1,4 +1,4 @@
-# UCANs and storacha
+# UCANs and Storacha
 
 For authorization, w3up services use [ucanto](https://github.com/web3-storage/ucanto), a Remote Procedure Call (RPC) framework built around [UCAN](https://ucan.xyz/), or User Controlled Authorization Networks. UCANs are a powerful capability-based authorization system that allows fine-grained sharing of permissions through a process called _delegation_ on top of [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
 
