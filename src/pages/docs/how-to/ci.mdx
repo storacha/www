@@ -2,7 +2,7 @@ import { Callout } from 'nextra/components'
 
 # How to upload from CI
 
-> Publish files to IPFS and Filecoin via web3.storage from a Continuous Integration server.
+> Publish files to IPFS and Filecoin via Storacha from a Continuous Integration server.
 
 Using `w3cli` locally, the steps are
 
@@ -58,13 +58,13 @@ The rest of this document explains the process in more detail.
 
 ## Create a space
 
-On your local machine with [w3cli][] installed and logged in (see: https://web3.storage/docs/quickstart/) run
+On your local machine with [w3cli][] installed and logged in (see: https://storacha.network/docs/quickstart/) run
 
 ```shell
 $ w3 space create
 ```
 
-and follow the instructions. (See: https://web3.storage/docs/how-to/create-space/#using-the-cli if you get stuck.)
+and follow the instructions. (See: https://storacha.network/docs/how-to/create-space/#using-the-cli if you get stuck.)
 
 If you want to use an existing space, make sure it is set as your current space using `w3 space ls` and `w3 space use`
 
@@ -82,7 +82,7 @@ $ w3 key create --json
 }
 ```
 
-Keep the `key` safe. It will be used by CI to sign requests to web3.storage.
+Keep the `key` safe. It will be used by CI to sign requests to Storacha.
 
 The `did` from the command above is the public decentalised identifier for that private `key`.
 
@@ -174,7 +174,7 @@ with:
 - run: echo ${{ steps.w3up.outputs.url }}
 ```
 
-It uploads `path_to_add` to web3.storage.
+It uploads `path_to_add` to Storacha.
 
 It outputs the root CID as `cid` and IPFS Gateway URL as `url` for subsequent steps in your workflow to use.
 

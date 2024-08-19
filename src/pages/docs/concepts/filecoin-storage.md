@@ -4,8 +4,8 @@ The Filecoin network is a great building block for any decentralized storage sys
 
 Read more about Filecoin proofs [here](https://filecoin.io/blog/posts/what-sets-us-apart-filecoin-s-proof-system/).
 
-Because of the open nature of the Filecoin network allowing anyone to participate, it's very inexpensive to store data on the Filecoin network. As a result, web3.storage uses the network today to back up all its data on the decentralized web. In the future, we will launch new products that allow users to take advantage of Filecoin for "colder," disruptively expensive data storage.
+Because of the open nature of the Filecoin network allowing anyone to participate, it's very inexpensive to store data on the Filecoin network. As a result, Storacha uses the network today to back up all its data on the decentralized web. In the future, we will launch new products that allow users to take advantage of Filecoin for "colder," disruptively expensive data storage.
 
-The great thing about IPFS is that, regardless of where your data is sitting (on web3.storage's dedicated servers, Filecoin, on your local IPFS node, or anywhere else), you access your data the same way - using the data's content address - and allows you to tune how many copies you have if you'd like, which has tradeoffs in terms of cost, availability, and read performance!
+The great thing about IPFS is that, regardless of where your data is sitting (on Storacha's dedicated servers, Filecoin, on your local IPFS node, or anywhere else), you access your data the same way - using the data's content address - and allows you to tune how many copies you have if you'd like, which has tradeoffs in terms of cost, availability, and read performance!
 
-When storing data on Filecoin, you enter storage "deals" that have a finite duration. web3.storage service currently renews deals for you to ensure your data deals never expire.
+When storing data on Filecoin, you enter storage "deals" that have a finite duration. Storacha service currently renews deals for you to ensure your data deals never expire.

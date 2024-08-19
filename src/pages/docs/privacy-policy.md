@@ -2,7 +2,7 @@
 
 ## Privacy
 
-This Privacy Policy governs all use of the web3.storage website (“web3.storage” or the “Website”), the w3link/w3s.link gateway (“Gateway”) and all content, services and products available at or through the Website or Gateway (collectively, “Services”).
+This Privacy Policy governs all use of the Storacha website (“Storacha” or the “Website”), the w3link/w3s.link gateway (“Gateway”) and all content, services and products available at or through the Website or Gateway (collectively, “Services”).
 
 The Services are offered subject to your acceptance without modification of all the terms and conditions herein, and all other other operating rules, policies (including, without limitation, our [Terms of Service](/docs/terms/) and procedures that may be updated from time to time.  By accessing or using any part of our Services you agree to be bound by the terms and conditions of the Privacy Policy.  If you do not agree to all of the terms and conditions of this Privacy Policy, then you may not access our Services.
 
@@ -19,7 +19,7 @@ This Privacy Policy applies to our collection, use, and disclosure of the person
 
 We are a conduit for information controlled by others. It is our users who are responsible for the user-uploaded and/or community-hosted content transmitted across our network (e.g., images, written content, graphics, etc.).
 
-This Privacy Policy also does not apply to any third-party domains, websites, APIs, applications, and networks, even if linked via the web3.storage website, as these third-party properties may have their own terms and privacy policies.
+This Privacy Policy also does not apply to any third-party domains, websites, APIs, applications, and networks, even if linked via the Storacha website, as these third-party properties may have their own terms and privacy policies.
 
 ### What information do we collect and on what basis?
 
@@ -94,11 +94,11 @@ During your use of our Services and your interactions with us, your personal inf
 
 ### California Statement
 
-If you are a resident of California, you have the right to request what information we collect, use, and disclose. Please see “What information do we collect and on what basis?” for a description of the data we have collected over the preceding 12 months. You also have the right to request that we delete your information. We do not sell your personal information. To make a request, you, or your agent, can contact us at support@web3.storage. Please note that we may still require you to verify your identity before we process a request. We will not discriminate against you because you have exercised any of your privacy rights under the CCPA. We currently do not respond to Do-Not-Track requests.
+If you are a resident of California, you have the right to request what information we collect, use, and disclose. Please see “What information do we collect and on what basis?” for a description of the data we have collected over the preceding 12 months. You also have the right to request that we delete your information. We do not sell your personal information. To make a request, you, or your agent, can contact us at support@storacha.network Please note that we may still require you to verify your identity before we process a request. We will not discriminate against you because you have exercised any of your privacy rights under the CCPA. We currently do not respond to Do-Not-Track requests.
 
 ### Contact Us
 
-Questions about our Privacy Policy?  Please contact support@web3.storage.
+Questions about our Privacy Policy?  Please contact support@storacha.network
 
 ### Changes to our Privacy Policy
 
