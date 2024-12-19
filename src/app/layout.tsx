@@ -35,7 +35,7 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
 function Banner () {
   return (
     <div className='bg-zinc-950 text-white text-sm text-center p-3'>
-      Looking for the <strong>old</strong> web3.storage? Read more <a className='underline' href='https://blog.web3.storage/posts/the-data-layer-is-here-with-the-new-web3-storage'>about our changes</a> or <a className='underline' href='https://old.web3.storage'>log in</a> to the old web3.storage.
+      Storage just got hotter and more decentralized! Check out <a className='underline' href='https://storacha.network'> Storacha</a>!
     </div>
   )
 }
@@ -48,6 +48,9 @@ function Footer () {
           <Web3StorageLogo>web3.storage</Web3StorageLogo>
           <p className='pt-6 pr-24 font-light text-lg'>Sign up for free using your email address.</p>
           <a className='shadow-md border bg-zinc-200 rounded-full inline-block px-4 py-2 bg-grad font-light uppercase mt-8' href='https://console.web3.storage'>Sign up</a>
+          <p className='pt-6 pr-24 font-light text-lg'>
+            Looking for the old web3.storage? <a className='underline' href='https://old.web3.storage'>Log in to the old web3.storage</a>.
+          </p>
         </div>
         <div className='md:w-1/4'>
           <h2 className='font-semibold pb-2 pt-16 md:pt-0'>Resources</h2>
