@@ -49,7 +49,7 @@ function Footer () {
           <p className='pt-6 pr-24 font-light text-lg'>Sign up for free using your email address.</p>
           <a className='shadow-md border bg-zinc-200 rounded-full inline-block px-4 py-2 bg-grad font-light uppercase mt-8' href='https://console.web3.storage'>Sign up</a>
           <p className='pt-6 pr-24 font-light text-lg'>
-            Looking for the old web3.storage? <a className='underline' href='https://old.web3.storage'>Log in to the old web3.storage</a>.
+            Looking for the old web3.storage? <a className='underline' href='https://old.web3.storage'>Log in</a> to the old web3.storage.
           </p>
         </div>
         <div className='md:w-1/4'>
