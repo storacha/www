@@ -35,7 +35,7 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
 function Banner () {
   return (
     <div className='bg-zinc-950 text-white text-sm text-center p-3'>
-      Storage just got hotter and more decentralized! Check out <a className='underline' href='https://storacha.network'> Storacha</a>!
+      &#128293; Storage just got hotter and more decentralized! Check out <a className='underline' href='https://storacha.network'> Storacha</a>! &#128293;
     </div>
   )
 }
