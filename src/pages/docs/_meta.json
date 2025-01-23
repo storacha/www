@@ -10,10 +10,10 @@
   "privacy-policy": "Privacy Policy",
   "service-level-agreement": "Service level agreement",
   "terms": "Terms of service",
-  "security-research-policy": "web3.storage Security Research Policy"
   "specs": {
     "newWindow": true,
     "title": "Specs",
     "href": "https://github.com/web3-storage/specs"
   }
+  "security-research-policy": "web3.storage Security Research Policy"
 }
