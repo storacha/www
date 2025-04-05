@@ -1,6 +1,6 @@
 # `w3up-client`
 
-You can easily integrate web3.storage into your JavaScript apps using `w3up-client`, our JavaScript client for the w3up platform.
+You can easily integrate Storacha into your JavaScript apps using `w3up-client`, our JavaScript client for the w3up platform.
 
 In this guide, we'll walk through the following steps:
 
@@ -36,7 +36,7 @@ See the [w3up-client README](https://github.com/web3-storage/w3up/blob/main/pack
 
 ## Create and provision a space
 
-When you upload things to web3.storage, each upload is associated with a "space", which is a unique identifier that acts as a namespace for your content. Spaces are identified by DID using keys created locally on your devices.
+When you upload things to Storacha, each upload is associated with a "space", which is a unique identifier that acts as a namespace for your content. Spaces are identified by DID using keys created locally on your devices.
 
 To create a space using `w3up-client`, use the `createSpace` client method:
 
@@ -86,7 +86,7 @@ If your agent has no other spaces, saving the space will set it as the "current 
 await client.setCurrentSpace(space.did())
 ```
 
-One last thing - now that you've saved your space locally, it's a good idea to setup recovery via [web3.storage Account](https://github.com/web3-storage/specs/blob/main/w3-account.md), so that when you move to a different device you can still administer your space as long as you can log in to your web3.storage Account: 
+One last thing - now that you've saved your space locally, it's a good idea to setup recovery via [Storacha Account](https://github.com/web3-storage/specs/blob/main/w3-account.md), so that when you move to a different device you can still administer your space as long as you can log in to your Storacha Account: 
 
 ```js
 const recovery = await space.createRecovery(myAccount.did())
@@ -100,7 +100,7 @@ await client.capability.access.delegate({
 
 ## Upload files
 
-Now that you've created and provisioned a space, you're ready to upload files to web3.storage!
+Now that you've created and provisioned a space, you're ready to upload files to Storacha!
 
 Call `uploadFile` to upload a single file, or `uploadDirectory` to upload multiple files.
 

@@ -13,17 +13,17 @@ Note that there is a minimum 30 day retention period for uploaded data, and even
 
 <Callout type="error" emoji="⚠️❗">
   **Permanent Data ♾️**<br/>
-  Removing files from w3up will remove them from the file listing for your account, but that doesn't prevent nodes on the decentralized storage network from retaining copies of the data indefinitely. web3.storage itself generally retains and charges users for any uploaded data for a minimum of 30 days. Do not use w3up for data that may need to be permanently deleted in the future.
+  Removing files from w3up will remove them from the file listing for your account, but that doesn't prevent nodes on the decentralized storage network from retaining copies of the data indefinitely. Storacha itself generally retains and charges users for any uploaded data for a minimum of 30 days. Do not use w3up for data that may need to be permanently deleted in the future.
 </Callout>
 
 ## Removing uploads (content CIDs) vs. stores (shard CIDs)
 
-web3.storage tracks two different things for its users to support content addressing. These concepts were first introduced in the Upload section:
+Storacha tracks two different things for its users to support content addressing. These concepts were first introduced in the Upload section:
 
 - **Content CIDs**: The CIDs used to reference and access uploads in the format generally useful to users (e.g., files, directories). These CIDs are usually prefixed by `bafy…` or `bafk…`.
-- **Shard CIDs**: The CID of the serialized shards of data itself (CAR files) that are produced client-side, sent to web3.storage, and stored. These CIDs are prefixed by `bag…`.
+- **Shard CIDs**: The CID of the serialized shards of data itself (CAR files) that are produced client-side, sent to Storacha, and stored. These CIDs are prefixed by `bag…`.
 
-web3.storage tracks usage for payment (i.e., how much storage is utilized by a user) using the volume of data associated with shard CIDs. However, in general, most users will be interacting with content CIDs (this is how you fetch your data from the network), with shard CIDs more of an implementation detail (how data gets chunked, serialized into CAR files, and stored for uploads).
+Storacha tracks usage for payment (i.e., how much storage is utilized by a user) using the volume of data associated with shard CIDs. However, in general, most users will be interacting with content CIDs (this is how you fetch your data from the network), with shard CIDs more of an implementation detail (how data gets chunked, serialized into CAR files, and stored for uploads).
 
 Fortunately, this shouldn't make things any more complicated - we go into more detail below, but in general, when you remove a content CID from your account, you'll want to remove the shard CIDs as well (e.g., in the client calling `client.remove(contentCID, { shards: true })`).
 
@@ -36,7 +36,7 @@ If you followed the Upload section, you should already have your client or CLI s
 - Client: `client.remove(contentCID)`
 - CLI: `w3 rm <contentCID>`
 
-If you initially uploaded your content by using the recommended upload methods (e.g., used `Client.upload()` or `w3 up`) and didn't interact with CAR shards at all when uploading, we recommend removing the shard CIDs associated with the content CID from your account. Otherwise, you will still be paying for the data stored with web3.storage (as mentioned above). The easiest way to do that is to set the `shards` option to `true`:
+If you initially uploaded your content by using the recommended upload methods (e.g., used `Client.upload()` or `w3 up`) and didn't interact with CAR shards at all when uploading, we recommend removing the shard CIDs associated with the content CID from your account. Otherwise, you will still be paying for the data stored with Storacha (as mentioned above). The easiest way to do that is to set the `shards` option to `true`:
 
 - Client: `client.remove(contentCID, { shards: true })`
 - CLI: `w3 rm <contentCID> --shards`

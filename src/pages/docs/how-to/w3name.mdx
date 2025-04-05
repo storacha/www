@@ -2,7 +2,7 @@ import { Callout } from 'nextra/components'
 
 # Update your data with w3name
 
-All the data you [store on web3.storage](upload) is [content-addressed](../concepts/content-addressing), which means that you always get location-independent, cryptographically verifiable links to your content.
+All the data you [store on Storacha](upload) is [content-addressed](../concepts/content-addressing), which means that you always get location-independent, cryptographically verifiable links to your content.
 
 Content addressing is a very powerful tool, but because the address is directly derived from the content, it is limited by definition to content that already exists, and any changes to the content will result in an entirely new address.
 
@@ -12,15 +12,15 @@ When you need to refer to something that might change over time, or that may not
 
 All records created and updated using w3name are signed locally with each user's private publishing key. This means that the w3name service never sees your keys, and it also doesn't require any authentication to use - no account or API keys required!
 
-In this guide, we'll discover how to use the JavaScript `w3name` package to create and manage name records for data stored with web3.storage.
+In this guide, we'll discover how to use the JavaScript `w3name` package to create and manage name records for data stored with Storacha.
 
 <Callout type="warning">
-  IPNS is a secure, local-first protocol, but does not always resolve performantly when needing to fetch the absolute latest update to a name (which is a requirement for most application use-cases) from the public IPFS network (e.g., over a local Kubo instance or public gateway). You can read more about this [here.](https://docs.ipfs.tech/concepts/ipns/#tradeoffs-between-consistency-vs-availability). As a result, w3name's recommended usage for use cases where performance and consistency are both important is [via an endpoint hosted by web3.storage](#getting-the-latest-revision). We plan on offering a new naming protocol at some point that can be used for application use cases without relying on any centralized infrastructure.
+  IPNS is a secure, local-first protocol, but does not always resolve performantly when needing to fetch the absolute latest update to a name (which is a requirement for most application use-cases) from the public IPFS network (e.g., over a local Kubo instance or public gateway). You can read more about this [here.](https://docs.ipfs.tech/concepts/ipns/#tradeoffs-between-consistency-vs-availability). As a result, w3name's recommended usage for use cases where performance and consistency are both important is [via an endpoint hosted by Storacha](#getting-the-latest-revision). We plan on offering a new naming protocol at some point that can be used for application use cases without relying on any centralized infrastructure.
 </Callout>
 
 ## What's in a name?
 
-w3name is similar to the Domain Name System (DNS), in that it allows you to query for an identifier and resolve the latest value. Unlike DNS, however, you cannot choose your own identifiers, and the "names" produced by IPNS and w3name are not human-readable, like `web3.storage` or `ipfs.io`.
+w3name is similar to the Domain Name System (DNS), in that it allows you to query for an identifier and resolve the latest value. Unlike DNS, however, you cannot choose your own identifiers, and the "names" produced by IPNS and w3name are not human-readable, like `storacha` or `ipfs.io`.
 
 The "names" in IPNS and w3name are unique identifiers, and each one is a string representation of the public half of a cryptographic key-pair.
 

@@ -1,6 +1,6 @@
 # IPFS HTTP Gateways
 
-web3.storage uses the [InterPlanetary File System (IPFS)](https://ipfs.io/) as a key part of its storage and retrieval infrastructure.
+Storacha uses the [InterPlanetary File System (IPFS)](https://ipfs.io/) as a key part of its storage and retrieval infrastructure.
 
 The IPFS network is a peer-to-peer network of computers that share resources to efficiently provide content to anyone that requests it. Computers that join the IPFS network supply blocks of data using a hash-based Content Identifiers (CIDs).
 
