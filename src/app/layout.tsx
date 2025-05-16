@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import '../globals.css'
 import { Web3StorageLogo } from '@/components/brand'
+import PlausibleProvider from 'next-plausible'
 
 export const metadata: Metadata = {
   title: {
@@ -24,9 +25,18 @@ export default function RootLayout({children}: { children: React.ReactNode}) {
         <meta name="theme-color" content="#5bbad5" />
       </head>
       <body>
-        <Banner />
-        {children}
-        <Footer />
+      <PlausibleProvider
+          domain='web3.storage'
+          trackFileDownloads={true}
+          trackOutboundLinks={true}
+          taggedEvents={true}
+          trackLocalhost={false}
+          enabled={true}
+        >
+          <Banner />
+          {children}
+          <Footer />
+        </PlausibleProvider>
       </body>
     </html>
   )
