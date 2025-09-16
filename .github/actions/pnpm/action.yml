@@ -7,9 +7,6 @@ runs:
     - uses: pnpm/action-setup@v2
       with:
         version: 8
-        run_install: |
-          - recursive: true
-            args: [--frozen-lockfile, --strict-peer-dependencies]
     - uses: actions/setup-node@v3
       with:
         node-version: 18
