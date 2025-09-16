@@ -36,7 +36,7 @@ jobs:
         uses: mathiasvr/command-output@v1.1.0
         id: cloudflare
         with:
-          run: npx wrangler pages deploy --project-name w3up-website-staging --branch "$GITHUB_REF_NAME" --commit-hash "$GITHUB_SHA" ${{ env.outputDir }}
+          run: npx wrangler pages deploy --project-name w3up-website --branch "$GITHUB_REF_NAME" --commit-hash "$GITHUB_SHA" ${{ env.outputDir }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
